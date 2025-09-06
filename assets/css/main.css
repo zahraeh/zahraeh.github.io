@@ -8,7 +8,6 @@
 
 /*--------------------------------------------------------------
 # Font & Color Variables
-# Help: https://bootstrapmade.com/color-system/
 --------------------------------------------------------------*/
 
 /* Fonts */
@@ -18,30 +17,30 @@
   --nav-font: "Poppins", sans-serif;
 }
 
-/* Global Colors - Updating them here will change the entire website's scheme */
+/* Global Colors */
 :root { 
-  --background-color: #101a20; /* Global background */
-  --default-color: #e7f2f7; /* Main text color */
-  --heading-color: #ffffff; /* Headings */
-  --accent-color: #6a0dad; /* Dark purple accent for buttons, links, highlights */
-  --surface-color: #141f26; /* Cards, boxes, separated surfaces */
-  --contrast-color: #ffffff; /* Ensures readability */
+  --background-color: #ffffff; /* White background */
+  --default-color: #000000; /* Black text for readability */
+  --heading-color: #000000; /* Black headings */
+  --accent-color: #6a0dad; /* Dark purple accent */
+  --surface-color: #f5f5f5; /* Light gray for cards/surfaces */
+  --contrast-color: #ffffff; /* For text on purple buttons */
 }
 
 /* Nav Menu Colors */
 :root {
-  --nav-color: #ffffff;  /* Default nav link color */
-  --nav-hover-color: #6a0dad; /* Dark purple hover/active */
-  --nav-mobile-background-color: #1a0f1f; /* Dark purple-black for mobile nav */
-  --nav-dropdown-background-color: #120a17; /* Dropdown background */
-  --nav-dropdown-color: #e7f2f7; /* Dropdown link color */
-  --nav-dropdown-hover-color: #6a0dad; /* Purple hover on dropdown links */
+  --nav-color: #000000;  /* Black nav links */
+  --nav-hover-color: #6a0dad; /* Purple hover */
+  --nav-mobile-background-color: #ffffff; /* White mobile menu */
+  --nav-dropdown-background-color: #f0f0f0; /* Light gray dropdown */
+  --nav-dropdown-color: #000000; /* Black dropdown links */
+  --nav-dropdown-hover-color: #6a0dad; /* Purple hover */
 }
 
-/* Color Presets - Alternative background modes */
+/* Color Presets */
 .light-background {
-  --background-color: #1c1324;
-  --surface-color: #3a2950;
+  --background-color: #ffffff;
+  --surface-color: #f5f5f5;
 }
 
 .dark-background {
@@ -56,7 +55,6 @@
 :root {
   scroll-behavior: smooth;
 }
-
 
 /*--------------------------------------------------------------
 # General Styling & Shared Classes
