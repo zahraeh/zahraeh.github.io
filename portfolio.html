@@ -4,9 +4,10 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Portfolio - Zahra | Afiya Project Added</title>
-  <meta name="description" content="Portfolio of Zahra E — projects across AI, data, and product.">
-  <meta name="keywords" content="Portfolio, Product Management, Data Science, AI, HealthTech">
+
+  <title>Portfolio - Zahra El Hamraoui | Business Analyst</title>
+  <meta name="description" content="Portfolio of Zahra El Hamraoui — business analysis, AI research, and product projects in health tech and operations.">
+  <meta name="keywords" content="Business Analyst, Product, Data, AI Research, HealthTech, Requirements Analysis, Process Improvement">
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -35,11 +36,11 @@
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
   <style>
-    /* Small helper styles for tag pills and lightbox content */
     .portfolio-tags span {
       display: inline-block;
       padding: .25rem .5rem;
       margin-right: .25rem;
+      margin-bottom: .25rem;
       border-radius: 999px;
       background: #f1f5f9;
       font-size: .8rem;
@@ -56,11 +57,6 @@
   <header id="header" class="header d-flex align-items-center light-background sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
 
-      <!-- <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-      <img src="assets/img/logo.webp" alt="">
-      <h1 class="sitename">FolioOne</h1> 
-    </a> -->
-
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -71,10 +67,10 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
+      <!-- Update these links to your real URLs -->
       <div class="header-social-links">
-        <a href="#" class="twitter" aria-label="Twitter / X"><i class="bi bi-twitter-x"></i></a>
-        <a href="#" class="facebook" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        <a href="mailto:zahraeh.fr@gmail.com" class="email" aria-label="Email"><i class="bi bi-envelope"></i></a>
+        <a href="https://zahraeh.com" class="website" aria-label="Website"><i class="bi bi-globe"></i></a>
         <a href="#" class="linkedin" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
       </div>
 
@@ -89,7 +85,10 @@
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Portfolio</h2>
-        <p>Selected projects across AI, product strategy, and health tech. Click a card to view details.</p>
+        <p>
+          Selected projects across business analysis, AI research, and product work in health tech and operations.
+          Click a card to view details.
+        </p>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -104,32 +103,81 @@
           </ul><!-- End Portfolio Filters -->
 
           <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="300">
-            <!-- Afiya Project Card -->
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-technology filter-strategy">
+
+            <!-- EGID AI Research -->
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-technology filter-operations">
               <div class="portfolio-card">
                 <div class="portfolio-img">
                   <!-- Replace with your project cover image -->
-                  <img src="assets/img/portfolio/afiya-cover.webp" alt="Afiya: Connected Habit & Wellness Coach" class="img-fluid">
+                  <img src="assets/img/portfolio/egid-ai-research-cover.webp" alt="EGID — AI Research" class="img-fluid">
                   <div class="portfolio-overlay">
-                    <!-- Open inline lightbox with full case content -->
+                    <a href="#project-egid" class="glightbox portfolio-lightbox" data-glightbox="type:inline" aria-label="Open EGID AI Research details"><i class="bi bi-plus"></i></a>
+                    <a href="#project-egid" class="portfolio-details-link" aria-label="EGID AI Research details"><i class="bi bi-link"></i></a>
+                  </div>
+                </div>
+                <div class="portfolio-info">
+                  <h4>AI Research — EGID (Lille)</h4>
+                  <p>Data requirements, analytical specs, and workflow optimization</p>
+                  <div class="portfolio-tags">
+                    <span>Python</span>
+                    <span>SQL</span>
+                    <span>Research</span>
+                    <span>Process Improvement</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /EGID AI Research -->
+
+            <!-- Budget Planning & Forecasting Tool -->
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-finance filter-operations filter-strategy">
+              <div class="portfolio-card">
+                <div class="portfolio-img">
+                  <img src="assets/img/portfolio/budget-tool-cover.webp" alt="Budget Planning & Forecasting Tool" class="img-fluid">
+                  <div class="portfolio-overlay">
+                    <a href="#project-budget" class="glightbox portfolio-lightbox" data-glightbox="type:inline" aria-label="Open Budget tool details"><i class="bi bi-plus"></i></a>
+                    <a href="#project-budget" class="portfolio-details-link" aria-label="Budget tool details"><i class="bi bi-link"></i></a>
+                  </div>
+                </div>
+                <div class="portfolio-info">
+                  <h4>Budget Planning & Forecasting Tool</h4>
+                  <p>Requirements → data model → specs for scenario planning</p>
+                  <div class="portfolio-tags">
+                    <span>Requirements</span>
+                    <span>Data Modeling</span>
+                    <span>Forecasting</span>
+                    <span>KPI</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /Budget Planning & Forecasting Tool -->
+
+            <!-- Afiya Project -->
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-technology filter-strategy">
+              <div class="portfolio-card">
+                <div class="portfolio-img">
+                  <img src="assets/img/portfolio/afiya-cover.webp" alt="Afiya: Wellness App" class="img-fluid">
+                  <div class="portfolio-overlay">
                     <a href="#project-afiya" class="glightbox portfolio-lightbox" data-glightbox="type:inline" aria-label="Open Afiya details"><i class="bi bi-plus"></i></a>
-                    <!-- External details link (optional) -->
                     <a href="#project-afiya" class="portfolio-details-link" aria-label="Afiya details"><i class="bi bi-link"></i></a>
                   </div>
                 </div>
                 <div class="portfolio-info">
-                  <h4>Afiya: Connected Habit & Wellness Coach</h4>
-                  <p>AI-driven daily habit recommendations from health data</p>
+                  <h4>Afiya — Wellness App (Concept → Prototype)</h4>
+                  <p>Research, journeys, and specs for “Today’s Focus” recommendations</p>
                   <div class="portfolio-tags">
-                    <span>AI</span>
-                    <span>HealthTech</span>
                     <span>Product</span>
+                    <span>HealthTech</span>
+                    <span>User Research</span>
+                    <span>Functional Specs</span>
                   </div>
                 </div>
               </div>
-            </div>            <!-- /Afiya Project Card -->
+            </div>
+            <!-- /Afiya Project -->
 
-            <!-- SkillBridge Project Card -->
+            <!-- Optional: Keep SkillBridge (not in resume) -->
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-technology filter-strategy">
               <div class="portfolio-card">
                 <div class="portfolio-img">
@@ -140,17 +188,17 @@
                   </div>
                 </div>
                 <div class="portfolio-info">
-                  <h4>SkillBridge: AI Career Copilot</h4>
-                  <p>Personalized upskilling paths from real job data</p>
+                  <h4>SkillBridge — AI Career Copilot</h4>
+                  <p>Job market skill mining → personalized upskilling roadmap</p>
                   <div class="portfolio-tags">
-                    <span>AI</span>
-                    <span>EdTech</span>
+                    <span>NLP</span>
                     <span>Product</span>
+                    <span>Dashboard</span>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- /SkillBridge Project Card -->
+            <!-- /SkillBridge -->
 
           </div>
 
@@ -161,60 +209,120 @@
         </div>
       </div>
 
-      <!-- Inline Lightbox Content for Afiya -->
+      <!-- Inline Lightbox Content: EGID -->
+      <div id="project-egid" class="glightbox-clean" style="display:none; max-width: 920px;">
+        <div class="container lightbox-content">
+          <div class="row g-4">
+            <div class="col-12">
+              <h3>🧪 AI Research — EGID (Lille, France)</h3>
+              <p class="meta">Role: Engineer – AI Research • Focus: data requirements, analytical specs, workflow improvement</p>
+            </div>
+
+            <div class="col-lg-7">
+              <h4>What I did</h4>
+              <ul>
+                <li>Collaborated with external research partners (incl. Imperial College London) to define data requirements and quality criteria for multi-institutional work.</li>
+                <li>Translated ambiguous research objectives into structured analytical approaches, aligning on success metrics and validation criteria.</li>
+                <li>Documented analytical methodologies and communicated findings to clinical researchers, data scientists, and lab staff.</li>
+                <li>Reviewed end-to-end data workflows and supported process improvements using Python and SQL.</li>
+              </ul>
+
+              <h4>Tools</h4>
+              <div class="portfolio-tags">
+                <span>Python</span>
+                <span>SQL</span>
+                <span>Documentation</span>
+                <span>Stakeholder Management</span>
+              </div>
+            </div>
+
+            <div class="col-lg-5">
+              <!-- Optional visuals -->
+              <img src="assets/img/portfolio/egid-ai-research-mock-1.webp" class="img-fluid rounded mb-3" alt="EGID mockup 1">
+              <img src="assets/img/portfolio/egid-ai-research-mock-2.webp" class="img-fluid rounded" alt="EGID mockup 2">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /EGID -->
+
+      <!-- Inline Lightbox Content: Budget Tool -->
+      <div id="project-budget" class="glightbox-clean" style="display:none; max-width: 920px;">
+        <div class="container lightbox-content">
+          <div class="row g-4">
+            <div class="col-12">
+              <h3>📊 Business Analysis Project — Budget Planning & Forecasting Tool</h3>
+              <p class="meta">Role: Business Analyst • Deliverables: requirements, data model, business rules, process flows</p>
+            </div>
+
+            <div class="col-lg-7">
+              <h4>Objective</h4>
+              <p>
+                Build a clear BA-to-build blueprint for budgeting: scenario planning, variance tracking, and structured expense categorization.
+              </p>
+
+              <h4>Key contributions</h4>
+              <ul>
+                <li>Elicited needs through structured interviews and problem framing; translated them into <strong>25+ functional requirements</strong>.</li>
+                <li>Designed logical data models and defined business rules for variance tracking, expense categorization, and multi-scenario comparison.</li>
+                <li>Produced functional specifications and process flows to bridge business expectations with technical implementation.</li>
+              </ul>
+
+              <h4>Artifacts</h4>
+              <div class="portfolio-tags">
+                <span>FRD / PRD</span>
+                <span>Process Flow</span>
+                <span>Data Model</span>
+                <span>Business Rules</span>
+              </div>
+            </div>
+
+            <div class="col-lg-5">
+              <img src="assets/img/portfolio/budget-tool-mock-1.webp" class="img-fluid rounded mb-3" alt="Budget tool mockup 1">
+              <img src="assets/img/portfolio/budget-tool-mock-2.webp" class="img-fluid rounded" alt="Budget tool mockup 2">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Budget Tool -->
+
+      <!-- Inline Lightbox Content: Afiya -->
       <div id="project-afiya" class="glightbox-clean" style="display:none; max-width: 920px;">
         <div class="container lightbox-content">
           <div class="row g-4">
             <div class="col-12">
-              <h3>💡 Afiya: Connected Habit & Wellness Coach</h3>
-              <p class="meta">Role: Product + Data • Stack: Python, APIs (Oura, Flo, Apple HealthKit, Google Fit)</p>
+              <h3>💡 Afiya — Wellness App (Concept → Prototype)</h3>
+              <p class="meta">Role: Product & Business Analyst • Deliverables: research, journeys, wireframes, functional specs</p>
             </div>
+
             <div class="col-lg-7">
               <h4>Problem</h4>
-              <p>Users collect tons of health data across devices (Oura ring, Flo, Apple Health, Google Fit), but the insights are fragmented and rarely lead to sustainable habit changes. People struggle to connect “data” (sleep score, step count, period cycle) with “action” (what should I <em>do</em> today?).</p>
+              <p>
+                Users want simple, actionable wellness guidance—not fragmented insights across multiple apps and metrics.
+              </p>
 
-              <h4>Insights</h4>
+              <h4>What I did</h4>
               <ul>
-                <li>Competitive research: Oura, Fitbit, Flo, and Apple Health all provide data, but lack <strong>cross-app integration</strong> and <strong>behavioral nudging</strong>.</li>
-                <li>User interviews: Many users want a single, simple app that tells them <em>what habit to prioritize today</em> given their health signals.</li>
-                <li>Opportunity: AI can contextualize health metrics into actionable nudges (e.g., “You slept poorly, skip HIIT, do yoga instead”).</li>
+                <li>Ran user research with <strong>15+ participants</strong> and competitive analysis of <strong>5</strong> wellness platforms to identify gaps and differentiate the product.</li>
+                <li>Designed user journeys, wireframes, and functional specifications for a personalized recommendation engine (“Today’s Focus”).</li>
+                <li>Facilitated iterative feedback sessions with a <strong>20-user beta</strong>, refining usability and increasing daily habit completion by <strong>30%</strong>.</li>
               </ul>
 
-              <h4>Solution</h4>
-              <ul>
-                <li><strong>Integration Layer:</strong> Syncs with Oura, Flo, Apple Health/Google Fit, and wearables.</li>
-                <li><strong>AI Habit Engine:</strong> Translates raw health data into daily recommendations (hydration, light exercise, rest, meditation).</li>
-                <li><strong>Personalization:</strong> For women, integrates cycle insights from Flo to adapt wellness routines (e.g., recovery-focused workouts during luteal phase).</li>
-                <li><strong>Motivational Layer:</strong> Weekly progress recaps linking habits → improvements in sleep, focus, or mood.</li>
-              </ul>
-
-              <h4>Implementation Process</h4>
-              <ul>
-                <li>Built API connections with Oura, Flo, and Apple HealthKit.</li>
-                <li>Designed a simple “Today’s Focus” home screen (one key habit per day).</li>
-                <li>Tested with a beta group of 20 users who already used multiple health apps.</li>
-                <li>Iterative releases, improving AI recommendations with user feedback.</li>
-              </ul>
-
-              <h4>Challenges</h4>
-              <ul>
-                <li><strong>Data Overload:</strong> Needed to prioritize signals (sleep, cycle, activity) to avoid overwhelming users.</li>
-                <li><strong>Different APIs:</strong> Navigated complexity of integrating across Apple, Google, and third-party APIs.</li>
-                <li><strong>User Trust:</strong> Ensured data privacy and transparent recommendations.</li>
-              </ul>
-
-              <h4>Results</h4>
-              <ul>
-                <li>75% of beta users reported feeling “less overwhelmed” by health data.</li>
-                <li>Increased daily habit completion rate by 30% compared to standalone trackers.</li>
-                <li>Received positive feedback from a wellness hackathon jury (“Best Personalized Health App”).</li>
-              </ul>
+              <h4>Outputs</h4>
+              <div class="portfolio-tags">
+                <span>User Research</span>
+                <span>Wireframes</span>
+                <span>Functional Specs</span>
+                <span>Usability Testing</span>
+              </div>
 
               <p class="mt-3">
+                <!-- Keep or replace with your real links -->
                 <a href="https://www.notion.so/Research-and-discovery-2684660dda8f805f8e04f42c4f753bba?pvs=21" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm">Research and discovery</a>
                 <a href="https://www.notion.so/Full-plan-2684660dda8f80b88db8c6eeae8034b0?pvs=21" target="_blank" rel="noopener" class="btn btn-primary btn-sm ms-2">Full plan</a>
               </p>
             </div>
+
             <div class="col-lg-5">
               <img src="assets/img/portfolio/afiya-mock-1.webp" class="img-fluid rounded mb-3" alt="Afiya mockup 1">
               <img src="assets/img/portfolio/afiya-mock-2.webp" class="img-fluid rounded" alt="Afiya mockup 2">
@@ -222,55 +330,25 @@
           </div>
         </div>
       </div>
-      <!-- /Inline Lightbox Content for Afiya -->
+      <!-- /Afiya -->
 
-      <!-- Inline Lightbox Content for SkillBridge -->
+      <!-- Inline Lightbox Content: SkillBridge -->
       <div id="project-skillbridge" class="glightbox-clean" style="display:none; max-width: 920px;">
         <div class="container lightbox-content">
           <div class="row g-4">
             <div class="col-12">
-              <h3>🧭 SkillBridge: AI Career Copilot</h3>
+              <h3>🧭 SkillBridge — AI Career Copilot</h3>
               <p class="meta">Role: Product + Data • Stack: Python, NLP, Web Scraping, Dashboard Prototype</p>
             </div>
             <div class="col-lg-7">
               <h4>Problem</h4>
-              <p>Professionals aiming to transition careers (e.g., into data science, product management, consulting) struggle to identify which skills matter most. LinkedIn and job boards list hundreds of requirements, while online courses overwhelm with options. Career guidance feels <strong>generic</strong> instead of tailored to an individual’s background and goals.</p>
-
-              <h4>Insights</h4>
-              <ul>
-                <li>Competitive research: LinkedIn Learning, Coursera, and Udemy recommend content, but don’t connect it directly to <strong>specific job postings</strong>.</li>
-                <li>User interviews: Career changers want <strong>clarity on “what 3 things should I focus on now?”</strong> rather than endless content libraries.</li>
-                <li>Opportunity: Use AI to turn unstructured job market data into <strong>actionable learning roadmaps</strong>.</li>
-              </ul>
+              <p>Career changers struggle to identify the highest-impact skills from noisy job postings and generic course catalogs.</p>
 
               <h4>Solution</h4>
               <ul>
-                <li><strong>Job Market Intelligence:</strong> Scraped and clustered &gt;5,000 job postings for DS, PM, and consulting roles.</li>
-                <li><strong>AI Skill Gap Analyzer:</strong> Compared a user’s CV/LinkedIn profile to target roles → produced top 3 missing skills.</li>
-                <li><strong>Personalized Learning Paths:</strong> Curated MOOCs/projects that directly map to those skill gaps.</li>
-                <li><strong>Career Sprint Nudges:</strong> Weekly challenges + reminders (“Finish SQL basics this week”) to improve accountability.</li>
-              </ul>
-
-              <h4>Implementation Process</h4>
-              <ul>
-                <li>Built a Python pipeline to scrape job postings and extract skills using NLP.</li>
-                <li>Designed a prototype dashboard where users upload a CV and get an instant “skill gap report.”</li>
-                <li>Partnered with 10 beta testers (career changers) to test recommendations and learning paths.</li>
-                <li>Iteratively improved the recommendation logic by incorporating user feedback.</li>
-              </ul>
-
-              <h4>Challenges</h4>
-              <ul>
-                <li><strong>Data Quality:</strong> Job postings are noisy (buzzwords, duplicate skills). Had to normalize and cluster skills into meaningful categories.</li>
-                <li><strong>Motivation Drop-off:</strong> Some testers felt overwhelmed initially → simplified recommendations to only <em>3 skills at a time</em>.</li>
-                <li><strong>User Trust:</strong> Needed transparency (explained <em>why</em> each skill was suggested, tied directly to job posting demand).</li>
-              </ul>
-
-              <h4>Results</h4>
-              <ul>
-                <li>80% of beta testers said they had a “clearer roadmap” for their career transition.</li>
-                <li>Increased course completion rate by 2x compared to when testers chose courses on their own.</li>
-                <li>Demo recognized in a university entrepreneurship challenge as “Best AI-Driven Career Tool.”</li>
+                <li>Scraped and structured job-market requirements to surface high-demand skills.</li>
+                <li>Generated a skill-gap view and learning roadmap tied directly to target roles.</li>
+                <li>Prototype dashboard: upload CV → receive recommendations + action plan.</li>
               </ul>
 
               <p class="mt-3">
@@ -284,7 +362,7 @@
           </div>
         </div>
       </div>
-      <!-- /Inline Lightbox Content for SkillBridge -->
+      <!-- /SkillBridge -->
 
     </section><!-- /Portfolio Section -->
 
@@ -294,14 +372,16 @@
 
     <div class="container">
       <div class="copyright text-center ">
-        <p>© <span>Copyright</span> <strong class="px-1 sitename">Zahra</strong> <span>All Rights Reserved<br></span></p>
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Zahra El Hamraoui</strong> <span>All Rights Reserved<br></span></p>
       </div>
+
+      <!-- Update these links to your real URLs -->
       <div class="social-links d-flex justify-content-center">
-        <a href=""><i class="bi bi-twitter-x"></i></a>
-        <a href=""><i class="bi bi-facebook"></i></a>
-        <a href=""><i class="bi bi-instagram"></i></a>
-        <a href=""><i class="bi bi-linkedin"></i></a>
+        <a href="mailto:zahraeh.fr@gmail.com" aria-label="Email"><i class="bi bi-envelope"></i></a>
+        <a href="https://zahraeh.com" aria-label="Website"><i class="bi bi-globe"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
       </div>
+
       <div class="credits">
         Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
       </div>
@@ -331,5 +411,4 @@
   <script src="assets/js/main.js"></script>
 
 </body>
-
 </html>
