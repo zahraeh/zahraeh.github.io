@@ -4,16 +4,16 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Zahra E | Certified Business Analyst</title>
-  <meta name="description" content="Portfolio of Zahra E - Certified ECBA™ & PSPO I™ Business Analyst specializing in AI & Data Transformation.">
-  <meta name="keywords" content="Business Analyst, ECBA, PSPO, AI Research, Data Transformation, Requirements Engineering">
+  <title>Resume - Zahra E | Business Analyst</title>
+  <meta name="description" content="Resume of Zahra E — Certified Business Analyst (ECBA™, PSPO I).">
+  <meta name="keywords" content="Zahra E, Resume, Business Analyst, ECBA, PSPO, AI Research, Data Transformation">
 
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -22,116 +22,350 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
 
   <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    /* ── Certification Cards — wired into FolioOne's design tokens ── */
+    .cert-card {
+      background: var(--surface-color, #fff);
+      border: 1px solid color-mix(in srgb, var(--default-color, #444) transparent 88%);
+      border-radius: 12px;
+      padding: 1.6rem 1.4rem 1.4rem;
+      height: 100%;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      overflow: hidden;
+    }
+
+    /* Top accent stripe */
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 12px 12px 0 0;
+      background: var(--cert-accent);
+      opacity: 0.9;
+    }
+
+    /* Subtle hover glow inset */
+    .cert-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      background: radial-gradient(ellipse at top left, color-mix(in srgb, var(--cert-accent) 8%, transparent), transparent 65%);
+      pointer-events: none;
+    }
+
+    .cert-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px color-mix(in srgb, var(--cert-accent) 14%, transparent);
+      border-color: color-mix(in srgb, var(--cert-accent) 40%, transparent);
+    }
+
+    .cert-card:hover::after { opacity: 1; }
+
+    .cert-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      background: color-mix(in srgb, var(--cert-accent) 11%, transparent);
+      color: var(--cert-accent);
+      position: relative;
+      z-index: 1;
+    }
+
+    .cert-issuer {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--cert-accent);
+      margin-bottom: 0.2rem;
+      position: relative; z-index: 1;
+    }
+
+    .cert-acronym {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--heading-color, #212529);
+      line-height: 1.2;
+      margin-bottom: 0.2rem;
+      position: relative; z-index: 1;
+    }
+
+    .cert-title {
+      font-size: 0.79rem;
+      color: var(--default-color, #6c757d);
+      margin-bottom: 0.9rem;
+      line-height: 1.4;
+      position: relative; z-index: 1;
+    }
+
+    .cert-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.71rem;
+      font-weight: 600;
+      padding: 0.22rem 0.65rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--cert-accent) 11%, transparent);
+      color: var(--cert-accent);
+      border: 1px solid color-mix(in srgb, var(--cert-accent) 22%, transparent);
+      position: relative; z-index: 1;
+    }
+
+    .cert-tags {
+      margin-top: 0.85rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      position: relative; z-index: 1;
+    }
+
+    .cert-tags span {
+      font-size: 0.69rem;
+      padding: 0.18rem 0.52rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--default-color, #444) 7%, transparent);
+      color: var(--default-color, #6c757d);
+      border: 1px solid color-mix(in srgb, var(--default-color, #444) 13%, transparent);
+    }
+
+    /* Per-card accent colours */
+    .cert-ecba  { --cert-accent: #2563eb; }
+    .cert-pspo  { --cert-accent: #7c3aed; }
+    .cert-extra { --cert-accent: #0891b2; }
+  </style>
 </head>
 
-<body class="index-page">
+<body class="resume-page">
 
   <header id="header" class="header d-flex align-items-center light-background sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
-
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="resume.html">Resume</a></li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="resume.html" class="active">Resume</a></li>
           <li><a href="portfolio.html">Portfolio</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list" aria-label="Open menu"></i>
       </nav>
-
       <div class="header-social-links">
-        <a href="https://www.linkedin.com/in/zahra-e-3004953a0/" target="_blank"><i class="bi bi-linkedin"></i></a>
-        <a href="https://github.com/zahraeh" target="_blank"><i class="bi bi-github"></i></a>
-        <a href="mailto:zahraeh.fr@gmail.com"><i class="bi bi-envelope"></i></a>
+        <a href="mailto:zahraeh.fr@gmail.com" class="email" aria-label="Email"><i class="bi bi-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/zahra-e-3004953a0/" target="_blank" rel="noopener" class="linkedin" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+        <a href="https://github.com/zahraeh" target="_blank" rel="noopener" class="github" aria-label="GitHub"><i class="bi bi-github"></i></a>
+        <a href="http://www.zahraeh.com" target="_blank" rel="noopener" class="website" aria-label="Website"><i class="bi bi-globe"></i></a>
       </div>
-
     </div>
   </header>
 
   <main class="main">
 
-    <section id="hero" class="hero section">
+    <!-- Profile Header -->
+    <section class="section py-5 border-bottom">
+      <div class="container" data-aos="fade-up">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-8">
+            <h1 class="mb-1">Zahra E</h1>
+            <p class="text-secondary mb-2">ECBA™ & PSPO I™ Certified Business Analyst | Requirements Engineering</p>
+            <p class="mb-0">
+              Lille, France ·
+              <a href="tel:+33767110422">+33 7 67 11 04 22</a> ·
+              <a href="mailto:zahraeh.fr@gmail.com">zahraeh.fr@gmail.com</a> ·
+              <a href="http://zahraeh.com" target="_blank" rel="noopener">zahraeh.com</a>
+            </p>
+          </div>
+          <div class="col-lg-4 text-lg-end">
+            <a class="btn btn-outline-primary" href="portfolio.html">View Afiya Project</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="resume" class="resume section">
+
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Experience</h2>
+        <p>Certified BA with 4 years of experience in requirements management and multi-stakeholder coordination for Data and AI projects in international environments.</p>
+      </div>
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row">
 
-        <div class="row gy-4 align-items-center">
-          <div class="col-lg-6 order-2 order-lg-1">
-            <div class="hero-content">
-              <h1 data-aos="fade-up" data-aos-delay="200">Zahra <span class="highlight">E</span></h1>
-              <h2 data-aos="fade-up" data-aos-delay="300">
-                <span class="typed" data-typed-items="Certified Business Analyst (ECBA™), Professional Product Owner (PSPO I™), Data-Driven Problem Solver"></span>
-              </h2>
-              
-              <p class="hero-description" data-aos="fade-up" data-aos-delay="400">
-                I bridge the gap between complex business needs and technical excellence. 
-                With 4 years of experience in <strong>AI Research</strong> and <strong>Data Transformation</strong>, 
-                I’ve optimized workflows by up to <strong>60%</strong>  and delivered specifications for high-impact 
-                HealthTech and Research solutions.
-              </p>
+          <div class="col-lg-7">
+            <div class="resume-item" data-aos="fade-up">
+              <div class="resume-content">
 
-              <div class="hero-actions" data-aos="fade-up" data-aos-delay="500">
-                <a href="portfolio.html" class="btn btn-primary">See Featured Project</a>
-              </div>
+                <article class="experience-item mb-4">
+                  <h4>Research Engineer Business Analysis — EGID</h4>
+                  <h5>2025 – Present · Lille, France</h5>
+                  <p><em>Strategic AI solution integration project.</em></p>
+                  <ul>
+                    <li>Gathered and formalized business requirements from academic and industrial profiles in a bilingual environment (FR/EN).</li>
+                    <li>Translated user needs into technical specifications for development teams; simplified complex solutions for non-technical users.</li>
+                    <li>Led the deployment of the AI solution and change management efforts (training, user support) to ensure tool adoption.</li>
+                    <li>Post-deployment analysis showing a 30% improvement in the analytical efficiency of business processes.</li>
+                  </ul>
+                </article>
 
-              <div class="social-links" data-aos="fade-up" data-aos-delay="600">
-                <span class="me-2 text-secondary">Expertise in:</span>
-                <i class="bi bi-check-circle-fill text-primary ms-2"></i> Agile
-                <i class="bi bi-check-circle-fill text-primary ms-2"></i> Python/SQL
-                <i class="bi bi-check-circle-fill text-primary ms-2"></i> BPMN 2.0
+                <article class="experience-item mb-4">
+                  <h4>Analyst Process & Data Transformation — CRG</h4>
+                  <h5>2021 – 2025 · Barcelona, Spain</h5>
+                  <p><em>Applied research environments.</em></p>
+                  <ul>
+                    <li>Designed and facilitated 7+ strategic AI workshops aimed at technical acculturation and tool adoption for 50+ users.</li>
+                    <li>Analyzed and optimized critical workflows via Python script development, resulting in a 60% reduction in operational processing time.</li>
+                    <li>Modeled data-driven solutions responding to specific business challenges and structured robust data flows.</li>
+                  </ul>
+                </article>
+
               </div>
             </div>
           </div>
 
-          <div class="col-lg-6 order-1 order-lg-2">
-            <div class="hero-image" data-aos="zoom-in" data-aos-delay="300">
-              <div class="image-wrapper">
-                <img src="assets/img/profile/profil-z.png" alt="Zahra E" class="img-fluid">
-                <div class="floating-elements">
-                  <div class="floating-card design" data-aos="fade-left" data-aos-delay="700">
-                    <i class="bi bi-file-earmark-text"></i>
-                    <span>Requirements</span>
-                  </div>
-                  <div class="floating-card code" data-aos="fade-right" data-aos-delay="800">
-                    <i class="bi bi-bar-chart"></i>
-                    <span>Data Specs</span>
-                  </div>
-                  <div class="floating-card creativity" data-aos="fade-up" data-aos-delay="900">
-                    <i class="bi bi-lightning-charge"></i>
-                    <span>Agile Delivery</span>
-                  </div>
-                </div>
+          <div class="col-lg-5">
+            <div class="resume-item" data-aos="fade-up" data-aos-delay="50">
+              <h3 class="resume-title">Business Analysis Projects</h3>
+              <div class="resume-content">
+                <article class="project-item mb-3">
+                  <h4>Afiya (Wellness Application)</h4>
+                  <ul>
+                    <li>Facilitated user workshops and prioritized a backlog of 40+ User Stories using the MoSCoW method on Jira.</li>
+                    <li>Performed BPMN 2.0 modeling (AS-IS/TO-BE) of data flows between APIs (Apple Health, Flo) and recommendation algorithms.</li>
+                    <li>Drafted Functional Specification Documents (DSF), Gherkin acceptance criteria, and executed UAT/Integration test plans.</li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+
+            <div class="resume-item" data-aos="fade-up" data-aos-delay="100">
+              <h3 class="resume-title">Skills</h3>
+              <div class="resume-content">
+                <p class="mb-2"><strong>Business Analysis:</strong> Requirements gathering, BRD / SFD, User Stories, Backlog, RTM, UAT, Business case, KPIs.</p>
+                <p class="mb-2"><strong>Methodologies:</strong> Agile / Scrum, BPMN (AS-IS/TO-BE), MoSCoW, Process improvement, BABOK®.</p>
+                <p class="mb-2"><strong>Tools & Data:</strong> Jira, Confluence, Miro, Power BI, SQL, Python, Advanced Excel.</p>
+                <p class="mb-0"><strong>Languages:</strong> French (C1/C2), English (Bilingual), Arabic (Native).</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="container mt-4" data-aos="fade-up" data-aos-delay="150">
+        <div class="row g-4">
+          <div class="col-lg-12">
+            <div class="resume-item">
+              <h3 class="resume-title">Education</h3>
+              <div class="resume-content">
+                <article class="education-item mb-3">
+                  <h4>Master of Science in Bioinformatics</h4>
+                  <h5>2018 – 2020 · Faculty of Medicine and Pharmacy, Morocco</h5>
+                </article>
+                <article class="education-item">
+                  <h4>Bachelor's in Applied Mathematics and Computer Science</h4>
+                  <h5>2015 – 2018 · Faculty of Sciences, Morocco</h5>
+                </article>
               </div>
             </div>
           </div>
         </div>
-
       </div>
+
+      <!-- ── CERTIFICATIONS ──────────────────────────────────── -->
+      <div class="container section-title mt-3" data-aos="fade-up">
+        <h2>Certifications</h2>
+        <p>Internationally recognised credentials in Business Analysis and Product Ownership.</p>
+      </div>
+
+      <div class="container pb-5" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4 justify-content-center">
+
+          <!-- ECBA -->
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="cert-card cert-ecba">
+              <div class="cert-icon"><i class="bi bi-award-fill"></i></div>
+              <div class="cert-issuer">IIBA</div>
+              <div class="cert-acronym">ECBA™</div>
+              <div class="cert-title">Entry Certificate in Business Analysis</div>
+              <span class="cert-status"><i class="bi bi-patch-check-fill"></i> Certified</span>
+              <div class="cert-tags">
+                <span>Requirements</span>
+                <span>BABOK®</span>
+                <span>Stakeholder Mgmt</span>
+                <span>BRD / SFD</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PSPO I -->
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="cert-card cert-pspo">
+              <div class="cert-icon"><i class="bi bi-kanban-fill"></i></div>
+              <div class="cert-issuer">Scrum.org</div>
+              <div class="cert-acronym">PSPO I™</div>
+              <div class="cert-title">Professional Scrum Product Owner I</div>
+              <span class="cert-status"><i class="bi bi-patch-check-fill"></i> Certified</span>
+              <div class="cert-tags">
+                <span>Agile / Scrum</span>
+                <span>Backlog</span>
+                <span>MoSCoW</span>
+                <span>User Stories</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Placeholder — replace or remove -->
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="cert-card cert-extra">
+              <div class="cert-icon"><i class="bi bi-plus-circle-dotted"></i></div>
+              <div class="cert-issuer">Your Issuer</div>
+              <div class="cert-acronym">+ Add Cert</div>
+              <div class="cert-title">Replace with your next certification — e.g. PL-300, CBAP, Google DA…</div>
+              <span class="cert-status"><i class="bi bi-hourglass-split"></i> Coming Soon</span>
+              <div class="cert-tags">
+                <span>Your skill</span>
+                <span>Your tool</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- ── /CERTIFICATIONS ─────────────────────────────────── -->
+
     </section>
+
   </main>
 
   <footer id="footer" class="footer">
     <div class="container">
-      <div class="copyright text-center ">
+      <div class="copyright text-center">
         <p>© <span>Copyright</span> <strong class="px-1 sitename">Zahra E</strong> <span>All Rights Reserved</span></p>
-      </div>
-      <div class="social-links d-flex justify-content-center">
-        <a href="https://www.linkedin.com/in/zahra-e-3004953a0/"><i class="bi bi-linkedin"></i></a>
-        <a href="https://github.com/zahraeh"><i class="bi bi-github"></i></a>
-        <a href="mailto:zahraeh.fr@gmail.com"><i class="bi bi-envelope"></i></a>
       </div>
     </div>
   </footer>
 
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
   <div id="preloader"></div>
 
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/typed.js/typed.umd.js"></script>
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-
   <script src="assets/js/main.js"></script>
 
 </body>
