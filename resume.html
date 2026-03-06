@@ -25,200 +25,195 @@
 
   <style>
     /* ═══════════════════════════════════════════════
-       UDEMY CERTIFICATIONS — INFINITE SCROLL TICKER
+       CERTIFICATIONS — INFINITE SCROLL TICKER
     ═══════════════════════════════════════════════ */
-    .udemy-certs-section {
-      padding: 60px 0 70px;
-      background: #f8faff;
+    .certs-ticker-section {
+      padding: 56px 0 64px;
+      background: linear-gradient(180deg, #f8faff 0%, #ffffff 100%);
       border-top: 1px solid #e8edf5;
       border-bottom: 1px solid #e8edf5;
+      overflow: hidden;
     }
 
-    .udemy-certs-section .section-label {
+    .certs-ticker-header {
       text-align: center;
-      margin-bottom: 36px;
+      margin-bottom: 40px;
     }
 
-    .udemy-certs-section .section-label h2 {
-      font-size: 1.55rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: #1a1a2e;
-    }
-
-    .udemy-certs-section .section-label p {
-      font-size: 0.9rem;
-      color: #6b7280;
-      margin: 0;
-    }
-
-    .udemy-badge {
+    .certs-ticker-header .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      background: #fff;
-      border: 1.5px solid #e5e9f2;
-      border-radius: 6px;
-      padding: 5px 11px 5px 7px;
-      margin-right: 6px;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      color: #a435f0;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6d28d9;
+      background: #f3e8ff;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 14px;
     }
 
-    .udemy-badge svg {
-      flex-shrink: 0;
+    .certs-ticker-header h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
     }
 
-    /* Ticker wrapper */
+    .certs-ticker-header p {
+      font-size: 0.88rem;
+      color: #64748b;
+      margin: 0;
+    }
+
     .ticker-wrapper {
       position: relative;
       overflow: hidden;
-      /* Fade edges */
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
     }
 
     .ticker-track {
       display: flex;
       width: max-content;
-      animation: ticker-scroll 40s linear infinite;
+      animation: ticker-left 38s linear infinite;
+      padding: 6px 0;
     }
 
-    .ticker-track:hover {
-      animation-play-state: paused;
-    }
+    .ticker-track:hover { animation-play-state: paused; }
 
-    /* Second row — slightly different speed, opposite direction for visual richness */
-    .ticker-track.reverse {
-      animation: ticker-scroll-reverse 50s linear infinite;
+    .ticker-track.row2 {
+      animation: ticker-right 50s linear infinite;
       margin-top: 14px;
     }
 
-    .ticker-track.reverse:hover {
-      animation-play-state: paused;
+    .ticker-track.row2:hover { animation-play-state: paused; }
+
+    @keyframes ticker-left {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
 
-    @keyframes ticker-scroll {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    @keyframes ticker-right {
+      from { transform: translateX(-50%); }
+      to   { transform: translateX(0); }
     }
 
-    @keyframes ticker-scroll-reverse {
-      0%   { transform: translateX(-50%); }
-      100% { transform: translateX(0); }
-    }
-
-    /* Individual cert card */
-    .cert-ticker-card {
+    .cert-card {
       display: inline-flex;
       align-items: flex-start;
-      gap: 14px;
+      gap: 13px;
       background: #ffffff;
-      border: 1.5px solid #e5e9f5;
-      border-radius: 14px;
-      padding: 16px 20px;
-      margin-right: 16px;
-      min-width: 310px;
-      max-width: 340px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-      cursor: default;
-      transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+      border: 1.5px solid #ede9fe;
+      border-radius: 16px;
+      padding: 16px 20px 14px;
+      margin-right: 14px;
+      width: 320px;
       flex-shrink: 0;
+      box-shadow: 0 1px 8px rgba(109,40,217,0.06);
+      transition: box-shadow 0.22s ease, transform 0.22s ease, border-color 0.22s ease;
     }
 
-    .cert-ticker-card:hover {
-      box-shadow: 0 8px 28px rgba(164, 53, 240, 0.13);
-      border-color: #c084fc;
-      transform: translateY(-3px);
+    .cert-card:hover {
+      box-shadow: 0 8px 30px rgba(109,40,217,0.14);
+      border-color: #a78bfa;
+      transform: translateY(-4px);
     }
 
-    .cert-ticker-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #a435f0, #7c3aed);
+    .cert-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      font-size: 1.1rem;
+      color: #fff;
     }
 
-    .cert-ticker-icon svg {
-      width: 22px;
-      height: 22px;
-      fill: #fff;
-    }
+    .icon-violet { background: linear-gradient(135deg, #7c3aed, #a855f7); }
+    .icon-blue   { background: linear-gradient(135deg, #2563eb, #60a5fa); }
+    .icon-teal   { background: linear-gradient(135deg, #0d9488, #34d399); }
+    .icon-rose   { background: linear-gradient(135deg, #e11d48, #fb7185); }
+    .icon-amber  { background: linear-gradient(135deg, #d97706, #fbbf24); }
 
-    .cert-ticker-body {
-      flex: 1;
-      min-width: 0;
-    }
+    .cert-card-body { flex: 1; min-width: 0; }
 
-    .cert-ticker-title {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #1a1a2e;
-      line-height: 1.35;
-      margin-bottom: 5px;
-      white-space: normal;
-    }
-
-    .cert-ticker-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .cert-ticker-date {
-      font-size: 0.7rem;
-      color: #9ca3af;
-      font-weight: 500;
-    }
-
-    .cert-ticker-tag {
+    .cert-card-issuer {
       font-size: 0.65rem;
       font-weight: 700;
-      padding: 2px 8px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #9333ea;
+      margin-bottom: 4px;
+    }
+
+    .cert-card-title {
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .cert-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .cert-card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+
+    .cert-tag {
+      font-size: 0.6rem;
+      font-weight: 600;
+      padding: 2px 7px;
       border-radius: 999px;
       background: #f3e8ff;
-      color: #7c3aed;
+      color: #6d28d9;
       white-space: nowrap;
     }
 
-    /* Verify link */
-    .cert-ticker-link {
+    .cert-verify-link {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      font-size: 0.68rem;
-      color: #a435f0;
+      gap: 3px;
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: #7c3aed;
       text-decoration: none;
-      font-weight: 600;
-      margin-top: 5px;
+      white-space: nowrap;
+      transition: color 0.15s;
     }
 
-    .cert-ticker-link:hover {
-      text-decoration: underline;
+    .cert-verify-link:hover { color: #4f46e5; text-decoration: underline; }
+
+    .certs-count-strip {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 36px;
+      flex-wrap: wrap;
+    }
+
+    .certs-count-strip .stat { text-align: center; }
+
+    .certs-count-strip .stat-num {
+      font-size: 1.6rem;
+      font-weight: 800;
       color: #7c3aed;
+      line-height: 1;
     }
 
-    /* ADD NEW CERT HINT */
-    .add-cert-hint {
-      text-align: center;
-      margin-top: 28px;
-      font-size: 0.8rem;
-      color: #9ca3af;
-    }
-
-    .add-cert-hint code {
-      background: #f3e8ff;
-      color: #7c3aed;
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-size: 0.75rem;
+    .certs-count-strip .stat-label {
+      font-size: 0.72rem;
+      color: #64748b;
+      margin-top: 3px;
     }
   </style>
 </head>
@@ -227,7 +222,6 @@
 
   <header id="header" class="header d-flex align-items-center light-background sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
-
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -237,14 +231,12 @@
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list" aria-label="Open menu"></i>
       </nav>
-
       <div class="header-social-links">
         <a href="mailto:zahraeh.fr@gmail.com" class="email" aria-label="Email"><i class="bi bi-envelope"></i></a>
         <a href="https://www.linkedin.com/in/zahra-e-3004953a0/" target="_blank" rel="noopener" class="linkedin" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
         <a href="https://github.com/zahraeh" target="_blank" rel="noopener" class="github" aria-label="GitHub"><i class="bi bi-github"></i></a>
         <a href="http://www.zahraeh.com" target="_blank" rel="noopener" class="website" aria-label="Website"><i class="bi bi-globe"></i></a>
       </div>
-
     </div>
   </header>
 
@@ -255,7 +247,7 @@
         <div class="row align-items-center g-4">
           <div class="col-lg-8">
             <h1 class="mb-1">Zahra E</h1>
-            <p class="text-secondary mb-2">ECBA™ & PSPO I™ Certified Business Analyst | Requirements Engineering</p>
+            <p class="text-secondary mb-2">ECBA™ &amp; PSPO I™ Certified Business Analyst | Requirements Engineering</p>
             <p class="mb-0">
               Lille, France ·
               <a href="tel:+33767110422">+33 7 67 11 04 22</a> ·
@@ -274,9 +266,7 @@
 
       <div class="container section-title" data-aos="fade-up">
         <h2>Experience</h2>
-        <p>
-          Certified BA with 4 years of experience in requirements management and multi-stakeholder coordination for Data and AI projects in international environments.
-        </p>
+        <p>Certified BA with 4 years of experience in requirements management and multi-stakeholder coordination for Data and AI projects in international environments.</p>
       </div>
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -298,7 +288,7 @@
                 </article>
 
                 <article class="experience-item mb-4">
-                  <h4>Analyst Process & Data Transformation — CRG</h4>
+                  <h4>Analyst Process &amp; Data Transformation — CRG</h4>
                   <h5>2021 – 2025 · Barcelona, Spain</h5>
                   <p><em>Applied research environments.</em></p>
                   <ul>
@@ -316,7 +306,6 @@
             <div class="resume-item" data-aos="fade-up" data-aos-delay="50">
               <h3 class="resume-title">Business Analysis Projects</h3>
               <div class="resume-content">
-
                 <article class="project-item mb-3">
                   <h4>Afiya (Wellness Application)</h4>
                   <ul>
@@ -325,7 +314,6 @@
                     <li>Drafted Functional Specification Documents (DSF), Gherkin acceptance criteria, and executed UAT/Integration test plans.</li>
                   </ul>
                 </article>
-
               </div>
             </div>
 
@@ -342,18 +330,10 @@
             <div class="resume-item" data-aos="fade-up" data-aos-delay="150">
               <h3 class="resume-title">Skills</h3>
               <div class="resume-content">
-                <p class="mb-2">
-                  <strong>Business Analysis:</strong> Requirements gathering, BRD / SFD, User Stories, Backlog, RTM, UAT, Business case, KPIs.
-                </p>
-                <p class="mb-2">
-                  <strong>Methodologies:</strong> Agile / Scrum, BPMN (AS-IS/TO-BE), MoSCoW, Process improvement, BABOK®.
-                </p>
-                <p class="mb-2">
-                  <strong>Tools & Data:</strong> Jira, Confluence, Miro, Power BI, SQL, Python, Advanced Excel.
-                </p>
-                <p class="mb-0">
-                  <strong>Languages:</strong> French (C1/C2), English (Bilingual), Arabic (Native).
-                </p>
+                <p class="mb-2"><strong>Business Analysis:</strong> Requirements gathering, BRD / SFD, User Stories, Backlog, RTM, UAT, Business case, KPIs.</p>
+                <p class="mb-2"><strong>Methodologies:</strong> Agile / Scrum, BPMN (AS-IS/TO-BE), MoSCoW, Process improvement, BABOK®.</p>
+                <p class="mb-2"><strong>Tools &amp; Data:</strong> Jira, Confluence, Miro, Power BI, SQL, Python, Advanced Excel.</p>
+                <p class="mb-0"><strong>Languages:</strong> French (C1/C2), English (Bilingual), Arabic (Native).</p>
               </div>
             </div>
           </div>
@@ -383,216 +363,297 @@
     </section>
 
 
-    <!-- ═══════════════════════════════════════════
-         UDEMY CERTIFICATIONS — SCROLLING TICKER
-         To add a new cert: copy one <div class="cert-ticker-card"> block
-         inside BOTH .ticker-track divs (they are duplicates for the loop).
-    ═══════════════════════════════════════════ -->
-    <section class="certs-section" data-aos="fade-up">
-      <div class="section-label">
-        <div class="container">
-          <div class="d-flex align-items-center justify-content-center gap-3 mb-2">
-            <!-- Udemy wordmark SVG -->
-            <svg width="80" height="22" viewBox="0 0 80 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8.5 14.5c0 1.93-1.57 3.5-3.5 3.5S1.5 16.43 1.5 14.5V5h-1.5v9.5C0 17.54 2.46 20 5 20s5-2.46 5-5.5V5H8.5v9.5z" fill="#a435f0"/>
-              <text x="14" y="16" font-family="'Poppins', sans-serif" font-weight="800" font-size="13" fill="#1c1d1f">Certif</text>
-            </svg>
-            <h2 style="margin:0;font-size:1.4rem;font-weight:700;color:#1a1a2e;">Continuous Learning</h2>
+    <!-- ═══════════════════════════════════════════════════════
+         CERTIFICATIONS TICKER
+         HOW TO ADD A NEW CERT:
+           1. Copy one <div class="cert-card"> block
+           2. Paste it in BOTH #track-r1 AND #track-r2 (first half only)
+           3. Update title, issuer, icon class, tags, and verify href
+    ═══════════════════════════════════════════════════════ -->
+    <section class="certs-ticker-section" data-aos="fade-up">
+
+      <div class="certs-ticker-header">
+        <div class="eyebrow"><i class="bi bi-mortarboard-fill"></i> Continuous Learning</div>
+        <h2>Certifications</h2>
+        <p>Verified credentials — hover any card to pause &amp; click to verify</p>
+      </div>
+
+      <!-- ROW 1 scrolls left -->
+      <div class="ticker-wrapper">
+        <div class="ticker-track" id="track-r1">
+
+          <!-- ══ 5 REAL CARDS ══ -->
+
+          <div class="cert-card">
+            <div class="cert-card-icon icon-violet"><i class="bi bi-bug-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Business Analyst: Software Testing Processes &amp; Techniques</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">Testing</span><span class="cert-tag">UAT</span><span class="cert-tag">QA</span></div>
+                <a class="cert-verify-link" href="https://ude.my/UC-b0cc017d-738a-4c92-9cef-caa0943f40ae" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
           </div>
-          <p>certifications — hover any card to pause</p>
+
+          <div class="cert-card">
+            <div class="cert-card-icon icon-blue"><i class="bi bi-diagram-3-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Business Process Modeling A-Z™: Learn BPMN 2.0 From Scratch</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">BPMN 2.0</span><span class="cert-tag">Process Modeling</span><span class="cert-tag">draw.io</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-9cd91647-ab8f-47a5-ba8e-f81fa09f12e8/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cert-card">
+            <div class="cert-card-icon icon-teal"><i class="bi bi-kanban-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">User Story Masterclass: Your Agile Guide to User Stories</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">User Stories</span><span class="cert-tag">Agile</span><span class="cert-tag">Acceptance Criteria</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-01d9b4cf-6d7e-4b89-83d3-e164b92ffe47/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cert-card">
+            <div class="cert-card-icon icon-rose"><i class="bi bi-cloud-arrow-up-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Understanding APIs and RESTful APIs Crash Course</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">APIs</span><span class="cert-tag">REST</span><span class="cert-tag">Web Services</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-a5a05df7-75e6-45d4-95ae-053911ba1724/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cert-card">
+            <div class="cert-card-icon icon-amber"><i class="bi bi-clipboard2-data-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Understand and Elicit Requirements with Business Analysis</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">Requirements</span><span class="cert-tag">Elicitation</span><span class="cert-tag">Analysis</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-0faef274-c559-49e5-bb6b-12bbc50e4d77/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ DUPLICATE for seamless loop ══ -->
+          <div class="cert-card">
+            <div class="cert-card-icon icon-violet"><i class="bi bi-bug-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Business Analyst: Software Testing Processes &amp; Techniques</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">Testing</span><span class="cert-tag">UAT</span><span class="cert-tag">QA</span></div>
+                <a class="cert-verify-link" href="https://ude.my/UC-b0cc017d-738a-4c92-9cef-caa0943f40ae" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-blue"><i class="bi bi-diagram-3-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Business Process Modeling A-Z™: Learn BPMN 2.0 From Scratch</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">BPMN 2.0</span><span class="cert-tag">Process Modeling</span><span class="cert-tag">draw.io</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-9cd91647-ab8f-47a5-ba8e-f81fa09f12e8/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-teal"><i class="bi bi-kanban-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">User Story Masterclass: Your Agile Guide to User Stories</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">User Stories</span><span class="cert-tag">Agile</span><span class="cert-tag">Acceptance Criteria</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-01d9b4cf-6d7e-4b89-83d3-e164b92ffe47/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-rose"><i class="bi bi-cloud-arrow-up-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Understanding APIs and RESTful APIs Crash Course</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">APIs</span><span class="cert-tag">REST</span><span class="cert-tag">Web Services</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-a5a05df7-75e6-45d4-95ae-053911ba1724/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-amber"><i class="bi bi-clipboard2-data-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Understand and Elicit Requirements with Business Analysis</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">Requirements</span><span class="cert-tag">Elicitation</span><span class="cert-tag">Analysis</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-0faef274-c559-49e5-bb6b-12bbc50e4d77/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <!-- ROW 1 — scrolls left -->
-      <div class="ticker-wrapper">
-        <div class="ticker-track" id="row1">
+      <!-- ROW 2 scrolls right (reversed order for visual variety) -->
+      <div class="ticker-wrapper" style="margin-top:14px;">
+        <div class="ticker-track row2" id="track-r2">
 
-          <!-- ════ CERT CARDS — ADD NEW ONES HERE ════ -->
-
-          <div class="cert-ticker-card">
-            <div class="cert-ticker-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <div class="cert-ticker-body">
-              <div class="cert-ticker-title">Business Analyst: Software Testing Processes &amp; Techniques</div>
-              <div class="cert-ticker-meta">
-                <span class="cert-ticker-date">2026</span>
-                <span class="cert-ticker-tag">Testing · UAT</span>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-amber"><i class="bi bi-clipboard2-data-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Understand and Elicit Requirements with Business Analysis</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">Requirements</span><span class="cert-tag">Elicitation</span><span class="cert-tag">Analysis</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-0faef274-c559-49e5-bb6b-12bbc50e4d77/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
               </div>
-              <a class="cert-ticker-link" href="https://ude.my/UC-b0cc017d-738a-4c92-9cef-caa0943f40ae" target="_blank" rel="noopener">
-                <i class="bi bi-box-arrow-up-right" style="font-size:0.65rem;"></i> Verify
-              </a>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-rose"><i class="bi bi-cloud-arrow-up-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Understanding APIs and RESTful APIs Crash Course</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">APIs</span><span class="cert-tag">REST</span><span class="cert-tag">Web Services</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-a5a05df7-75e6-45d4-95ae-053911ba1724/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-teal"><i class="bi bi-kanban-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">User Story Masterclass: Your Agile Guide to User Stories</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">User Stories</span><span class="cert-tag">Agile</span><span class="cert-tag">Acceptance Criteria</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-01d9b4cf-6d7e-4b89-83d3-e164b92ffe47/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-blue"><i class="bi bi-diagram-3-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Business Process Modeling A-Z™: Learn BPMN 2.0 From Scratch</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">BPMN 2.0</span><span class="cert-tag">Process Modeling</span><span class="cert-tag">draw.io</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-9cd91647-ab8f-47a5-ba8e-f81fa09f12e8/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-violet"><i class="bi bi-bug-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Business Analyst: Software Testing Processes &amp; Techniques</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">Testing</span><span class="cert-tag">UAT</span><span class="cert-tag">QA</span></div>
+                <a class="cert-verify-link" href="https://ude.my/UC-b0cc017d-738a-4c92-9cef-caa0943f40ae" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <!-- duplicate for loop -->
+          <div class="cert-card">
+            <div class="cert-card-icon icon-amber"><i class="bi bi-clipboard2-data-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Understand and Elicit Requirements with Business Analysis</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">Requirements</span><span class="cert-tag">Elicitation</span><span class="cert-tag">Analysis</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-0faef274-c559-49e5-bb6b-12bbc50e4d77/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-rose"><i class="bi bi-cloud-arrow-up-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Understanding APIs and RESTful APIs Crash Course</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">APIs</span><span class="cert-tag">REST</span><span class="cert-tag">Web Services</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-a5a05df7-75e6-45d4-95ae-053911ba1724/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-teal"><i class="bi bi-kanban-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">User Story Masterclass: Your Agile Guide to User Stories</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">User Stories</span><span class="cert-tag">Agile</span><span class="cert-tag">Acceptance Criteria</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-01d9b4cf-6d7e-4b89-83d3-e164b92ffe47/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-blue"><i class="bi bi-diagram-3-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Business Process Modeling A-Z™: Learn BPMN 2.0 From Scratch</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">BPMN 2.0</span><span class="cert-tag">Process Modeling</span><span class="cert-tag">draw.io</span></div>
+                <a class="cert-verify-link" href="https://www.udemy.com/certificate/UC-9cd91647-ab8f-47a5-ba8e-f81fa09f12e8/" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-card-icon icon-violet"><i class="bi bi-bug-fill"></i></div>
+            <div class="cert-card-body">
+              <div class="cert-card-issuer">Udemy · 2026</div>
+              <div class="cert-card-title">Business Analyst: Software Testing Processes &amp; Techniques</div>
+              <div class="cert-card-footer">
+                <div class="cert-card-tags"><span class="cert-tag">Testing</span><span class="cert-tag">UAT</span><span class="cert-tag">QA</span></div>
+                <a class="cert-verify-link" href="https://ude.my/UC-b0cc017d-738a-4c92-9cef-caa0943f40ae" target="_blank" rel="noopener"><i class="bi bi-patch-check-fill"></i> Verify</a>
+              </div>
             </div>
           </div>
 
-          <!-- ── PLACEHOLDER CARDS (replace with your real certs) ── -->
+        </div>
+      </div>
 
-          <div class="cert-ticker-card">
-            <div class="cert-ticker-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <div class="cert-ticker-body">
-              <div class="cert-ticker-title">UBusiness Process Modeling A-Z™: Learn BPMN 2.0 From Scratch</div>
-              <div class="cert-ticker-meta">
-                <span class="cert-ticker-date">2026</span>
-                <span class="cert-ticker-tag">BPMN . Process Modeling . Business analysis . draw.io </span>
-              </div>
-              <a class="cert-ticker-link" href="https://www.udemy.com/certificate/UC-9cd91647-ab8f-47a5-ba8e-f81fa09f12e8/" target="_blank" rel="noopener">
-                <i class="bi bi-box-arrow-up-right" style="font-size:0.65rem;"></i> Verify
-              </a>
-            </div>
+      <!-- Stats strip -->
+      <div class="container">
+        <div class="certs-count-strip">
+          <div class="stat">
+            <div class="stat-num">5+</div>
+            <div class="stat-label">Certificates earned</div>
           </div>
-
-
-
-
-
-
-          <div class="cert-ticker-card">
-            <div class="cert-ticker-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <div class="cert-ticker-body">
-              <div class="cert-ticker-title">User Story Masterclass: Your Agile Guide to User Stories</div>
-              <div class="cert-ticker-meta">
-                <span class="cert-ticker-date">2026</span>
-                <span class="cert-ticker-tag">User stories . Agile . Scrum . acceptance criteria</span>
-              </div>
-              <a class="cert-ticker-link" href="https://www.udemy.com/certificate/UC-01d9b4cf-6d7e-4b89-83d3-e164b92ffe47/" target="_blank" rel="noopener">
-                <i class="bi bi-box-arrow-up-right" style="font-size:0.65rem;"></i> Verify
-              </a>
-            </div>
+          <div class="stat">
+            <div class="stat-num">2026</div>
+            <div class="stat-label">All completed this year</div>
           </div>
-
-          <div class="cert-ticker-card">
-            <div class="cert-ticker-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <div class="cert-ticker-body">
-              <div class="cert-ticker-title">Understanding APIs and RESTful APIs Crash Course</div>
-              <div class="cert-ticker-meta">
-                <span class="cert-ticker-date">2026</span>
-                <span class="cert-ticker-tag"> APIs . REST . Web Services</span>
-              </div>
-              <a class="cert-ticker-link" href="https://www.udemy.com/certificate/UC-a5a05df7-75e6-45d4-95ae-053911ba1724/" target="_blank" rel="noopener">
-                <i class="bi bi-box-arrow-up-right" style="font-size:0.65rem;"></i> Verify
-              </a>
-            </div>
+          <div class="stat">
+            <div class="stat-num">3</div>
+            <div class="stat-label">Core BA domains covered</div>
           </div>
+        </div>
+      </div>
 
-          <div class="cert-ticker-card">
-            <div class="cert-ticker-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <div class="cert-ticker-body">
-              <div class="cert-ticker-title">Understand and Elicit Requirements with Business Analysis</div>
-              <div class="cert-ticker-meta">
-                <span class="cert-ticker-date">2026</span>
-                <span class="cert-ticker-tag">Requirements . Analysis . Elicitation</span>
-              </div>
-              <a class="cert-ticker-link" href="https://www.udemy.com/certificate/UC-0faef274-c559-49e5-bb6b-12bbc50e4d77/" target="_blank" rel="noopener">
-                <i class="bi bi-box-arrow-up-right" style="font-size:0.65rem;"></i> Verify
-              </a>
-            </div>
-          </div>
-
-          <!-- ════ END CERT CARDS — DUPLICATE BLOCK BELOW FOR INFINITE LOOP ════ -->
-          <div class="cert-ticker-card">
-            <div class="cert-ticker-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <div class="cert-ticker-body">
-              <div class="cert-ticker-title">UBusiness Process Modeling A-Z™: Learn BPMN 2.0 From Scratch</div>
-              <div class="cert-ticker-meta">
-                <span class="cert-ticker-date">2026</span>
-                <span class="cert-ticker-tag">BPMN . Process Modeling . Business analysis . draw.io </span>
-              </div>
-              <a class="cert-ticker-link" href="https://www.udemy.com/certificate/UC-9cd91647-ab8f-47a5-ba8e-f81fa09f12e8/" target="_blank" rel="noopener">
-                <i class="bi bi-box-arrow-up-right" style="font-size:0.65rem;"></i> Verify
-              </a>
-            </div>
-          </div>
-
-          <div class="cert-ticker-card">
-            <div class="cert-ticker-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <div class="cert-ticker-body">
-              <div class="cert-ticker-title">Business Analyst: Software Testing Processes &amp; Techniques</div>
-              <div class="cert-ticker-meta">
-                <span class="cert-ticker-date">2026</span>
-                <span class="cert-ticker-tag">Testing · UAT</span>
-              </div>
-              <a class="cert-ticker-link" href="https://ude.my/UC-b0cc017d-738a-4c92-9cef-caa0943f40ae" target="_blank" rel="noopener">
-                <i class="bi bi-box-arrow-up-right" style="font-size:0.65rem;"></i> Verify
-              </a>
-            </div>
-          </div>
-
-          <!-- ── PLACEHOLDER CARDS (replace with your real certs) ── -->
-
-          <div class="cert-ticker-card">
-            <div class="cert-ticker-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <div class="cert-ticker-body">
-              <div class="cert-ticker-title">User Story Masterclass: Your Agile Guide to User Stories</div>
-              <div class="cert-ticker-meta">
-                <span class="cert-ticker-date">2026</span>
-                <span class="cert-ticker-tag">User stories . Agile . Scrum . acceptance criteria</span>
-              </div>
-              <a class="cert-ticker-link" href="https://www.udemy.com/certificate/UC-01d9b4cf-6d7e-4b89-83d3-e164b92ffe47/" target="_blank" rel="noopener">
-                <i class="bi bi-box-arrow-up-right" style="font-size:0.65rem;"></i> Verify
-              </a>
-            </div>
-          </div>
-
-          <div class="cert-ticker-card">
-            <div class="cert-ticker-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <div class="cert-ticker-body">
-              <div class="cert-ticker-title">Understanding APIs and RESTful APIs Crash Course</div>
-              <div class="cert-ticker-meta">
-                <span class="cert-ticker-date">2026</span>
-                <span class="cert-ticker-tag"> APIs . REST . Web Services</span>
-              </div>
-              <a class="cert-ticker-link" href="https://www.udemy.com/certificate/UC-a5a05df7-75e6-45d4-95ae-053911ba1724/" target="_blank" rel="noopener">
-                <i class="bi bi-box-arrow-up-right" style="font-size:0.65rem;"></i> Verify
-              </a>
-            </div>
-          </div>
-
-          <div class="cert-ticker-card">
-            <div class="cert-ticker-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <div class="cert-ticker-body">
-              <div class="cert-ticker-title">Understand and Elicit Requirements with Business Analysis</div>
-              <div class="cert-ticker-meta">
-                <span class="cert-ticker-date">2026</span>
-                <span class="cert-ticker-tag">Requirements . Analysis . Elicitation</span>
-              </div>
-              <a class="cert-ticker-link" href="https://www.udemy.com/certificate/UC-0faef274-c559-49e5-bb6b-12bbc50e4d77/" target="_blank" rel="noopener">
-                <i class="bi bi-box-arrow-up-right" style="font-size:0.65rem;"></i> Verify
-              </a>
-            </div>
-          </div>
-    <!-- ═══ /UDEMY CERTIFICATIONS ═══ -->
-
+    </section>
 
   </main>
 
   <footer id="footer" class="footer">
     <div class="container">
-      <div class="copyright text-center ">
+      <div class="copyright text-center">
         <p>© <span>Copyright</span> <strong class="px-1 sitename">Zahra E</strong> <span>All Rights Reserved</span></p>
       </div>
     </div>
   </footer>
 
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
   <div id="preloader"></div>
 
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -600,7 +661,6 @@
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-
   <script src="assets/js/main.js"></script>
 
 </body>
