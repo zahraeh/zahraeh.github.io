@@ -6,8 +6,8 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Portfolio - Zahra E | Certified Business Analyst</title>
-  <meta name="description" content="Portfolio of Zahra E — Featuring the Afiya Wellness App project.">
-  <meta name="keywords" content="Business Analyst, Product, HealthTech, User Research, Afiya, BPMN 2.0, Agile">
+  <meta name="description" content="Portfolio of Zahra E — Business Analyst with projects in HealthTech and Digital Banking.">
+  <meta name="keywords" content="Business Analyst, Product, HealthTech, Digital Banking, DSP2, BPMN 2.0, Agile, Zahra">
 
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -37,6 +37,51 @@
     .isotope-container { justify-content: center; }
     .portfolio-img img { transition: 0.3s; }
     .portfolio-item:hover img { transform: scale(1.1); }
+
+    /* ── Project language badge ── */
+    .lang-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: .2rem .55rem;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+    .lang-badge.fr { background: rgba(0,86,179,.85); color: #fff; }
+    .lang-badge.en { background: rgba(20,160,100,.85); color: #fff; }
+
+    /* ── Stat pills inside cards ── */
+    .stat-pill {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: .4rem .75rem;
+      min-width: 70px;
+    }
+    .stat-pill strong { font-size: 1.1rem; color: #0d6efd; line-height: 1; }
+    .stat-pill small  { font-size: .65rem; color: #64748b; margin-top: 2px; }
+
+    /* ── Section subtitle chip ── */
+    .project-chip {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: .18rem .7rem;
+      margin-bottom: .6rem;
+    }
   </style>
 </head>
 
@@ -66,59 +111,143 @@
     <section id="portfolio" class="portfolio section">
 
       <div class="container section-title" data-aos="fade-up">
-        <h2>Featured Project</h2>
-        <p>
-          <strong>Afiya Wellness:</strong> Applying Requirements Engineering to HealthTech.
-        </p>
+        <h2>Projets</h2>
+        <p>Deux études de cas end-to-end — de l'analyse des besoins aux livrables exploitables.</p>
       </div>
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4 isotope-container">
+        <div class="row gy-4 isotope-container justify-content-center">
 
-          <div class="col-lg-7 col-md-10 portfolio-item">
-            <div class="portfolio-card shadow-sm rounded overflow-hidden bg-white">
+          <!-- ══════════════════════════════════════════
+               PROJECT 1 — AFIYA (English)
+          ═══════════════════════════════════════════ -->
+          <div class="col-lg-6 col-md-10 portfolio-item">
+            <div class="portfolio-card shadow-sm rounded overflow-hidden bg-white h-100 d-flex flex-column">
+
               <div class="portfolio-img position-relative">
-                <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop" alt="Afiya: Wellness App Concept" class="img-fluid">
+                <span class="lang-badge en">English</span>
+                <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop"
+                     alt="Afiya Wellness App" class="img-fluid">
                 <div class="portfolio-overlay d-flex align-items-center justify-content-center">
-                  <a href="https://precious-afiya.notion.site/Afiya-Small-insights-Better-habits-31c91d8111b280928e7ec3e0f444b80d" target="_blank" class="mx-2" title="View Project Details"><i class="bi bi-plus fs-2"></i></a>
-                  <a href="https://precious-afiya.notion.site/Afiya-Small-insights-Better-habits-31c91d8111b280928e7ec3e0f444b80d" target="_blank" class="mx-2" title="External Link"><i class="bi bi-link-45deg fs-2"></i></a>
+                  <a href="https://precious-afiya.notion.site/Afiya-Small-insights-Better-habits-31c91d8111b280928e7ec3e0f444b80d"
+                     target="_blank" class="mx-2" title="Voir le projet"><i class="bi bi-plus fs-2"></i></a>
+                  <a href="https://precious-afiya.notion.site/Afiya-Small-insights-Better-habits-31c91d8111b280928e7ec3e0f444b80d"
+                     target="_blank" class="mx-2" title="Lien externe"><i class="bi bi-link-45deg fs-2"></i></a>
                 </div>
               </div>
-              <div class="portfolio-info p-4">
+
+              <div class="portfolio-info p-4 d-flex flex-column flex-grow-1">
+                <span class="project-chip">HealthTech · Agile/Scrum</span>
                 <h4>Afiya — Connected Wellness Coach</h4>
-                <p class="text-secondary">End-to-end BA lifecycle: from stakeholder needs to functional specs.</p>
-                
-                <div class="my-3">
-                  <h6><strong>The Business Challenge:</strong></h6>
-                  <p class="small">Users struggle with fragmented health data. Afiya centralizes metrics into a "Today's Focus" recommendation engine.</p>
+                <p class="text-secondary small">End-to-end BA lifecycle: from stakeholder needs to functional specs.</p>
+
+                <div class="my-2">
+                  <h6 class="fw-semibold">The Business Challenge</h6>
+                  <p class="small mb-2">Users struggle with fragmented health data across multiple apps. Afiya centralizes metrics into a "Today's Focus" AI recommendation engine that nudges healthy habits without overwhelming the user.</p>
                 </div>
 
-                <div class="my-3">
-                  <h6><strong>Key Contributions (from CV):</strong></h6>
-                  <ul class="small">
+                <div class="my-2">
+                  <h6 class="fw-semibold">Key Contributions</h6>
+                  <ul class="small mb-0">
                     <li><strong>Agility:</strong> Managed a backlog of 40+ User Stories on Jira using <strong>MoSCoW</strong> prioritization.</li>
-                    <li><strong>Modeling:</strong> Created <strong>BPMN 2.0</strong> (AS-IS/TO-BE) flows for API integrations (Apple Health, Flo).</li>
+                    <li><strong>Modeling:</strong> Created <strong>BPMN 2.0</strong> AS-IS/TO-BE flows for API integrations (Apple Health, Flo).</li>
                     <li><strong>Engineering:</strong> Drafted Functional Specs (DSF) and <strong>Gherkin</strong> acceptance criteria for UAT.</li>
                   </ul>
                 </div>
 
-                <div class="portfolio-tags">
+                <div class="d-flex gap-2 flex-wrap my-3">
+                  <div class="stat-pill"><strong>40+</strong><small>User Stories</small></div>
+                  <div class="stat-pill"><strong>BPMN</strong><small>AS-IS/TO-BE</small></div>
+                  <div class="stat-pill"><strong>Gherkin</strong><small>UAT criteria</small></div>
+                </div>
+
+                <div class="portfolio-tags mb-3">
                   <span class="badge bg-light text-dark border">Agile/Scrum</span>
                   <span class="badge bg-light text-dark border">BPMN 2.0</span>
                   <span class="badge bg-light text-dark border">Jira/Confluence</span>
                   <span class="badge bg-light text-dark border">API Documentation</span>
                 </div>
-                
-                <div class="mt-4">
-                  <a href="https://precious-afiya.notion.site/Afiya-Small-insights-Better-habits-31c91d8111b280928e7ec3e0f444b80d" target="_blank" class="btn btn-primary w-100">Read Full Case Study on Notion <i class="bi bi-arrow-up-right-square ms-2"></i></a>
+
+                <div class="mt-auto">
+                  <a href="https://precious-afiya.notion.site/Afiya-Small-insights-Better-habits-31c91d8111b280928e7ec3e0f444b80d"
+                     target="_blank" class="btn btn-primary w-100">
+                    Read Full Case Study on Notion <i class="bi bi-arrow-up-right-square ms-2"></i>
+                  </a>
                 </div>
               </div>
+
             </div>
           </div>
-          
+
+          <!-- ══════════════════════════════════════════
+               PROJECT 2 — DIGITAL BANKING (French)
+          ═══════════════════════════════════════════ -->
+          <div class="col-lg-6 col-md-10 portfolio-item">
+            <div class="portfolio-card shadow-sm rounded overflow-hidden bg-white h-100 d-flex flex-column">
+
+              <div class="portfolio-img position-relative">
+                <span class="lang-badge fr">Français</span>
+                <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop"
+                     alt="Digital Banking App Mobile DSP2" class="img-fluid" style="object-fit:cover; height:260px; width:100%;">
+                <div class="portfolio-overlay d-flex align-items-center justify-content-center">
+                  <a href="https://www.notion.so/32091d8111b2818ab6e0c73abe5391d9"
+                     target="_blank" class="mx-2" title="Voir le projet"><i class="bi bi-plus fs-2"></i></a>
+                  <a href="https://www.notion.so/32091d8111b2818ab6e0c73abe5391d9"
+                     target="_blank" class="mx-2" title="Lien externe"><i class="bi bi-link-45deg fs-2"></i></a>
+                </div>
+              </div>
+
+              <div class="portfolio-info p-4 d-flex flex-column flex-grow-1">
+                <span class="project-chip">Digital Banking · DSP2 · RGPD</span>
+                <h4>Digital Banking — Refonte App Mobile Paiements</h4>
+                <p class="text-secondary small">Mission BA chez un éditeur bancaire : analyse end-to-end d'une refonte mobile, de la modélisation BPMN aux specs fonctionnelles.</p>
+
+                <div class="my-2">
+                  <h6 class="fw-semibold">Le défi business</h6>
+                  <p class="small mb-2">Taux d'abandon de <strong>34%</strong> sur le parcours virement — causé par une rupture OTP SMS. Concurrence néobanques (Revolut, N26). Obligation réglementaire DSP2 pour le virement instantané. Budget : 1,2M€ · MEP cible : 6 mois.</p>
+                </div>
+
+                <div class="my-2">
+                  <h6 class="fw-semibold">Contributions clés</h6>
+                  <ul class="small mb-0">
+                    <li><strong>Analyse :</strong> BPMN AS-IS en swim lanes → identification des 3 irritants principaux avec impact chiffré.</li>
+                    <li><strong>Conception :</strong> BPMN TO-BE avec biométrie in-app FaceID/TouchID — SCA conforme DSP2, zéro rupture de parcours.</li>
+                    <li><strong>Spécification :</strong> EDB complète — 10 besoins fonctionnels MoSCoW + 5 BNF + glossaire 18 termes bancaires.</li>
+                    <li><strong>Conformité :</strong> Analyse DSP2 & RGPD art. 9 (données biométriques) intégrée dès les specs.</li>
+                  </ul>
+                </div>
+
+                <div class="d-flex gap-2 flex-wrap my-3">
+                  <div class="stat-pill"><strong>-79%</strong><small>temps parcours</small></div>
+                  <div class="stat-pill"><strong>-64%</strong><small>actions user</small></div>
+                  <div class="stat-pill"><strong>10 BF</strong><small>spécifiés</small></div>
+                </div>
+
+                <div class="portfolio-tags mb-3">
+                  <span class="badge bg-light text-dark border">BPMN 2.0</span>
+                  <span class="badge bg-light text-dark border">DSP2 / RGPD</span>
+                  <span class="badge bg-light text-dark border">Agile SAFe</span>
+                  <span class="badge bg-light text-dark border">Jira</span>
+                  <span class="badge bg-light text-dark border">Figma</span>
+                  <span class="badge bg-light text-dark border">API REST</span>
+                </div>
+
+                <div class="mt-auto">
+                  <a href="https://www.notion.so/32091d8111b2818ab6e0c73abe5391d9"
+                     target="_blank" class="btn btn-primary w-100">
+                    Lire l'étude de cas sur Notion <i class="bi bi-arrow-up-right-square ms-2"></i>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- end row -->
+
         </div>
       </div>
     </section>
+
   </main>
 
   <footer id="footer" class="footer">
@@ -129,7 +258,9 @@
     </div>
   </footer>
 
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
 
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
