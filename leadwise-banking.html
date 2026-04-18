@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>LeadWise Banking — Dossier de Spécifications BA | Zahra E</title>
+  <meta name="description" content="Dossier de spécifications BA pour LeadWise Banking — système de gestion des leads bancaires avec scoring IA, conformité RGPD et intégration Salesforce.">
+  <meta name="keywords" content="Business Analyst, CRM Bancaire, RGPD, Lead Management, Claude API, FastAPI, Salesforce, Zahra">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    /* ── Hero banner ── */
+    .lw-hero {
+      background: linear-gradient(135deg, #0d1b3e 0%, #1a3a6b 60%, #0056b3 100%);
+      color: #fff;
+      padding: 4rem 0 3rem;
+    }
+    .lw-hero .badge-chip {
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: .25rem .8rem;
+      margin-bottom: 1rem;
+    }
+    .lw-hero h1 { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 700; }
+    .lw-hero .sub { opacity: .8; font-size: .95rem; }
+
+    /* ── KPI strip ── */
+    .kpi-strip { background: #f8fafc; border-top: 3px solid #0056b3; border-bottom: 1px solid #e2e8f0; }
+    .kpi-item strong { font-size: 1.6rem; color: #0056b3; display: block; line-height: 1; }
+    .kpi-item span { font-size: .75rem; color: #64748b; }
+
+    /* ── Section styles ── */
+    .lw-section { padding: 3.5rem 0; }
+    .lw-section:nth-child(even) { background: #f8fafc; }
+    .section-label {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #0056b3;
+      border-left: 3px solid #0056b3;
+      padding-left: .6rem;
+      margin-bottom: .5rem;
+    }
+    .lw-section h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+
+    /* ── Tables ── */
+    .lw-table th { background: #0d1b3e; color: #fff; font-size: .8rem; font-weight: 600; }
+    .lw-table td { font-size: .85rem; vertical-align: middle; }
+    .lw-table .badge-critique { background:#dc3545; color:#fff; font-size:.7rem; padding:.2rem .5rem; border-radius:4px; }
+    .lw-table .badge-majeur   { background:#fd7e14; color:#fff; font-size:.7rem; padding:.2rem .5rem; border-radius:4px; }
+    .lw-table .badge-passed   { background:#198754; color:#fff; font-size:.7rem; padding:.2rem .5rem; border-radius:4px; }
+    .lw-table .badge-todo     { background:#6c757d; color:#fff; font-size:.7rem; padding:.2rem .5rem; border-radius:4px; }
+    .lw-table .badge-progress { background:#0d6efd; color:#fff; font-size:.7rem; padding:.2rem .5rem; border-radius:4px; }
+
+    /* ── User Story cards ── */
+    .us-card { border-left: 4px solid #0056b3; background: #fff; border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+    .us-card.must { border-color: #0056b3; }
+    .us-card.should { border-color: #6c757d; }
+    .us-card .us-title { font-weight: 700; font-size: 1rem; margin-bottom: .25rem; }
+    .us-card .us-story { font-style: italic; color: #475569; font-size: .9rem; margin-bottom: .75rem; }
+    .us-card ul { font-size: .85rem; margin: 0; padding-left: 1.2rem; }
+    .us-badge { font-size: .65rem; font-weight: 700; padding: .15rem .5rem; border-radius: 4px; text-transform: uppercase; }
+    .us-badge.must { background: #dbeafe; color: #1e40af; }
+    .us-badge.should { background: #f1f5f9; color: #475569; }
+
+    /* ── Stack cards ── */
+    .stack-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; text-align: center; height: 100%; }
+    .stack-card .icon { font-size: 1.8rem; margin-bottom: .5rem; }
+    .stack-card h6 { font-size: .85rem; font-weight: 700; margin-bottom: .15rem; }
+    .stack-card small { font-size: .75rem; color: #64748b; }
+
+    /* ── Flow steps ── */
+    .flow-step { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+    .flow-num { min-width: 34px; height: 34px; background: #0056b3; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .85rem; flex-shrink: 0; }
+    .flow-content h6 { font-weight: 700; font-size: .9rem; margin-bottom: .1rem; }
+    .flow-content p { font-size: .82rem; color: #475569; margin: 0; }
+
+    /* ── Scoring pills ── */
+    .seg-froid  { background: #e0f2fe; color: #0369a1; }
+    .seg-tiede  { background: #fef9c3; color: #92400e; }
+    .seg-chaud  { background: #dcfce7; color: #166534; }
+    .seg-pill { display: inline-block; padding: .2rem .7rem; border-radius: 999px; font-size: .8rem; font-weight: 600; }
+
+    /* ── KPI tracker ── */
+    .kpi-row td:first-child { font-weight: 600; font-size: .85rem; }
+
+    /* ── Competence bars ── */
+    .comp-bar { background: #e2e8f0; border-radius: 999px; height: 8px; }
+    .comp-bar-fill { background: #0056b3; border-radius: 999px; height: 8px; }
+
+    /* ── Glossary ── */
+    .glossary-term { font-weight: 700; font-size: .85rem; }
+    .glossary-def  { font-size: .83rem; color: #475569; }
+    .glossary-domain { font-size: .72rem; color: #0056b3; font-weight: 600; text-transform: uppercase; }
+
+    /* ── Back button ── */
+    .back-btn { color: #fff; opacity: .8; text-decoration: none; font-size: .85rem; }
+    .back-btn:hover { opacity: 1; color: #fff; }
+  </style>
+</head>
+
+<body class="portfolio-details-page">
+
+  <header id="header" class="header d-flex align-items-center light-background sticky-top">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="resume.html">Resume</a></li>
+          <li><a href="portfolio.html" class="active">Portfolio</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <div class="header-social-links">
+        <a href="mailto:zahraeh.fr@gmail.com" class="email"><i class="bi bi-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/zahra-e-3004953a0/" target="_blank"><i class="bi bi-linkedin"></i></a>
+        <a href="https://github.com/zahraeh" target="_blank"><i class="bi bi-github"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ══ HERO ══════════════════════════════════════════════════════ -->
+    <section class="lw-hero">
+      <div class="container">
+        <a href="portfolio.html" class="back-btn mb-3 d-inline-block"><i class="bi bi-arrow-left me-1"></i> Retour au portfolio</a>
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-8">
+            <span class="badge-chip">CRM Bancaire · RGPD · Agent IA</span>
+            <h1>LeadWise Banking</h1>
+            <p class="sub mb-3">Système de Gestion des Leads — Secteur Bancaire<br>Dossier de Spécifications &amp; Validation · Business Analyst</p>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge bg-light text-dark">FastAPI / Python</span>
+              <span class="badge bg-light text-dark">Claude API (Anthropic)</span>
+              <span class="badge bg-light text-dark">Salesforce CRM</span>
+              <span class="badge bg-light text-dark">RGPD Art. 6/17/21</span>
+              <span class="badge bg-light text-dark">Pydantic v2</span>
+              <span class="badge bg-light text-dark">Streamlit</span>
+              <span class="badge bg-light text-dark">Locust</span>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="bg-white bg-opacity-10 rounded p-3" style="border:1px solid rgba(255,255,255,.2)">
+              <table class="table table-sm mb-0 text-white" style="font-size:.85rem;">
+                <tbody>
+                  <tr><td class="opacity-75">Auteure</td><td><strong>Zahra — Business Analyst</strong></td></tr>
+                  <tr><td class="opacity-75">Domaine</td><td>CRM Bancaire &amp; Conformité RGPD</td></tr>
+                  <tr><td class="opacity-75">Version</td><td>v1.0 · 2026</td></tr>
+                  <tr><td class="opacity-75">Statut</td><td><span class="badge" style="background:rgba(255,255,255,.2)">Portfolio · Données fictives</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ KPI STRIP ═════════════════════════════════════════════════ -->
+    <div class="kpi-strip py-3">
+      <div class="container">
+        <div class="row text-center gy-3">
+          <div class="col-6 col-md-3 kpi-item"><strong>6</strong><span>User Stories BDD</span></div>
+          <div class="col-6 col-md-3 kpi-item"><strong>10</strong><span>Règles de gestion</span></div>
+          <div class="col-6 col-md-3 kpi-item"><strong>8</strong><span>Endpoints API REST</span></div>
+          <div class="col-6 col-md-3 kpi-item"><strong>&lt;45s</strong><span>délai traitement lead</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 01 CONTEXTE & PROBLÉMATIQUE ═══════════════════════════════ -->
+    <section class="lw-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">01</span>
+        <h2>Contexte &amp; Problématique Business</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <p>BankWise Retail est une banque retail française fictive positionnée sur le segment <strong>digital-first</strong>. Dans le cadre de sa campagne saisonnière <em>Livret A Boosté — Printemps 2025</em>, la banque génère plusieurs milliers de leads marketing par semaine via ses canaux digitaux (Google Ads, email, comparateurs, push notifications).</p>
+            <p>L'intégralité de ce flux est aujourd'hui traitée <strong>manuellement</strong> par les conseillers en agence, sans outil de priorisation ni système de conformité RGPD structuré.</p>
+
+            <h5 class="fw-semibold mt-4 mb-3">Diagnostic des Dysfonctionnements</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>Dysfonctionnement identifié</th><th>Impact opérationnel</th></tr></thead>
+                <tbody>
+                  <tr><td>Traitement 100% manuel des leads entrants</td><td>Dépendance humaine totale, erreurs de saisie fréquentes</td></tr>
+                  <tr><td>Délai de rappel supérieur à 72h</td><td>Perte des leads "Chauds" au profit des concurrents directs</td></tr>
+                  <tr><td>Taux de conversion inférieur à 8%</td><td>Manque à gagner estimé à <strong>+30K€/mois</strong></td></tr>
+                  <tr><td>Absence de scoring ou de priorisation</td><td>Conseillers surchargés, mauvaise allocation des ressources</td></tr>
+                  <tr><td>Conformité RGPD non maîtrisée</td><td>Risque de sanction CNIL et litiges réglementaires</td></tr>
+                  <tr><td>Aucune traçabilité des consentements</td><td>Exposition maximale en cas d'audit externe</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="bg-primary text-white rounded p-3 mb-4" style="font-size:.85rem;">
+              <strong><i class="bi bi-bar-chart-line me-1"></i> Benchmark sectoriel 2025</strong><br>
+              Délai de contact moyen (leaders bancaires) : <strong>4h</strong><br>
+              Taux de conversion : <strong>12–20%</strong><br>
+              Scoring automatisé : standard chez <strong>78%</strong> des banques digitales
+            </div>
+
+            <h5 class="fw-semibold mb-3">Objectifs du Projet</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>#</th><th>Objectif</th><th>Cible</th></tr></thead>
+                <tbody>
+                  <tr><td>OBJ-1</td><td>Réduire le délai de traitement</td><td>&lt; 24h</td></tr>
+                  <tr><td>OBJ-2</td><td>Améliorer le taux de conversion</td><td>15%</td></tr>
+                  <tr><td>OBJ-3</td><td>Automatiser le scoring</td><td>100%</td></tr>
+                  <tr><td>OBJ-4</td><td>Garantir la conformité RGPD</td><td>0 écart CNIL</td></tr>
+                  <tr><td>OBJ-5</td><td>Centraliser le suivi Salesforce</td><td>100% tracés</td></tr>
+                  <tr><td>OBJ-6</td><td>Contacter 80% des leads sous 48h</td><td>80%</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 02 CADRAGE & GOUVERNANCE ═══════════════════════════════════ -->
+    <section class="lw-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">02</span>
+        <h2>Cadrage Projet — Périmètre &amp; Gouvernance</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Périmètre Fonctionnel</h5>
+            <div class="row g-2">
+              <div class="col-6">
+                <div class="p-3 rounded h-100" style="background:#dcfce7; border-left:4px solid #16a34a;">
+                  <p class="fw-bold mb-2" style="font-size:.8rem; color:#166534;">✅ Dans le Périmètre</p>
+                  <ul class="mb-0" style="font-size:.8rem; color:#166534;">
+                    <li>Capture et qualification des leads</li>
+                    <li>Gestion consentement &amp; traçabilité RGPD</li>
+                    <li>Scoring automatique via IA (Claude API)</li>
+                    <li>Affectation automatique aux conseillers</li>
+                    <li>Suivi cycle de vie complet du lead</li>
+                    <li>Tableau de bord KPIs temps réel</li>
+                    <li>Dédoublonnage automatique</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="p-3 rounded h-100" style="background:#fee2e2; border-left:4px solid #dc2626;">
+                  <p class="fw-bold mb-2" style="font-size:.8rem; color:#991b1b;">❌ Hors Périmètre</p>
+                  <ul class="mb-0" style="font-size:.8rem; color:#991b1b;">
+                    <li>Gestion des clients existants</li>
+                    <li>Module de souscription en ligne</li>
+                    <li>Reporting financier / comptabilité</li>
+                    <li>Intégration back-office bancaire</li>
+                    <li>Application mobile native</li>
+                    <li>Gestion des réclamations</li>
+                    <li>Module de fidélisation client</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Contraintes Réglementaires &amp; Légales</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>Référence</th><th>Exigence</th><th>Criticité</th></tr></thead>
+                <tbody>
+                  <tr><td>RGPD Art. 6</td><td>Consentement explicite obligatoire à chaque soumission</td><td><span class="badge-critique">CRITIQUE</span></td></tr>
+                  <tr><td>RGPD Art. 17</td><td>Endpoint DELETE /leads/{id} opérationnel sous 72h</td><td><span class="badge-critique">CRITIQUE</span></td></tr>
+                  <tr><td>RGPD Art. 21</td><td>Opt-out → arrêt immédiat + anonymisation données</td><td><span class="badge-critique">CRITIQUE</span></td></tr>
+                  <tr><td>CNIL — Durée</td><td>Suppression automatique après 3 ans si non converti</td><td><span class="badge-majeur">MAJEUR</span></td></tr>
+                  <tr><td>LCB-FT</td><td>Vérification KYC avant toute offre commerciale</td><td><span class="badge-majeur">MAJEUR</span></td></tr>
+                  <tr><td>DSP2</td><td>Chiffrement des données bancaires en transit et au repos</td><td><span class="badge-majeur">MAJEUR</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <h5 class="fw-semibold mb-3">Matrice RACI</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table text-center">
+                <thead><tr><th>Partie Prenante</th><th>Rôle</th><th>Cadrage</th><th>Specs</th><th>Tests</th><th>Recette</th></tr></thead>
+                <tbody>
+                  <tr><td class="text-start">Marie Dupont</td><td>Product Owner</td><td>A</td><td>A</td><td>I</td><td>A</td></tr>
+                  <tr><td class="text-start">Jean-Marc Lefebvre</td><td>Resp. Marketing</td><td>C</td><td>C</td><td>I</td><td>R</td></tr>
+                  <tr><td class="text-start">Sophie Arnaud</td><td>Juriste RGPD</td><td>C</td><td>R</td><td>C</td><td>A</td></tr>
+                  <tr><td class="text-start">Romain Petit</td><td>Tech Lead</td><td>I</td><td>C</td><td>R</td><td>I</td></tr>
+                  <tr class="table-primary fw-bold"><td class="text-start">Zahra ★</td><td>Business Analyst</td><td>R</td><td>R</td><td>R</td><td>R</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p style="font-size:.78rem; color:#64748b;">R = Responsable · A = Approbateur · C = Consulté · I = Informé</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 03 SPÉCIFICATIONS FONCTIONNELLES ══════════════════════════ -->
+    <section class="lw-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">03</span>
+        <h2>Spécifications Fonctionnelles</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-5">
+            <h5 class="fw-semibold mb-3">Règles de Gestion</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>ID</th><th>Libellé</th><th>Priorité</th></tr></thead>
+                <tbody>
+                  <tr><td>RG-001</td><td>Consentement obligatoire — aucun lead traité sans opt-in explicite</td><td><span class="badge-critique">CRITIQUE</span></td></tr>
+                  <tr><td>RG-002</td><td>Score &lt; 3 → segment Froid → séquence nurturing auto</td><td><span class="badge-critique">CRITIQUE</span></td></tr>
+                  <tr><td>RG-003</td><td>Score ≥ 7 → conseiller contacte sous 24h (SLA)</td><td><span class="badge-critique">CRITIQUE</span></td></tr>
+                  <tr><td>RG-004</td><td>Données prospects supprimées après 3 ans si non converties</td><td><span class="badge-critique">CRITIQUE</span></td></tr>
+                  <tr><td>RG-005</td><td>Opt-out → arrêt immédiat + anonymisation</td><td><span class="badge-critique">CRITIQUE</span></td></tr>
+                  <tr><td>RG-006</td><td>Lead affecté au conseiller de l'agence la plus proche (code postal)</td><td><span class="badge-majeur">MAJEUR</span></td></tr>
+                  <tr><td>RG-007</td><td>Doublon (email OU tél.) → fusion silencieuse + log</td><td><span class="badge-majeur">MAJEUR</span></td></tr>
+                  <tr><td>RG-008</td><td>Date/heure consentement archivée en base (audit trail)</td><td><span class="badge-critique">CRITIQUE</span></td></tr>
+                  <tr><td>RG-009</td><td>Score 4–6 → affectation conseiller sous 48h</td><td><span class="badge-majeur">MAJEUR</span></td></tr>
+                  <tr><td>RG-010</td><td>Chaque appel IA conservé avec input/output pour audit</td><td><span class="badge-majeur">MAJEUR</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <h5 class="fw-semibold mb-3">User Stories — Format BDD</h5>
+
+            <div class="us-card must">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <span class="us-title">US-001 — Capture d'un lead via formulaire web</span>
+                <span class="us-badge must ms-2">Must Have · 5 pts</span>
+              </div>
+              <p class="us-story">"En tant que prospect intéressé par le Livret A Boosté, je veux remplir un formulaire en ligne afin d'être recontacté par un conseiller BankWise."</p>
+              <ul>
+                <li>Champs requis : Nom, Prénom, Email, Téléphone, Code Postal, Source</li>
+                <li>Case RGPD explicite et obligatoire — blocage si non cochée</li>
+                <li>Email de confirmation automatique en moins de 5 minutes</li>
+                <li>Lead créé dans Salesforce avec le statut "Prospect"</li>
+                <li>Horodatage du consentement archivé (RG-008)</li>
+                <li>Détection de doublon sur email ET téléphone (RG-007)</li>
+              </ul>
+            </div>
+
+            <div class="us-card must">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <span class="us-title">US-002 — Scoring automatique par l'agent IA</span>
+                <span class="us-badge must ms-2">Must Have · 8 pts</span>
+              </div>
+              <p class="us-story">"En tant que responsable marketing, je veux que chaque nouveau lead soit automatiquement scoré par l'IA afin de prioriser les prises de contact."</p>
+              <ul>
+                <li>Score calculé sur une échelle de 1 à 10 en moins de 3 secondes</li>
+                <li>Critères pondérés : source (25%), comportement web (20%), âge (20%), code postal (20%), horaire (15%)</li>
+                <li>Classification : Froid (1–3) / Tiède (4–6) / Chaud (7–10)</li>
+                <li>Score et justification IA visibles dans Salesforce sous 2 minutes</li>
+                <li>Log de scoring conservé (input, output, timestamp) pour auditabilité</li>
+              </ul>
+            </div>
+
+            <div class="us-card must">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <span class="us-title">US-003 — Affectation automatique à un conseiller</span>
+                <span class="us-badge must ms-2">Must Have · 8 pts</span>
+              </div>
+              <p class="us-story">"En tant que directeur d'agence, je veux que les leads qualifiés soient automatiquement affectés à un conseiller disponible."</p>
+              <ul>
+                <li>Affectation selon géolocalisation (code postal) ET charge de travail</li>
+                <li>Notification conseiller : email + alerte Salesforce à l'affectation</li>
+                <li>File d'attente prioritaire si aucun conseiller disponible dans le SLA</li>
+                <li>SLA Chaud : 24h | SLA Tiède : 48h</li>
+              </ul>
+            </div>
+
+            <div class="us-card must">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <span class="us-title">US-004 — Gestion du droit d'opposition (opt-out RGPD)</span>
+                <span class="us-badge must ms-2">Must Have · 5 pts</span>
+              </div>
+              <p class="us-story">"En tant que prospect, je veux pouvoir retirer mon consentement à tout moment via un lien de désabonnement."</p>
+              <ul>
+                <li>Lien de désabonnement présent dans chaque communication email</li>
+                <li>Demande d'opt-out traitée et confirmée en moins de 72h (RGPD Art. 21)</li>
+                <li>Arrêt immédiat de toutes les communications marketing dès l'opt-out</li>
+                <li>Données anonymisées (conservation si obligation légale LCB-FT)</li>
+              </ul>
+            </div>
+
+            <div class="us-card should">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <span class="us-title">US-005 — Tableau de bord KPIs temps réel</span>
+                <span class="us-badge should ms-2">Should Have · 5 pts</span>
+              </div>
+              <p class="us-story">"En tant que responsable marketing, je veux visualiser en temps réel les indicateurs de performance de mes campagnes."</p>
+              <ul>
+                <li>Volume leads, taux de conversion, taux opt-in, délai moyen de contact</li>
+                <li>Données actualisées toutes les 60 minutes — filtres : campagne, date, canal, segment</li>
+                <li>Export CSV disponible pour analyse externe</li>
+              </ul>
+            </div>
+
+            <div class="us-card should">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <span class="us-title">US-006 — Dédoublonnage automatique des leads</span>
+                <span class="us-badge should ms-2">Should Have · 3 pts</span>
+              </div>
+              <p class="us-story">"En tant que conseiller, je veux ne pas recevoir deux fois le même prospect dans mon pipeline."</p>
+              <ul>
+                <li>Détection sur email ET téléphone à chaque nouvelle soumission</li>
+                <li>Fusion silencieuse : enrichissement de la fiche lead existante</li>
+                <li>Notification au conseiller d'origine avec le diff des informations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 04 ARCHITECTURE TECHNIQUE & AGENT IA ══════════════════════ -->
+    <section class="lw-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">04</span>
+        <h2>Architecture Technique &amp; Agent IA</h2>
+
+        <div class="row gy-4">
+          <div class="col-12">
+            <h5 class="fw-semibold mb-3">Stack Technique</h5>
+            <div class="row g-3">
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">🖥️</div>
+                  <h6>Streamlit</h6>
+                  <small>Frontend — formulaire &amp; dashboard KPIs</small>
+                </div>
+              </div>
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">⚡</div>
+                  <h6>FastAPI</h6>
+                  <small>Backend — API REST, orchestration flux</small>
+                </div>
+              </div>
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">🤖</div>
+                  <h6>Claude API</h6>
+                  <small>claude-sonnet-4 — scoring IA &amp; justification</small>
+                </div>
+              </div>
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">✅</div>
+                  <h6>Pydantic v2</h6>
+                  <small>Validation schémas &amp; contraintes métier</small>
+                </div>
+              </div>
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">☁️</div>
+                  <h6>Salesforce</h6>
+                  <small>CRM simulé (JSON) — leads &amp; affectations</small>
+                </div>
+              </div>
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">📊</div>
+                  <h6>Locust</h6>
+                  <small>Tests perf. 50/200/500 users simultanés</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Flux de Données — Architecture End-to-End</h5>
+            <div class="flow-step">
+              <div class="flow-num">1</div>
+              <div class="flow-content">
+                <h6>Streamlit — Formulaire</h6>
+                <p>Prospect soumet ses coordonnées + consentement RGPD</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">2</div>
+              <div class="flow-content">
+                <h6>FastAPI — POST /leads <small class="text-muted">&lt;0.5s</small></h6>
+                <p>Validation Pydantic, horodatage consentement, déduplication</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">3</div>
+              <div class="flow-content">
+                <h6>Claude API — Agent IA <small class="text-muted">&lt;3s</small></h6>
+                <p>Analyse du profil, calcul score 1–10, justification textuelle</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">4</div>
+              <div class="flow-content">
+                <h6>FastAPI — Moteur affectation <small class="text-muted">&lt;0.5s</small></h6>
+                <p>Sélection conseiller (géo + charge), création SLA</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">5</div>
+              <div class="flow-content">
+                <h6>Salesforce Mock — CRM <small class="text-muted">&lt;0.5s</small></h6>
+                <p>Création fiche lead avec score, segment, conseiller assigné</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">6</div>
+              <div class="flow-content">
+                <h6>Email + Notification <small class="text-muted">&lt;5 min</small></h6>
+                <p>Confirmation prospect + alerte conseiller (email + CRM)</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Matrice de Scoring IA</h5>
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>Critère</th><th>Poids</th><th>Score Max (10)</th><th>Score Min (1)</th></tr></thead>
+                <tbody>
+                  <tr><td>Source du lead</td><td>25%</td><td>Formulaire email direct</td><td>Push notif. non sollicité</td></tr>
+                  <tr><td>Comportement web</td><td>20%</td><td>3+ visites &gt; 5 min</td><td>0 visite page produit</td></tr>
+                  <tr><td>Tranche d'âge</td><td>20%</td><td>25–45 ans</td><td>&lt;18 ou &gt;65 ans</td></tr>
+                  <tr><td>Zone géographique</td><td>20%</td><td>Paris, Lyon, Bordeaux</td><td>Zone rurale isolée</td></tr>
+                  <tr><td>Horaire de soumission</td><td>15%</td><td>Lun–Ven 9h–18h</td><td>Nuit ou week-end</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Classification des Segments</h5>
+            <div class="d-flex flex-column gap-2">
+              <div class="p-3 rounded seg-froid" style="border-left:4px solid #0284c7;">
+                <span class="seg-pill seg-froid me-2">Froid (1–3)</span>
+                <strong>Pas d'affectation</strong> — Séquence nurturing email automatique : J+3, J+7, J+14
+              </div>
+              <div class="p-3 rounded seg-tiede" style="border-left:4px solid #d97706;">
+                <span class="seg-pill seg-tiede me-2">Tiède (4–6)</span>
+                <strong>SLA 48h</strong> — Affectation conseiller + notification standard
+              </div>
+              <div class="p-3 rounded seg-chaud" style="border-left:4px solid #16a34a;">
+                <span class="seg-pill seg-chaud me-2">Chaud (7–10) ★</span>
+                <strong>SLA 24h</strong> — Affectation immédiate + alerte urgente + suivi SLA
+              </div>
+            </div>
+
+            <h5 class="fw-semibold mt-4 mb-3">Endpoints API — FastAPI</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>Méthode</th><th>Endpoint</th><th>Contrainte RGPD</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="badge bg-success">POST</span></td><td>/leads</td><td>Consentement vérifié</td></tr>
+                  <tr><td><span class="badge bg-primary">GET</span></td><td>/leads</td><td>Token requis</td></tr>
+                  <tr><td><span class="badge bg-primary">GET</span></td><td>/leads/{id}</td><td>Token requis</td></tr>
+                  <tr><td><span class="badge bg-success">POST</span></td><td>/leads/{id}/score</td><td>Token requis</td></tr>
+                  <tr><td><span class="badge bg-warning text-dark">PUT</span></td><td>/leads/{id}/statut</td><td>Token requis</td></tr>
+                  <tr><td><span class="badge bg-danger">DELETE</span></td><td>/leads/{id}</td><td>Admin + log obligatoire</td></tr>
+                  <tr><td><span class="badge bg-primary">GET</span></td><td>/dashboard/kpis</td><td>Token requis</td></tr>
+                  <tr><td><span class="badge bg-success">POST</span></td><td>/leads/{id}/optout</td><td>Aucun token requis</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 05 STRATÉGIE DE TESTS ══════════════════════════════════════ -->
+    <section class="lw-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">05</span>
+        <h2>Stratégie de Tests &amp; Résultats de Validation</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Vue d'Ensemble</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>Niveau</th><th>Outil</th><th>Couverture</th><th>Statut</th></tr></thead>
+                <tbody>
+                  <tr><td>Tests unitaires</td><td>pytest</td><td>90% du code</td><td><span class="badge-passed">DONE</span></td></tr>
+                  <tr><td>Tests d'intégration</td><td>pytest + httpx</td><td>Tous endpoints</td><td><span class="badge-passed">DONE</span></td></tr>
+                  <tr><td>Tests fonctionnels</td><td>Squash TM</td><td>6 US / 10 RG</td><td><span class="badge-progress">EN COURS</span></td></tr>
+                  <tr><td>Tests RGPD</td><td>Squash TM</td><td>6 articles RGPD</td><td><span class="badge-progress">EN COURS</span></td></tr>
+                  <tr><td>Tests UAT</td><td>Excel / Notion</td><td>5 scénarios</td><td><span class="badge-todo">À PLANIFIER</span></td></tr>
+                  <tr><td>Tests de performance</td><td>Locust</td><td>3 scénarios charge</td><td><span class="badge-todo">À PLANIFIER</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Cas de Tests Fonctionnels</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>ID</th><th>Titre</th><th>Statut</th></tr></thead>
+                <tbody>
+                  <tr><td>CT-001</td><td>Soumission formulaire valide</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>CT-002</td><td>Blocage sans consentement RGPD</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>CT-003</td><td>Email invalide bloqué (422)</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>CT-004</td><td>Scoring lead Chaud (score ≥ 7)</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>CT-005</td><td>Scoring lead Froid (score ≤ 3)</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>CT-006</td><td>Affectation automatique conseiller</td><td><span class="badge-todo">À EXÉCUTER</span></td></tr>
+                  <tr><td>CT-007</td><td>Opt-out RGPD via lien email</td><td><span class="badge-todo">À EXÉCUTER</span></td></tr>
+                  <tr><td>CT-008</td><td>Détection doublon (même email)</td><td><span class="badge-todo">À EXÉCUTER</span></td></tr>
+                  <tr><td>CT-009</td><td>Export CSV dashboard</td><td><span class="badge-todo">À EXÉCUTER</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Tests RGPD — Matrice de Conformité</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>ID</th><th>Test RGPD</th><th>Article</th><th>Statut</th></tr></thead>
+                <tbody>
+                  <tr><td>RGPD-001</td><td>Consentement explicite obligatoire</td><td>Art. 6</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>RGPD-002</td><td>Horodatage du consentement</td><td>Art. 6</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>RGPD-003</td><td>Blocage traitement sans consentement</td><td>Art. 6</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>RGPD-004</td><td>Droit à l'effacement fonctionnel</td><td>Art. 17</td><td><span class="badge-todo">À EXÉCUTER</span></td></tr>
+                  <tr><td>RGPD-005</td><td>Traitement opt-out &lt; 72h</td><td>Art. 21</td><td><span class="badge-todo">À EXÉCUTER</span></td></tr>
+                  <tr><td>RGPD-006</td><td>Conservation 3 ans maximum</td><td>CNIL</td><td><span class="badge-todo">À EXÉCUTER</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Tests de Performance — Scénarios Locust</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>Scénario</th><th>Users</th><th>Durée</th><th>Critère de Succès</th></tr></thead>
+                <tbody>
+                  <tr><td>Charge normale</td><td>50</td><td>10 min</td><td>Réponse &lt;2s, 0 erreur</td></tr>
+                  <tr><td>Charge élevée</td><td>200</td><td>5 min</td><td>Réponse &lt;5s, erreur &lt;1%</td></tr>
+                  <tr><td>Pic de charge (stress)</td><td>500</td><td>2 min</td><td>Stable, pas de crash</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 06 KPIs & BILAN ════════════════════════════════════════════ -->
+    <section class="lw-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">06</span>
+        <h2>Suivi des KPIs &amp; Bilan de Livraison</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <h5 class="fw-semibold mb-3">Tableau de Bord des KPIs Cibles</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>Indicateur</th><th>Situation Initiale</th><th>Cible</th><th>Résultat Actuel</th></tr></thead>
+                <tbody>
+                  <tr><td>Taux de conversion lead → opportunité</td><td>&lt;8%</td><td>15%</td><td>À mesurer</td></tr>
+                  <tr><td>Délai de traitement du lead</td><td>&gt;72h</td><td>&lt;24h</td><td class="text-success fw-bold">~45s ✔</td></tr>
+                  <tr><td>Leads contactés sous 48h</td><td>—</td><td>80%</td><td>À mesurer</td></tr>
+                  <tr><td>Taux de consentement opt-in</td><td>—</td><td>60%</td><td>À mesurer</td></tr>
+                  <tr><td>Temps de réponse scoring IA</td><td>—</td><td>&lt;3s</td><td class="text-success fw-bold">~1.8s ✔</td></tr>
+                  <tr><td>Disponibilité système</td><td>—</td><td>&gt;99%</td><td>À mesurer en prod</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <h5 class="fw-semibold mb-3">Compétences BA Démontrées</h5>
+            <div class="d-flex flex-column gap-2" style="font-size:.85rem;">
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Collecte &amp; analyse des besoins</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:90%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Rédaction User Stories &amp; specs</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:95%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Conformité réglementaire RGPD</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:90%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Stratégie de tests</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:85%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>IA appliquée au métier (Claude API)</span><span class="text-muted">Intermédiaire</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:70%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Pilotage par les KPIs</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:90%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Coordination multi-parties prenantes</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:88%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <h5 class="fw-semibold mb-3">Bilan de Livraison — 4 Semaines</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered lw-table">
+                <thead><tr><th>Semaine</th><th>Livrable</th><th>Livrables Produits</th><th>Statut</th></tr></thead>
+                <tbody>
+                  <tr><td>S1</td><td>Cadrage &amp; Documentation BA</td><td>Note de cadrage, 10 règles de gestion, 6 User Stories BDD, specs fonctionnelles SF-01/02/03, glossaire métier</td><td><span class="badge-passed">LIVRÉ</span></td></tr>
+                  <tr><td>S2</td><td>Agent IA &amp; Application</td><td>Architecture technique, prompt engineering Claude API, backend FastAPI, interface Streamlit, 8 endpoints documentés</td><td><span class="badge-passed">LIVRÉ</span></td></tr>
+                  <tr><td>S3</td><td>Tests &amp; Validation</td><td>Plan de tests (6 niveaux), 9 cas de tests fonctionnels, 6 tests RGPD, 3 scénarios de performance, rapport UAT</td><td><span class="badge-progress">EN COURS</span></td></tr>
+                  <tr><td>S4</td><td>Finalisation &amp; Portfolio</td><td>README GitHub, rapport final, pitch deck 5 slides, portfolio Notion public, post LinkedIn</td><td><span class="badge-progress">EN COURS</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 07 GLOSSAIRE ═══════════════════════════════════════════════ -->
+    <section class="lw-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">07</span>
+        <h2>Annexes — Glossaire Métier &amp; CRM</h2>
+        <div class="row g-3">
+          <!-- col 1 -->
+          <div class="col-lg-4">
+            <div class="p-3 border rounded bg-white h-100">
+              <dl class="mb-0">
+                <dt class="glossary-term">Lead <span class="glossary-domain ms-1">CRM</span></dt>
+                <dd class="glossary-def">Prospect ayant manifesté un intérêt commercial et fourni son consentement RGPD explicite</dd>
+                <dt class="glossary-term">Opt-in <span class="glossary-domain ms-1">RGPD</span></dt>
+                <dd class="glossary-def">Consentement explicite et éclairé du prospect au traitement de ses données à des fins marketing</dd>
+                <dt class="glossary-term">Opt-out <span class="glossary-domain ms-1">RGPD</span></dt>
+                <dd class="glossary-def">Acte par lequel un prospect retire son consentement — déclenche l'arrêt immédiat de tout traitement</dd>
+                <dt class="glossary-term">Scoring <span class="glossary-domain ms-1">IA / CRM</span></dt>
+                <dd class="glossary-def">Attribution d'une note de 1 à 10 évaluant la maturité et le potentiel de conversion d'un lead</dd>
+                <dt class="glossary-term">Nurturing <span class="glossary-domain ms-1">Marketing</span></dt>
+                <dd class="glossary-def mb-0">Séquence de communications automatisées visant à faire mûrir un lead jusqu'à maturité d'achat</dd>
+              </dl>
+            </div>
+          </div>
+          <!-- col 2 -->
+          <div class="col-lg-4">
+            <div class="p-3 border rounded bg-white h-100">
+              <dl class="mb-0">
+                <dt class="glossary-term">Segment Chaud <span class="glossary-domain ms-1">CRM</span></dt>
+                <dd class="glossary-def">Lead avec score ≥ 7 — SLA de contact : 24h — affectation conseiller prioritaire</dd>
+                <dt class="glossary-term">Segment Tiède <span class="glossary-domain ms-1">CRM</span></dt>
+                <dd class="glossary-def">Lead avec score 4–6 — SLA de contact : 48h — traitement standard</dd>
+                <dt class="glossary-term">Segment Froid <span class="glossary-domain ms-1">CRM</span></dt>
+                <dd class="glossary-def">Lead avec score 1–3 — pas d'affectation — séquence nurturing automatique</dd>
+                <dt class="glossary-term">SLA <span class="glossary-domain ms-1">Contrat</span></dt>
+                <dd class="glossary-def">Service Level Agreement — engagement de niveau de service (ex : contact sous 24h)</dd>
+                <dt class="glossary-term">Déduplication <span class="glossary-domain ms-1">Données</span></dt>
+                <dd class="glossary-def mb-0">Processus de détection et fusion automatique des fiches leads en double dans le CRM</dd>
+              </dl>
+            </div>
+          </div>
+          <!-- col 3 -->
+          <div class="col-lg-4">
+            <div class="p-3 border rounded bg-white h-100">
+              <dl class="mb-0">
+                <dt class="glossary-term">KYC <span class="glossary-domain ms-1">Réglementaire</span></dt>
+                <dd class="glossary-def">Know Your Customer — vérification réglementaire de l'identité du prospect avant offre commerciale</dd>
+                <dt class="glossary-term">LCB-FT <span class="glossary-domain ms-1">Réglementaire</span></dt>
+                <dd class="glossary-def">Lutte Contre le Blanchiment et le Financement du Terrorisme — réglementation bancaire française</dd>
+                <dt class="glossary-term">DSP2 <span class="glossary-domain ms-1">Réglementaire</span></dt>
+                <dd class="glossary-def">Directive sur les Services de Paiement 2 — exige le chiffrement des données bancaires</dd>
+                <dt class="glossary-term">Audit trail <span class="glossary-domain ms-1">Conformité</span></dt>
+                <dd class="glossary-def">Journal de traçabilité permettant de reconstituer l'historique complet de chaque action système</dd>
+                <dt class="glossary-term">RACI <span class="glossary-domain ms-1">Gouvernance</span></dt>
+                <dd class="glossary-def mb-0">Matrice d'attribution des responsabilités : Responsable, Approbateur, Consulté, Informé</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- Author note -->
+        <div class="mt-4 p-3 rounded" style="background:#dbeafe; border-left:4px solid #2563eb; font-size:.85rem;">
+          <strong><i class="bi bi-info-circle me-1"></i> Note de l'auteure :</strong> Ce document est un livrable de portfolio réalisé dans le cadre d'une formation Business Analyst spécialisée secteur bancaire et CRM. Tous les noms, données, scénarios et chiffres sont <strong>fictifs et créés à des fins pédagogiques</strong>. Ce projet démontre la maîtrise du cycle BA complet, de la collecte des besoins à la validation, en intégrant les exigences réglementaires RGPD et les technologies IA modernes.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ CTA ════════════════════════════════════════════════════════ -->
+    <section class="py-5 text-center" style="background:#0d1b3e; color:#fff;">
+      <div class="container">
+        <h3 class="mb-2">Vous souhaitez en savoir plus ?</h3>
+        <p class="opacity-75 mb-4">Consultez mes autres projets ou prenez contact directement.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+          <a href="portfolio.html" class="btn btn-outline-light">← Retour au Portfolio</a>
+          <a href="contact.html" class="btn btn-primary">Me contacter</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Zahra E</strong> <span>All Rights Reserved</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</body>
+</html>
