@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Project BRIDGE — ERP Oracle EBS · Distribution Européenne | Zahra E</title>
+  <meta name="description" content="Simulation complète d'une mission BA : migration ERP Oracle EBS pour un distributeur européen de jouets présent dans 12 pays. Cartographie AS-IS, Gap Analysis, Specs fonctionnelles, Design technique SQL/EDI/API, UAT et conduite du changement.">
+  <meta name="keywords" content="Business Analyst, Oracle EBS, ERP, Supply Chain, Order-to-Cash, Procure-to-Pay, EDI, BPMN, Gap Analysis, UAT, Zahra">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --br-dark:   #1e1b4b;
+      --br-mid:    #312e81;
+      --br-accent: #f97316;
+      --br-light:  #fff7ed;
+    }
+
+    /* ── Hero ── */
+    .br-hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 55%, #7c3aed 100%);
+      color: #fff;
+      padding: 4rem 0 3rem;
+    }
+    .br-hero .badge-chip {
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: .25rem .8rem;
+      margin-bottom: 1rem;
+    }
+    .br-hero h1 { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 700; }
+    .br-hero .sub { opacity: .8; font-size: .95rem; }
+    .br-accent-line { color: var(--br-accent); font-weight: 700; }
+
+    /* ── KPI strip ── */
+    .kpi-strip { background: #f8fafc; border-top: 3px solid var(--br-accent); border-bottom: 1px solid #e2e8f0; }
+    .kpi-item strong { font-size: 1.6rem; color: var(--br-accent); display: block; line-height: 1; }
+    .kpi-item span { font-size: .75rem; color: #64748b; }
+
+    /* ── Sections ── */
+    .br-section { padding: 3.5rem 0; }
+    .br-section:nth-child(even) { background: #f8fafc; }
+    .section-label {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--br-accent);
+      border-left: 3px solid var(--br-accent);
+      padding-left: .6rem;
+      margin-bottom: .5rem;
+    }
+    .br-section h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+
+    /* ── Tables ── */
+    .br-table th { background: var(--br-dark); color: #fff; font-size: .8rem; font-weight: 600; }
+    .br-table td { font-size: .85rem; vertical-align: middle; }
+    .badge-p1       { background: #dc3545; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-p2       { background: #fd7e14; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-p3       { background: #6c757d; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-passed   { background: #198754; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-fail     { background: #dc3545; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-todo     { background: #6c757d; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-progress { background: #0d6efd; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-otc      { background: #dbeafe; color: #1e40af; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-p2p      { background: #dcfce7; color: #166534; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-cc       { background: #fef9c3; color: #92400e; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+
+    /* ── Deliverable cards ── */
+    .deliv-card {
+      border-left: 4px solid var(--br-accent);
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,.07);
+    }
+    .deliv-card .deliv-num { font-size: .7rem; font-weight: 700; color: var(--br-accent); text-transform: uppercase; letter-spacing: .08em; }
+    .deliv-card .deliv-title { font-weight: 700; font-size: 1rem; margin-bottom: .25rem; }
+    .deliv-card ul { font-size: .85rem; margin: 0; padding-left: 1.2rem; color: #475569; }
+
+    /* ── Process flow steps ── */
+    .flow-step { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+    .flow-num { min-width: 34px; height: 34px; background: var(--br-accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .85rem; flex-shrink: 0; }
+    .flow-content h6 { font-weight: 700; font-size: .9rem; margin-bottom: .1rem; }
+    .flow-content p { font-size: .82rem; color: #475569; margin: 0; }
+
+    /* ── Stack cards ── */
+    .stack-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; text-align: center; height: 100%; }
+    .stack-card .icon { font-size: 1.8rem; margin-bottom: .5rem; }
+    .stack-card h6 { font-size: .85rem; font-weight: 700; margin-bottom: .15rem; }
+    .stack-card small { font-size: .75rem; color: #64748b; }
+
+    /* ── Competence bars ── */
+    .comp-bar { background: #e2e8f0; border-radius: 999px; height: 8px; }
+    .comp-bar-fill { background: var(--br-accent); border-radius: 999px; height: 8px; }
+
+    /* ── Module pills ── */
+    .module-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--br-dark); color: #fff;
+      border-radius: 6px; padding: .4rem .9rem;
+      font-size: .8rem; font-weight: 600;
+    }
+    .module-pill.active { background: var(--br-accent); }
+
+    /* ── BPMN swim-lane visual ── */
+    .swimlane { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; font-size: .8rem; }
+    .swimlane-header { background: var(--br-dark); color: #fff; padding: .4rem 1rem; font-weight: 700; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; }
+    .swimlane-row { display: flex; flex-wrap: wrap; gap: .4rem; padding: .6rem 1rem; border-top: 1px solid #e2e8f0; align-items: center; }
+    .swimlane-row:nth-child(even) { background: #f8fafc; }
+    .swimlane-actor { min-width: 110px; font-weight: 600; color: #475569; font-size: .75rem; }
+    .swimlane-steps { display: flex; flex-wrap: wrap; gap: .35rem; flex: 1; }
+    .sw-step { background: #e0e7ff; color: #3730a3; border-radius: 4px; padding: .2rem .55rem; font-size: .72rem; font-weight: 500; white-space: nowrap; }
+    .sw-step.pain { background: #fee2e2; color: #991b1b; }
+    .sw-step.ok { background: #dcfce7; color: #166534; }
+    .sw-arrow { color: #94a3b8; font-size: .7rem; align-self: center; }
+
+    /* ── SQL block ── */
+    .sql-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      font-family: 'Courier New', monospace;
+      font-size: .78rem;
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+    .sql-kw { color: #7dd3fc; }
+    .sql-fn { color: #fbbf24; }
+    .sql-str { color: #86efac; }
+    .sql-cm { color: #64748b; font-style: italic; }
+
+    /* ── Change mgmt timeline ── */
+    .cm-phase { border-left: 3px solid var(--br-accent); padding-left: 1rem; margin-bottom: 1.5rem; position: relative; }
+    .cm-phase::before { content: ''; position: absolute; left: -7px; top: 4px; width: 11px; height: 11px; background: var(--br-accent); border-radius: 50%; }
+    .cm-phase h6 { font-weight: 700; font-size: .9rem; margin-bottom: .25rem; }
+    .cm-phase p { font-size: .82rem; color: #475569; margin: 0; }
+    .cm-phase .cm-week { font-size: .72rem; color: var(--br-accent); font-weight: 700; text-transform: uppercase; }
+
+    /* ── Back button ── */
+    .back-btn { color: #fff; opacity: .8; text-decoration: none; font-size: .85rem; }
+    .back-btn:hover { opacity: 1; color: #fff; }
+
+    /* ── Incident log ── */
+    .inc-severity-high { color: #dc3545; font-weight: 700; }
+    .inc-severity-med  { color: #fd7e14; font-weight: 700; }
+    .inc-severity-low  { color: #198754; font-weight: 700; }
+  </style>
+</head>
+
+<body class="portfolio-details-page">
+
+  <header id="header" class="header d-flex align-items-center light-background sticky-top">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="resume.html">Resume</a></li>
+          <li><a href="portfolio.html" class="active">Portfolio</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <div class="header-social-links">
+        <a href="mailto:zahraeh.fr@gmail.com" class="email"><i class="bi bi-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/zahra-e-3004953a0/" target="_blank"><i class="bi bi-linkedin"></i></a>
+        <a href="https://github.com/zahraeh" target="_blank"><i class="bi bi-github"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ══ HERO ══════════════════════════════════════════════════════════ -->
+    <section class="br-hero">
+      <div class="container">
+        <a href="portfolio.html" class="back-btn mb-3 d-inline-block"><i class="bi bi-arrow-left me-1"></i> Retour au portfolio</a>
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-8">
+            <span class="badge-chip">Oracle EBS · ERP Migration · Distribution Européenne</span>
+            <h1>⚡ Project BRIDGE</h1>
+            <p class="sub mb-1"><strong>B</strong>usiness <strong>R</strong>edesign &amp; <strong>I</strong>ntegration for <strong>D</strong>istribution <strong>G</strong>rowth in <strong>E</strong>urope</p>
+            <p class="sub mb-3">Simulation de mission BA complète · Secteur Toys &amp; Hobby · 12 pays · ERP Oracle EBS</p>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge bg-light text-dark">Oracle EBS</span>
+              <span class="badge bg-light text-dark">Order-to-Cash</span>
+              <span class="badge bg-light text-dark">Procure-to-Pay</span>
+              <span class="badge bg-light text-dark">EDI X12</span>
+              <span class="badge bg-light text-dark">SQL / PL-SQL</span>
+              <span class="badge bg-light text-dark">BPMN 2.0</span>
+              <span class="badge bg-light text-dark">3PL Integration</span>
+              <span class="badge bg-light text-dark">Change Management</span>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="bg-white bg-opacity-10 rounded p-3" style="border:1px solid rgba(255,255,255,.2)">
+              <table class="table table-sm mb-0 text-white" style="font-size:.85rem;">
+                <tbody>
+                  <tr><td class="opacity-75">Auteure</td><td><strong>Zahra · Business Analyst</strong></td></tr>
+                  <tr><td class="opacity-75">Secteur</td><td>Toys &amp; Hobby / Distribution EU</td></tr>
+                  <tr><td class="opacity-75">ERP cible</td><td>Oracle E-Business Suite</td></tr>
+                  <tr><td class="opacity-75">Périmètre</td><td>12 pays · 5 modules EBS</td></tr>
+                  <tr><td class="opacity-75">Statut</td><td><span class="badge" style="background:rgba(255,255,255,.2)">Portfolio · Données fictives</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ KPI STRIP ══════════════════════════════════════════════════════ -->
+    <div class="kpi-strip py-3">
+      <div class="container">
+        <div class="row text-center gy-3">
+          <div class="col-6 col-md-2 kpi-item"><strong>12</strong><span>gaps identifiés</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>8</strong><span>critiques P1</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>5</strong><span>modules Oracle EBS</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>3,5j→0</strong><span>délai expédition → facture</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>95%→20%</strong><span>saisies manuelles</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>0%→85%</strong><span>réconciliation AP auto</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 01 CONTEXTE & PROBLÉMATIQUE ════════════════════════════════════ -->
+    <section class="br-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">01</span>
+        <h2>Contexte &amp; Diagnostic</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <p>Notre client est un <strong>distributeur européen de jouets et produits hobby</strong>, présent dans <strong>12 pays</strong>, avec un chiffre d'affaires de 320 M€. L'entreprise opère sur un <strong>ERP legacy déconnecté de son entrepôt 3PL</strong>. L'ensemble du flux order-to-cash et procure-to-pay repose sur des saisies manuelles, des exports Excel et des rapprochements par email entre les équipes.</p>
+
+            <h5 class="fw-semibold mt-4 mb-3">Dysfonctionnements identifiés</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered br-table">
+                <thead><tr><th>Dysfonctionnement</th><th>Impact opérationnel</th><th>Coût estimé</th></tr></thead>
+                <tbody>
+                  <tr><td>ERP et WMS 3PL totalement déconnectés</td><td>Double saisie 100% manuelle sur chaque expédition</td><td>~18 ETP/an</td></tr>
+                  <tr><td>Stock en temps réel inexistant</td><td>Ruptures non détectées, sur-ventes fréquentes</td><td>~2,4 M€/an</td></tr>
+                  <tr><td>Facturation avec 3,5 jours de retard moyen</td><td>Trésorerie dégradée, pénalités clients</td><td>~340 K€/an</td></tr>
+                  <tr><td>Rapprochements comptables AP sous Excel</td><td>Clôtures décalées de 5 jours, risque d'erreur élevé</td><td>~6 ETP/an</td></tr>
+                  <tr><td>Commandes saisies manuellement à 95%</td><td>Délai traitement 48h, taux d'erreur 12%</td><td>~900 K€/an</td></tr>
+                  <tr><td>Aucun portail fournisseur</td><td>PO transmis par email, suivi impossible</td><td>~4 ETP/an</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="rounded p-3 mb-4" style="background: linear-gradient(135deg,#1e1b4b,#312e81); color:#fff; font-size:.85rem;">
+              <strong><i class="bi bi-trophy me-1"></i> Objectifs Oracle EBS — Cibles post-migration</strong>
+              <ul class="mt-2 mb-0" style="line-height:2;">
+                <li>Délai expédition → facturation : <strong class="br-accent-line">0 jour</strong> (auto)</li>
+                <li>Discordance stock ERP/WMS : <strong class="br-accent-line">&lt; 1%</strong></li>
+                <li>Commandes via EDI/portail : <strong class="br-accent-line">&gt; 80%</strong></li>
+                <li>Réconciliation AP automatique : <strong class="br-accent-line">≥ 85%</strong></li>
+                <li>Clôture mensuelle : <strong class="br-accent-line">J+2</strong> (vs J+7)</li>
+              </ul>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Modules Oracle EBS couverts</h5>
+            <div class="d-flex flex-wrap gap-2 mb-4">
+              <span class="module-pill active">OM · Order Management</span>
+              <span class="module-pill active">INV · Inventory</span>
+              <span class="module-pill active">AR · Accounts Receivable</span>
+              <span class="module-pill active">AP · Accounts Payable</span>
+              <span class="module-pill active">PO · Purchasing</span>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Parties prenantes</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered br-table">
+                <thead><tr><th>Partie prenante</th><th>Rôle</th><th>Implication</th></tr></thead>
+                <tbody>
+                  <tr><td>DSI Europe</td><td>Sponsor projet</td><td>Décision, budget</td></tr>
+                  <tr><td>Directeur Supply Chain</td><td>MOA principal</td><td>Validation processus</td></tr>
+                  <tr><td>Resp. Comptabilité</td><td>MOA Finance</td><td>Specs AP/AR</td></tr>
+                  <tr><td>Prestataire 3PL</td><td>Partie technique</td><td>EDI / WMS API</td></tr>
+                  <tr><td>Oracle Partner</td><td>MOE</td><td>Paramétrage EBS</td></tr>
+                  <tr class="table-warning fw-bold"><td>Zahra ★</td><td>Business Analyst</td><td>End-to-end</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 02 CARTOGRAPHIE AS-IS ══════════════════════════════════════════ -->
+    <section class="br-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Livrable 01</span>
+        <h2>Cartographie AS-IS — Order-to-Cash &amp; Procure-to-Pay</h2>
+
+        <div class="row gy-4">
+          <div class="col-12">
+            <p class="text-muted" style="font-size:.9rem;">Élicitation menée via 14 ateliers (interviews acteurs clés + observation terrain). Cartographie selon standard BPMN 2.0. Les étapes en <span class="badge" style="background:#fee2e2; color:#991b1b; font-size:.75rem;">rouge</span> représentent les points de douleur identifiés.</p>
+          </div>
+
+          <div class="col-12">
+            <h5 class="fw-semibold mb-3">Flux Order-to-Cash (OTC) — État actuel</h5>
+            <div class="swimlane mb-4">
+              <div class="swimlane-header">Processus Order-to-Cash AS-IS · Flux manuel</div>
+              <div class="swimlane-row">
+                <div class="swimlane-actor">Client</div>
+                <div class="swimlane-steps">
+                  <span class="sw-step ok">Passe commande (email / fax)</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step ok">Réceptionne accusé</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step ok">Attend livraison</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step ok">Réceptionne facture</span>
+                </div>
+              </div>
+              <div class="swimlane-row">
+                <div class="swimlane-actor">ADV / Sales</div>
+                <div class="swimlane-steps">
+                  <span class="sw-step pain">Ressaisit commande dans ERP (+48h)</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Vérifie stock manuellement</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step ok">Confirme au client</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Envoie bon de préparation par email au 3PL</span>
+                </div>
+              </div>
+              <div class="swimlane-row">
+                <div class="swimlane-actor">3PL (Entrepôt)</div>
+                <div class="swimlane-steps">
+                  <span class="sw-step ok">Prépare commande</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step ok">Expédie</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Envoie avis d'expédition par email</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Pas de mise à jour stock temps réel</span>
+                </div>
+              </div>
+              <div class="swimlane-row">
+                <div class="swimlane-actor">Facturation / AR</div>
+                <div class="swimlane-steps">
+                  <span class="sw-step pain">Reçoit email 3PL, ressaisit dans ERP</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Crée facture manuellement (+3,5j délai)</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step ok">Envoie facture client</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Relances manuelles (Excel)</span>
+                </div>
+              </div>
+              <div class="swimlane-row">
+                <div class="swimlane-actor">Comptabilité</div>
+                <div class="swimlane-steps">
+                  <span class="sw-step pain">Lettrage manuel AR (Excel)</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Clôture décalée J+7</span>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Flux Procure-to-Pay (P2P) — État actuel</h5>
+            <div class="swimlane">
+              <div class="swimlane-header">Processus Procure-to-Pay AS-IS · Flux manuel</div>
+              <div class="swimlane-row">
+                <div class="swimlane-actor">Acheteur</div>
+                <div class="swimlane-steps">
+                  <span class="sw-step pain">Identifie besoin en réapprovisionnement (Excel)</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Crée PO manuellement dans ERP</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Envoie PO par email fournisseur</span>
+                </div>
+              </div>
+              <div class="swimlane-row">
+                <div class="swimlane-actor">Fournisseur</div>
+                <div class="swimlane-steps">
+                  <span class="sw-step ok">Accuse réception par email</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step ok">Expédie marchandise</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Envoie facture (PDF par email)</span>
+                </div>
+              </div>
+              <div class="swimlane-row">
+                <div class="swimlane-actor">3PL (Réception)</div>
+                <div class="swimlane-steps">
+                  <span class="sw-step ok">Réceptionne marchandise</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Transmet ASN par email (pas d'EDI)</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Mise à jour stock manuelle (+24h)</span>
+                </div>
+              </div>
+              <div class="swimlane-row">
+                <div class="swimlane-actor">Comptabilité AP</div>
+                <div class="swimlane-steps">
+                  <span class="sw-step pain">Rapprochement 3-way (PO/GRN/Facture) sous Excel</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step pain">Validation manuelle (risque d'erreur élevé)</span>
+                  <span class="sw-arrow">→</span>
+                  <span class="sw-step ok">Paiement fournisseur</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 03 GAP ANALYSIS ════════════════════════════════════════════════ -->
+    <section class="br-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Livrable 02</span>
+        <h2>Matrice des Écarts — Gap Analysis</h2>
+
+        <p class="text-muted mb-4" style="font-size:.9rem;">12 gaps identifiés via l'analyse AS-IS/TO-BE. Chaque gap est tracé par un identifiant unique et accompagné d'une preuve SQL démontrant l'écart dans les données.</p>
+
+        <div class="table-responsive">
+          <table class="table table-bordered br-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Processus</th>
+                <th>Intitulé du gap</th>
+                <th>Impact AS-IS</th>
+                <th>Solution TO-BE Oracle EBS</th>
+                <th>Priorité</th>
+                <th>Module</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>OTC-01</strong></td>
+                <td><span class="badge-otc">OTC</span></td>
+                <td>Déclenchement facturation manuel post-expédition 3PL</td>
+                <td>+3,5 jours délai, ~340 K€ trésorerie</td>
+                <td>Auto-invoice via ASN EDI 856 → Oracle AR AutoInvoice</td>
+                <td><span class="badge-p1">P1 CRITIQUE</span></td>
+                <td>AR / OM</td>
+              </tr>
+              <tr>
+                <td><strong>OTC-02</strong></td>
+                <td><span class="badge-otc">OTC</span></td>
+                <td>Absence d'intégration ERP/WMS — stock non synchronisé</td>
+                <td>Discordance 20%, sur-ventes, ruptures non détectées</td>
+                <td>API REST WMS ↔ Oracle INV (mise à jour toutes les 15 min)</td>
+                <td><span class="badge-p1">P1 CRITIQUE</span></td>
+                <td>INV</td>
+              </tr>
+              <tr>
+                <td><strong>OTC-03</strong></td>
+                <td><span class="badge-otc">OTC</span></td>
+                <td>Commandes reçues par email/fax — pas d'EDI</td>
+                <td>95% saisie manuelle, taux d'erreur 12%, délai +48h</td>
+                <td>Portail commandes EDI X12 850 + mapping Oracle OM</td>
+                <td><span class="badge-p1">P1 CRITIQUE</span></td>
+                <td>OM</td>
+              </tr>
+              <tr>
+                <td><strong>OTC-04</strong></td>
+                <td><span class="badge-otc">OTC</span></td>
+                <td>Aucune vérification de crédit automatique à la prise de commande</td>
+                <td>Expéditions vers clients en dépassement de limite, impayés</td>
+                <td>Oracle Credit Management — hold automatique si dépassement</td>
+                <td><span class="badge-p1">P1 CRITIQUE</span></td>
+                <td>AR / OM</td>
+              </tr>
+              <tr>
+                <td><strong>OTC-05</strong></td>
+                <td><span class="badge-otc">OTC</span></td>
+                <td>Relances AR 100% manuelles (téléphone + email)</td>
+                <td>Taux recouvrement dégradé, ~6 ETP/an sur dunning</td>
+                <td>Oracle Collections — workflow relance automatisé J+30/60/90</td>
+                <td><span class="badge-p2">P2 MAJEUR</span></td>
+                <td>AR</td>
+              </tr>
+              <tr>
+                <td><strong>OTC-06</strong></td>
+                <td><span class="badge-otc">OTC</span></td>
+                <td>Pas de visibilité client sur statut commande</td>
+                <td>Volume appels SAV +40%, satisfaction client dégradée</td>
+                <td>Oracle iStore / portail client avec tracking temps réel</td>
+                <td><span class="badge-p2">P2 MAJEUR</span></td>
+                <td>OM</td>
+              </tr>
+              <tr>
+                <td><strong>P2P-01</strong></td>
+                <td><span class="badge-p2p">P2P</span></td>
+                <td>Rapprochement 3-way matching (PO/GRN/Facture) manuel sous Excel</td>
+                <td>0% automatisé, 8 ETP/an, risque de fraude et d'erreur élevé</td>
+                <td>Oracle AP AutoMatch — 3-way matching paramétré + tolérance</td>
+                <td><span class="badge-p1">P1 CRITIQUE</span></td>
+                <td>AP / PO</td>
+              </tr>
+              <tr>
+                <td><strong>P2P-02</strong></td>
+                <td><span class="badge-p2p">P2P</span></td>
+                <td>PO transmis par email — pas d'EDI fournisseur</td>
+                <td>Pas de traçabilité, 72h de délai confirmation, erreurs fréquentes</td>
+                <td>EDI X12 850/855 + portail fournisseur Oracle iSupplier</td>
+                <td><span class="badge-p1">P1 CRITIQUE</span></td>
+                <td>PO</td>
+              </tr>
+              <tr>
+                <td><strong>P2P-03</strong></td>
+                <td><span class="badge-p2p">P2P</span></td>
+                <td>Réapprovisionnement déclenché manuellement (analyse Excel)</td>
+                <td>Ruptures fréquentes ou surstock, pas de MRP</td>
+                <td>Oracle Min/Max Planning + MRP standard INV</td>
+                <td><span class="badge-p1">P1 CRITIQUE</span></td>
+                <td>INV / PO</td>
+              </tr>
+              <tr>
+                <td><strong>P2P-04</strong></td>
+                <td><span class="badge-p2p">P2P</span></td>
+                <td>ASN 3PL transmis par email — délai mise à jour stock +24h</td>
+                <td>Données inventaire décalées, DRP impossible</td>
+                <td>EDI X12 856 (ASN) → Oracle INV MSCA reception auto</td>
+                <td><span class="badge-p1">P1 CRITIQUE</span></td>
+                <td>INV</td>
+              </tr>
+              <tr>
+                <td><strong>CC-01</strong></td>
+                <td><span class="badge-cc">COMPTA</span></td>
+                <td>Clôture mensuelle à J+7 — rapprochements manuels</td>
+                <td>Reporting financier décalé, direction sans visibilité temps réel</td>
+                <td>Oracle GL avec AutoPost + réconciliation inter-sociétés auto</td>
+                <td><span class="badge-p2">P2 MAJEUR</span></td>
+                <td>AR / AP / GL</td>
+              </tr>
+              <tr>
+                <td><strong>CC-02</strong></td>
+                <td><span class="badge-cc">COMPTA</span></td>
+                <td>TVA multi-pays non paramétrée — calculs manuels</td>
+                <td>Risque de non-conformité fiscale sur 12 régimes TVA européens</td>
+                <td>Oracle Tax Engine — matrices TVA par pays/catégorie</td>
+                <td><span class="badge-p2">P2 MAJEUR</span></td>
+                <td>AR / AP</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- SQL proof section -->
+        <div class="row mt-4 gy-4">
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Preuve SQL — Gap OTC-01 : délai facturation</h5>
+            <div class="sql-block">
+<span class="sql-cm">-- Mesure du délai moyen expédition → facturation (AS-IS)</span><br>
+<span class="sql-kw">SELECT</span><br>
+&nbsp;&nbsp;wsh.name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="sql-cm">AS shipment_number,</span><br>
+&nbsp;&nbsp;wnd.actual_departure_date&nbsp;&nbsp; <span class="sql-cm">AS ship_date,</span><br>
+&nbsp;&nbsp;ra.trx_date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="sql-cm">AS invoice_date,</span><br>
+&nbsp;&nbsp;<span class="sql-fn">ROUND</span>(ra.trx_date - wnd.actual_departure_date, <span class="sql-str">1</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="sql-cm">AS delay_days</span><br>
+<span class="sql-kw">FROM</span> wsh_delivery_details &nbsp;wsh<br>
+<span class="sql-kw">JOIN</span> wsh_new_deliveries &nbsp;&nbsp;wnd <span class="sql-kw">ON</span> wnd.delivery_id = wsh.delivery_id<br>
+<span class="sql-kw">JOIN</span> oe_order_lines_all &nbsp;&nbsp;oel <span class="sql-kw">ON</span> oel.line_id = wsh.source_line_id<br>
+<span class="sql-kw">JOIN</span> ra_customer_trx_all &nbsp;ra &nbsp;<span class="sql-kw">ON</span> ra.attribute1 = wnd.name<br>
+<span class="sql-kw">WHERE</span> wnd.actual_departure_date <span class="sql-kw">IS NOT NULL</span><br>
+&nbsp;&nbsp;<span class="sql-kw">AND</span> ra.trx_date <span class="sql-kw">IS NOT NULL</span><br>
+&nbsp;&nbsp;<span class="sql-kw">AND</span> wnd.actual_departure_date &gt;= <span class="sql-fn">TRUNC</span>(<span class="sql-fn">SYSDATE</span>-<span class="sql-str">90</span>)<br>
+<span class="sql-kw">ORDER BY</span> delay_days <span class="sql-kw">DESC</span>;<br><br>
+<span class="sql-cm">-- Résultat agrégé : délai moyen = 3,52 jours · Max = 8 jours</span>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Preuve SQL — Gap P2P-01 : matching AP non automatisé</h5>
+            <div class="sql-block">
+<span class="sql-cm">-- Identification des factures sans 3-way matching (AS-IS)</span><br>
+<span class="sql-kw">SELECT</span><br>
+&nbsp;&nbsp;aia.invoice_num &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sql-cm">AS invoice_number,</span><br>
+&nbsp;&nbsp;aia.invoice_date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sql-cm">AS invoice_date,</span><br>
+&nbsp;&nbsp;aia.invoice_amount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sql-cm">AS amount,</span><br>
+&nbsp;&nbsp;poh.segment1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sql-cm">AS po_number,</span><br>
+&nbsp;&nbsp;rcv.quantity_received &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sql-cm">AS received_qty,</span><br>
+&nbsp;&nbsp;aila.quantity_invoiced &nbsp;&nbsp;&nbsp;&nbsp;<span class="sql-cm">AS invoiced_qty,</span><br>
+&nbsp;&nbsp;<span class="sql-kw">CASE WHEN</span> aila.match_status_flag <span class="sql-kw">IS NULL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="sql-kw">THEN</span> <span class="sql-str">'UNMATCHED - Manual Review'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="sql-kw">ELSE</span> <span class="sql-str">'AUTO-MATCHED'</span> <span class="sql-kw">END AS</span> match_status<br>
+<span class="sql-kw">FROM</span> ap_invoices_all &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aia<br>
+<span class="sql-kw">JOIN</span> ap_invoice_lines_all alia <span class="sql-kw">ON</span> aila.invoice_id = aia.invoice_id<br>
+<span class="sql-kw">LEFT JOIN</span> po_headers_all &nbsp;poh &nbsp;<span class="sql-kw">ON</span> poh.po_header_id = aila.po_header_id<br>
+<span class="sql-kw">LEFT JOIN</span> rcv_transactions rcv <span class="sql-kw">ON</span> rcv.po_line_id = aila.po_line_id<br>
+<span class="sql-kw">WHERE</span> aila.match_status_flag <span class="sql-kw">IS NULL</span><br>
+&nbsp;&nbsp;<span class="sql-kw">AND</span> aia.invoice_date &gt;= <span class="sql-fn">ADD_MONTHS</span>(<span class="sql-fn">SYSDATE</span>, <span class="sql-str">-3</span>);<br><br>
+<span class="sql-cm">-- Résultat : 100% des factures non matchées → traitement Excel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 04 SPÉCIFICATIONS FONCTIONNELLES ═══════════════════════════════ -->
+    <section class="br-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Livrable 03</span>
+        <h2>Spécifications Fonctionnelles — Oracle INV &amp; AP</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Paramétrage Oracle INV — Inventory Management</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered br-table">
+                <thead><tr><th>Paramètre EBS</th><th>Valeur configurée</th><th>Justification</th></tr></thead>
+                <tbody>
+                  <tr><td>Organisation d'inventaire</td><td>1 org / entrepôt 3PL par pays</td><td>Ségrégation légale multi-pays</td></tr>
+                  <tr><td>Contrôle de lot</td><td>Activé (Lot mandatory)</td><td>Traçabilité produits jouets CE</td></tr>
+                  <tr><td>Unité de mesure</td><td>PCS / CARTON / PALETTE</td><td>Gestion logistique 3PL</td></tr>
+                  <tr><td>Coût standard</td><td>Standard Costing activé</td><td>Reporting financier consolidé</td></tr>
+                  <tr><td>Min/Max Planning</td><td>Activé par SKU</td><td>Remplacement MRP manuel Excel</td></tr>
+                  <tr><td>Transactions MSCA</td><td>Réception EDI 856 auto</td><td>Suppression saisie manuelle 3PL</td></tr>
+                  <tr><td>Cycle Count</td><td>ABC mensuel automatique</td><td>Fiabilisation stock (cible &lt;1%)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Paramétrage Oracle AP — Accounts Payable</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered br-table">
+                <thead><tr><th>Paramètre EBS</th><th>Valeur configurée</th><th>Justification</th></tr></thead>
+                <tbody>
+                  <tr><td>3-Way Matching</td><td>Obligatoire PO &gt; 500€</td><td>Contrôle interne / audit</td></tr>
+                  <tr><td>Tolérance matching</td><td>±2% quantité / ±50€ montant</td><td>Réduction faux positifs</td></tr>
+                  <tr><td>Payment Terms</td><td>30j / 60j / 90j selon fournisseur</td><td>Synchronisation contrats achat</td></tr>
+                  <tr><td>AutoApproval</td><td>Activé si 3-way OK + tolérance OK</td><td>Objectif 85% auto-approval</td></tr>
+                  <tr><td>Hold Rules</td><td>Price variance &gt; 5%, Qty variance &gt; 2%</td><td>Escalade automatique achats</td></tr>
+                  <tr><td>Tax Engine</td><td>Oracle Tax — 12 régimes EU</td><td>Conformité TVA multi-pays</td></tr>
+                  <tr><td>Electronic Invoicing</td><td>EDI X12 810 + PDF OCR fallback</td><td>Réduction traitement manuel</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <h5 class="fw-semibold mb-3">Règles de Gestion ERP</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered br-table">
+                <thead><tr><th>ID</th><th>Règle de gestion</th><th>Processus</th><th>Priorité</th></tr></thead>
+                <tbody>
+                  <tr><td>RG-OTC-01</td><td>Toute expédition confirmée par EDI 856 déclenche automatiquement la facturation Oracle AR dans les 30 minutes</td><td>OTC</td><td><span class="badge-p1">P1 CRITIQUE</span></td></tr>
+                  <tr><td>RG-OTC-02</td><td>Vérification crédit client obligatoire à la saisie de commande — hold automatique si dépassement limite</td><td>OTC</td><td><span class="badge-p1">P1 CRITIQUE</span></td></tr>
+                  <tr><td>RG-OTC-03</td><td>Discordance stock ERP/WMS &gt; 1% → alerte automatique Supply Chain Manager dans les 2 heures</td><td>OTC</td><td><span class="badge-p1">P1 CRITIQUE</span></td></tr>
+                  <tr><td>RG-OTC-04</td><td>Commandes EDI 850 reçues sans PO existant → rejet automatique + notification acheteur sous 15 min</td><td>OTC</td><td><span class="badge-p2">P2 MAJEUR</span></td></tr>
+                  <tr><td>RG-P2P-01</td><td>Facture fournisseur dépassant ±2% quantité ou ±5% prix vs PO → hold automatique + escalade acheteur</td><td>P2P</td><td><span class="badge-p1">P1 CRITIQUE</span></td></tr>
+                  <tr><td>RG-P2P-02</td><td>Niveau stock &lt; point de commande Min → création PO automatique Oracle MRP dans les 4 heures ouvrées</td><td>P2P</td><td><span class="badge-p1">P1 CRITIQUE</span></td></tr>
+                  <tr><td>RG-P2P-03</td><td>PO créé automatiquement par MRP soumis à approbation manager si montant &gt; 10 000€</td><td>P2P</td><td><span class="badge-p2">P2 MAJEUR</span></td></tr>
+                  <tr><td>RG-CC-01</td><td>Clôture mensuelle automatisée Oracle GL le 2ème jour ouvré suivant la fin de période</td><td>Finance</td><td><span class="badge-p2">P2 MAJEUR</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 05 DESIGN TECHNIQUE ════════════════════════════════════════════ -->
+    <section class="br-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Livrable 04</span>
+        <h2>Design Technique — SQL, EDI X12 &amp; API REST</h2>
+
+        <div class="row gy-4">
+          <div class="col-12">
+            <h5 class="fw-semibold mb-3">Architecture d'Intégration TO-BE</h5>
+            <div class="row g-3">
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">🏭</div>
+                  <h6>Oracle EBS</h6>
+                  <small>OM / INV / AR / AP / PO — ERP central</small>
+                </div>
+              </div>
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">📦</div>
+                  <h6>WMS 3PL</h6>
+                  <small>Warehouse Management — synchronisation API REST</small>
+                </div>
+              </div>
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">🔗</div>
+                  <h6>EDI X12</h6>
+                  <small>850/855/856/810 — fournisseurs et 3PL</small>
+                </div>
+              </div>
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">🌐</div>
+                  <h6>iSupplier Portal</h6>
+                  <small>Oracle iSupplier — portail web fournisseurs</small>
+                </div>
+              </div>
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">📊</div>
+                  <h6>Oracle BI</h6>
+                  <small>Reporting temps réel supply chain &amp; finance</small>
+                </div>
+              </div>
+              <div class="col-6 col-md-4 col-lg-2">
+                <div class="stack-card">
+                  <div class="icon">⚙️</div>
+                  <h6>Oracle SOA / MFT</h6>
+                  <small>Middleware — orchestration flux EDI/API</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Flux d'intégration TO-BE — Order-to-Cash</h5>
+            <div class="flow-step">
+              <div class="flow-num">1</div>
+              <div class="flow-content">
+                <h6>Client → EDI X12 850 (Purchase Order)</h6>
+                <p>Commande client reçue via EDI, validée par Oracle SOA et chargée dans Oracle OM automatiquement</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">2</div>
+              <div class="flow-content">
+                <h6>Oracle OM → Credit Check automatique <small class="text-muted">&lt;30s</small></h6>
+                <p>Vérification solde AR + limite crédit client — hold auto si dépassement (RG-OTC-02)</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">3</div>
+              <div class="flow-content">
+                <h6>Oracle INV → Vérification stock temps réel <small class="text-muted">&lt;15s</small></h6>
+                <p>Réservation ATP (Available-to-Promise) avec données WMS synchronisées toutes les 15 min</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">4</div>
+              <div class="flow-content">
+                <h6>Oracle OM → WMS 3PL via API REST <small class="text-muted">&lt;1 min</small></h6>
+                <p>Ordre de préparation transmis automatiquement — plus d'email manuel</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">5</div>
+              <div class="flow-content">
+                <h6>3PL → EDI X12 856 (ASN) → Oracle AR <small class="text-muted">&lt;30 min</small></h6>
+                <p>Avis d'expédition déclenche automatiquement Oracle AutoInvoice — facturation immédiate</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">6</div>
+              <div class="flow-content">
+                <h6>Oracle AR → Lettrage automatique + BI <small class="text-muted">temps réel</small></h6>
+                <p>Paiement client lettre automatiquement — dunning Oracle Collections si retard</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Design API REST — WMS ↔ Oracle INV</h5>
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered br-table">
+                <thead><tr><th>Méthode</th><th>Endpoint</th><th>Déclencheur</th><th>Oracle Target</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="badge bg-success">POST</span></td><td>/inventory/receipt</td><td>Réception 3PL</td><td>INV MSCA Receipt</td></tr>
+                  <tr><td><span class="badge bg-success">POST</span></td><td>/inventory/shipment</td><td>Expédition 3PL</td><td>INV Misc Issue + AR AutoInvoice</td></tr>
+                  <tr><td><span class="badge bg-primary">GET</span></td><td>/inventory/stock/{item_id}</td><td>ATP check OM</td><td>INV On-Hand Quantity</td></tr>
+                  <tr><td><span class="badge bg-warning text-dark">PUT</span></td><td>/inventory/cycle-count</td><td>Comptage physique</td><td>INV Cycle Count</td></tr>
+                  <tr><td><span class="badge bg-success">POST</span></td><td>/orders/pick-release</td><td>Ordre prep Oracle</td><td>WMS Pick List</td></tr>
+                  <tr><td><span class="badge bg-primary">GET</span></td><td>/orders/{order_id}/status</td><td>Portail client</td><td>OM Order Status</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Messages EDI X12 — Matrice de mapping</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered br-table">
+                <thead><tr><th>EDI X12</th><th>Description</th><th>Sens</th><th>Oracle cible</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>850</strong></td><td>Purchase Order (commande client)</td><td>Client → ERP</td><td>Oracle OM Order Import</td></tr>
+                  <tr><td><strong>855</strong></td><td>PO Acknowledgment</td><td>ERP → Client</td><td>Oracle OM Workflow</td></tr>
+                  <tr><td><strong>856</strong></td><td>Ship Notice / ASN</td><td>3PL → ERP</td><td>Oracle INV + AR AutoInvoice</td></tr>
+                  <tr><td><strong>810</strong></td><td>Invoice (facture fournisseur)</td><td>Fournisseur → ERP</td><td>Oracle AP Invoice Interface</td></tr>
+                  <tr><td><strong>820</strong></td><td>Payment Order / Remittance</td><td>ERP → Fournisseur</td><td>Oracle AP Payment</td></tr>
+                  <tr><td><strong>940</strong></td><td>Warehouse Shipping Order</td><td>ERP → 3PL</td><td>Oracle OM → WMS</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 06 UAT & INCIDENTS ══════════════════════════════════════════════ -->
+    <section class="br-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Livrable 05</span>
+        <h2>Plan de Recette UAT &amp; Log d'Incidents L3</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Scénarios UAT — Couverture fonctionnelle</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered br-table">
+                <thead><tr><th>ID</th><th>Scénario</th><th>Gap couvert</th><th>Statut</th></tr></thead>
+                <tbody>
+                  <tr><td>UAT-OTC-01</td><td>Réception EDI 850 → création commande Oracle OM</td><td>OTC-03</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>UAT-OTC-02</td><td>Credit check automatique → hold sur dépassement</td><td>OTC-04</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>UAT-OTC-03</td><td>ASN EDI 856 → AutoInvoice AR &lt; 30 min</td><td>OTC-01</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>UAT-OTC-04</td><td>Synchronisation stock WMS ↔ Oracle INV toutes 15 min</td><td>OTC-02</td><td><span class="badge-fail">ÉCHEC → L3</span></td></tr>
+                  <tr><td>UAT-OTC-05</td><td>Dunning Oracle Collections — relance J+30</td><td>OTC-05</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>UAT-OTC-06</td><td>Portail client — tracking commande temps réel</td><td>OTC-06</td><td><span class="badge-progress">EN COURS</span></td></tr>
+                  <tr><td>UAT-P2P-01</td><td>3-way matching automatique AP &lt; 500€ tolérance</td><td>P2P-01</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>UAT-P2P-02</td><td>PO automatique MRP si stock &lt; point de commande</td><td>P2P-03</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>UAT-P2P-03</td><td>EDI 850 fournisseur → Oracle PO confirmation</td><td>P2P-02</td><td><span class="badge-fail">ÉCHEC → L3</span></td></tr>
+                  <tr><td>UAT-P2P-04</td><td>ASN 3PL EDI 856 → réception Oracle INV auto</td><td>P2P-04</td><td><span class="badge-progress">EN COURS</span></td></tr>
+                  <tr><td>UAT-CC-01</td><td>Clôture automatique Oracle GL à J+2</td><td>CC-01</td><td><span class="badge-passed">PASSÉ</span></td></tr>
+                  <tr><td>UAT-CC-02</td><td>Tax Engine — calcul TVA automatique 12 pays</td><td>CC-02</td><td><span class="badge-progress">EN COURS</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Log d'Incidents L3 — Recette UAT</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered br-table">
+                <thead><tr><th>INC-ID</th><th>Description</th><th>Sévérité</th><th>Root Cause</th><th>Résolution</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><strong>INC-001</strong></td>
+                    <td>Synchronisation INV/WMS — delta stock +3% après batch de nuit</td>
+                    <td><span class="inc-severity-high">HIGH</span></td>
+                    <td>Timezone mismatch UTC vs CET dans API REST — transactions à 23h non incluses</td>
+                    <td>Patch middleware SOA — normalisation UTC + rejeu batch · <span class="badge-passed">RÉSOLU</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>INC-002</strong></td>
+                    <td>EDI 850 fournisseur — caractères spéciaux allemands (ü,ö,ä) rejetés</td>
+                    <td><span class="inc-severity-high">HIGH</span></td>
+                    <td>Encoding ISO-8859-1 côté fournisseur DE vs UTF-8 attendu Oracle</td>
+                    <td>Conversion encoding dans transformateur XSLT SOA · <span class="badge-passed">RÉSOLU</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>INC-003</strong></td>
+                    <td>AutoInvoice AR — 2% des factures sans numéro de transaction</td>
+                    <td><span class="inc-severity-med">MEDIUM</span></td>
+                    <td>Séquence Oracle RA_CUSTOMER_TRX_S non initialisée sur 3 orgs</td>
+                    <td>Script SQL initialisation sequences + re-traitement · <span class="badge-passed">RÉSOLU</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>INC-004</strong></td>
+                    <td>3-way matching — tolérance prix ignorée sur factures multi-lignes</td>
+                    <td><span class="inc-severity-high">HIGH</span></td>
+                    <td>Bug paramétrage Oracle AP — tolérance appliquée sur total et non ligne</td>
+                    <td>SR Oracle Support ouvert · Patch 34821066 en attente · <span class="badge-progress">EN COURS</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>INC-005</strong></td>
+                    <td>Tax Engine — TVA polonaise 23% calculée à 8% sur produits jouets</td>
+                    <td><span class="inc-severity-med">MEDIUM</span></td>
+                    <td>Catégorie fiscale Oracle mal mappée sur famille produits PL</td>
+                    <td>Correction matrice Oracle Tax + re-calcul lots affectés · <span class="badge-passed">RÉSOLU</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-3 p-3 rounded" style="background:#fff7ed; border-left:4px solid var(--br-accent); font-size:.83rem;">
+              <strong><i class="bi bi-bar-chart-fill me-1"></i> Bilan recette UAT :</strong>
+              <div class="row mt-2 text-center">
+                <div class="col-3"><strong class="d-block" style="color:#198754; font-size:1.1rem;">7</strong><small>Scénarios PASSÉS</small></div>
+                <div class="col-3"><strong class="d-block" style="color:#dc3545; font-size:1.1rem;">2</strong><small>Échecs → L3</small></div>
+                <div class="col-3"><strong class="d-block" style="color:#0d6efd; font-size:1.1rem;">3</strong><small>En cours</small></div>
+                <div class="col-3"><strong class="d-block" style="color:var(--br-accent); font-size:1.1rem;">83%</strong><small>Taux succès</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 07 CHANGE MANAGEMENT ═══════════════════════════════════════════ -->
+    <section class="br-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Livrable 06</span>
+        <h2>Conduite du Changement &amp; Plan de Communication</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-5">
+            <h5 class="fw-semibold mb-3">Timeline de déploiement — 6 phases</h5>
+
+            <div class="cm-phase">
+              <div class="cm-week">Phase 1 · Semaines 1–4</div>
+              <h6>Découverte &amp; Élicitation</h6>
+              <p>14 ateliers d'élicitation · cartographie AS-IS BPMN · interviews utilisateurs clés · diagnostic des points de douleur · kick-off projet</p>
+            </div>
+            <div class="cm-phase">
+              <div class="cm-week">Phase 2 · Semaines 5–8</div>
+              <h6>Analyse des écarts &amp; conception TO-BE</h6>
+              <p>12 gaps documentés · spécifications fonctionnelles Oracle EBS · design technique SQL/EDI/API · validation MOA</p>
+            </div>
+            <div class="cm-phase">
+              <div class="cm-week">Phase 3 · Semaines 9–14</div>
+              <h6>Paramétrage &amp; intégrations</h6>
+              <p>Configuration Oracle INV/AP/AR/OM/PO · développement interfaces EDI X12 · API WMS · tests unitaires &amp; intégration</p>
+            </div>
+            <div class="cm-phase">
+              <div class="cm-week">Phase 4 · Semaines 15–18</div>
+              <h6>Recette UAT &amp; formation pilote</h6>
+              <p>12 scénarios UAT · log incidents L3 · formation utilisateurs clés 12 pays · support go-live pilote (France + Allemagne)</p>
+            </div>
+            <div class="cm-phase">
+              <div class="cm-week">Phase 5 · Semaines 19–24</div>
+              <h6>Déploiement progressif (10 pays restants)</h6>
+              <p>Rollout par vagues de 2–3 pays · hypercare 4 semaines par vague · mesure des KPIs post-déploiement</p>
+            </div>
+            <div class="cm-phase">
+              <div class="cm-week">Phase 6 · Semaines 25–28</div>
+              <h6>Stabilisation &amp; TMA</h6>
+              <p>Pilotage TMA · optimisation paramétrage · tableau de bord Oracle BI · bilan de projet · REX</p>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <h5 class="fw-semibold mb-3">Plan de communication par cible</h5>
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered br-table">
+                <thead><tr><th>Cible</th><th>Message clé</th><th>Canal</th><th>Fréquence</th><th>Responsable</th></tr></thead>
+                <tbody>
+                  <tr><td>Comité de direction</td><td>Avancement, risques, budget, ROI</td><td>Comité mensuel</td><td>Mensuel</td><td>BA + PMO</td></tr>
+                  <tr><td>Managers Supply Chain</td><td>Impact processus, planning formation</td><td>Workshop + email</td><td>Bi-mensuel</td><td>BA</td></tr>
+                  <tr><td>Équipes ADV / Achat</td><td>Nouvelles procédures Oracle EBS</td><td>Training + guides</td><td>Par phase</td><td>BA + Change Manager</td></tr>
+                  <tr><td>Comptabilité (12 pays)</td><td>Nouveaux flux AP/AR, dates clôture</td><td>Webinar + manuel</td><td>Avant go-live</td><td>BA + Finance</td></tr>
+                  <tr><td>3PL (entrepôt)</td><td>Nouveaux flux EDI, API REST</td><td>Atelier technique</td><td>Phase 3</td><td>BA + Tech Lead</td></tr>
+                  <tr><td>Fournisseurs (top 30)</td><td>Portail iSupplier, EDI X12</td><td>Email + formation</td><td>Phase 3–4</td><td>BA + Achat</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Compétences BA démontrées</h5>
+            <div class="d-flex flex-column gap-2" style="font-size:.85rem;">
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Élicitation &amp; cartographie de processus (BPMN)</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:95%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Analyse des écarts fonctionnels (Gap Analysis)</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:92%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Spécifications ERP Oracle EBS (INV, AP, AR, OM, PO)</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:90%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>SQL &amp; intégrations EDI X12 / API REST</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:85%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Tests &amp; support L3 (UAT, incidents)</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:88%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Conduite du changement &amp; communication multi-pays</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:85%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Gestion de projet (jalons, risques, RACI)</span><span class="text-muted">Avancé</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:90%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 08 BILAN CHIFFRÉ ═══════════════════════════════════════════════ -->
+    <section class="br-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">08</span>
+        <h2>Bilan Chiffré — AS-IS vs Cibles Oracle EBS</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <div class="table-responsive">
+              <table class="table table-bordered br-table">
+                <thead><tr><th>Indicateur</th><th>Valeur AS-IS</th><th>Cible Oracle EBS</th><th>Écart</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td>Délai expédition → facturation</td>
+                    <td class="text-danger fw-bold">3,5 jours</td>
+                    <td class="text-success fw-bold">0 jour (auto)</td>
+                    <td><span class="badge bg-success">−3,5 jours</span></td>
+                  </tr>
+                  <tr>
+                    <td>Taux discordance stock ERP/WMS</td>
+                    <td class="text-danger fw-bold">~20%</td>
+                    <td class="text-success fw-bold">&lt; 1%</td>
+                    <td><span class="badge bg-success">−19 pts</span></td>
+                  </tr>
+                  <tr>
+                    <td>Commandes saisies manuellement</td>
+                    <td class="text-danger fw-bold">~95%</td>
+                    <td class="text-success fw-bold">&lt; 20% (EDI + portail)</td>
+                    <td><span class="badge bg-success">−75 pts</span></td>
+                  </tr>
+                  <tr>
+                    <td>Rapprochement AP automatique</td>
+                    <td class="text-danger fw-bold">0%</td>
+                    <td class="text-success fw-bold">≥ 85%</td>
+                    <td><span class="badge bg-success">+85 pts</span></td>
+                  </tr>
+                  <tr>
+                    <td>Clôture mensuelle</td>
+                    <td class="text-danger fw-bold">J+7</td>
+                    <td class="text-success fw-bold">J+2</td>
+                    <td><span class="badge bg-success">−5 jours</span></td>
+                  </tr>
+                  <tr>
+                    <td>ETP mobilisés sur tâches manuelles</td>
+                    <td class="text-danger fw-bold">~28 ETP/an</td>
+                    <td class="text-success fw-bold">&lt; 8 ETP/an</td>
+                    <td><span class="badge bg-success">−20 ETP</span></td>
+                  </tr>
+                  <tr>
+                    <td>ROI estimé (an 1 post-déploiement)</td>
+                    <td class="text-muted">—</td>
+                    <td class="text-success fw-bold">~4,2 M€</td>
+                    <td><span class="badge" style="background:var(--br-accent);">Économies + gains</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <h5 class="fw-semibold mb-3">Les 6 livrables produits</h5>
+            <div class="deliv-card">
+              <div class="deliv-num">Livrable 01</div>
+              <div class="deliv-title">🗺 Cartographie AS-IS — OTC &amp; P2P</div>
+              <ul><li>14 ateliers d'élicitation · notation BPMN 2.0</li><li>Points de douleur identifiés et quantifiés</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Livrable 02</div>
+              <div class="deliv-title">📊 Matrice des écarts — 12 gaps, scoring, SQL proof</div>
+              <ul><li>8 gaps P1 Critiques · 4 gaps P2 Majeurs</li><li>Preuves SQL de chaque écart dans les données</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Livrable 03</div>
+              <div class="deliv-title">📋 Spécifications fonctionnelles — Oracle INV &amp; AP</div>
+              <ul><li>8 règles de gestion · paramétrage détaillé 5 modules EBS</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Livrable 04</div>
+              <div class="deliv-title">🔧 Design technique — SQL, EDI X12, API REST</div>
+              <ul><li>6 flux EDI · 6 endpoints API · 2 requêtes SQL avancées</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Livrable 05</div>
+              <div class="deliv-title">🧪 Plan de recette UAT + Log incidents L3</div>
+              <ul><li>12 scénarios UAT · 5 incidents documentés et résolus</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Livrable 06</div>
+              <div class="deliv-title">📣 Conduite du changement &amp; plan de communication</div>
+              <ul><li>6 phases · 6 cibles · plan de formation 12 pays</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Author note -->
+        <div class="mt-4 p-3 rounded" style="background:#ede9fe; border-left:4px solid #7c3aed; font-size:.85rem;">
+          <strong><i class="bi bi-info-circle me-1"></i> Note de l'auteure :</strong> Project BRIDGE est un livrable de portfolio simulant une mission BA end-to-end dans le secteur de la distribution de jouets en Europe. Tous les noms, données, chiffres et scénarios sont <strong>fictifs et créés à des fins de démonstration professionnelle</strong>. Ce projet démontre la maîtrise du cycle BA complet sur un périmètre ERP Oracle EBS multi-modules et multi-pays, depuis la découverte fonctionnelle jusqu'à la conduite du changement.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ CTA ════════════════════════════════════════════════════════════ -->
+    <section class="py-5 text-center" style="background: linear-gradient(135deg, #1e1b4b, #312e81); color:#fff;">
+      <div class="container">
+        <h3 class="mb-2">Vous souhaitez en savoir plus ?</h3>
+        <p class="opacity-75 mb-4">Consultez mes autres projets ou prenez contact directement.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+          <a href="portfolio.html" class="btn btn-outline-light">← Retour au Portfolio</a>
+          <a href="contact.html" class="btn" style="background:var(--br-accent); color:#fff; border:none;">Me contacter</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Zahra E</strong> <span>All Rights Reserved</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</body>
+</html>
