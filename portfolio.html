@@ -25,62 +25,134 @@
   <link href="assets/css/main.css" rel="stylesheet">
 
   <style>
-    .portfolio-tags span {
-      display: inline-block;
-      padding: .25rem .5rem;
-      margin-right: .25rem;
-      margin-bottom: .25rem;
-      border-radius: 999px;
-      background: #f1f5f9;
-      font-size: .8rem;
-    }
     .isotope-container { justify-content: center; }
-    .portfolio-img img { transition: 0.3s; }
-    .portfolio-item:hover img { transform: scale(1.1); }
 
-    /* ── Project language badge ── */
+    /* ── Language badge ── */
     .lang-badge {
       position: absolute;
-      top: 12px;
-      left: 12px;
+      top: 12px; left: 12px;
       z-index: 10;
-      font-size: .7rem;
-      font-weight: 600;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-      padding: .2rem .55rem;
-      border-radius: 999px;
+      font-size: .7rem; font-weight: 600;
+      letter-spacing: .05em; text-transform: uppercase;
+      padding: .2rem .55rem; border-radius: 999px;
       backdrop-filter: blur(4px);
     }
     .lang-badge.fr { background: rgba(0,86,179,.85); color: #fff; }
     .lang-badge.en { background: rgba(20,160,100,.85); color: #fff; }
+    .lang-badge.bi { background: rgba(13,13,13,.75); color: #fff; }
 
-    /* ── Stat pills inside cards ── */
-    .stat-pill {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: .4rem .75rem;
-      min-width: 70px;
+    /* ══ FEATURED CARD (LeadWise) ══ */
+    .featured-card {
+      background: #0d1b3e;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 48px rgba(0,0,0,.18);
+      display: flex;
+      flex-direction: row;
+      min-height: 420px;
     }
-    .stat-pill strong { font-size: 1.1rem; color: #0d6efd; line-height: 1; }
-    .stat-pill small  { font-size: .65rem; color: #64748b; margin-top: 2px; }
-
-    /* ── Section subtitle chip ── */
-    .project-chip {
-      display: inline-block;
-      font-size: .72rem;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: #64748b;
-      border: 1px solid #e2e8f0;
+    .featured-video-side {
+      position: relative;
+      flex: 0 0 58%;
+      min-height: 380px;
+    }
+    .featured-video-side video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .featured-video-side::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, transparent 55%, #0d1b3e 100%);
+      pointer-events: none;
+    }
+    .featured-content {
+      flex: 1;
+      color: #fff;
+      padding: 2.2rem 2rem 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .featured-badge {
+      display: inline-flex; align-items: center; gap: .35rem;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.18);
       border-radius: 999px;
-      padding: .18rem .7rem;
-      margin-bottom: .6rem;
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .22rem .75rem; color: #fff;
+      margin-bottom: .9rem; width: fit-content;
+    }
+    .featured-badge .dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; }
+    .featured-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: .2rem; }
+    .featured-card .sub { font-size: .85rem; opacity: .65; margin-bottom: 1rem; }
+    .featured-card p.desc { font-size: .85rem; opacity: .8; line-height: 1.6; margin-bottom: 1rem; }
+    .featured-stat {
+      text-align: center;
+      padding: .45rem .6rem;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      min-width: 64px;
+    }
+    .featured-stat strong { font-size: 1.05rem; font-weight: 700; display: block; line-height: 1; color: #7dd3fc; }
+    .featured-stat small  { font-size: .6rem; opacity: .65; margin-top: 2px; display: block; }
+    .featured-tag {
+      display: inline-block;
+      background: rgba(255,255,255,.09);
+      color: rgba(255,255,255,.75);
+      border-radius: 999px;
+      padding: .18rem .6rem; font-size: .72rem; margin: .15rem .1rem;
+    }
+    .featured-chip {
+      font-size: .68rem; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: rgba(255,255,255,.45);
+      margin-bottom: .5rem; display: block;
+    }
+
+    /* ── Responsive: stack on mobile ── */
+    @media (max-width: 767px) {
+      .featured-card { flex-direction: column; }
+      .featured-video-side { flex: 0 0 220px; min-height: 220px; }
+      .featured-video-side::after { background: linear-gradient(to bottom, transparent 55%, #0d1b3e 100%); }
+      .featured-content { padding: 1.5rem; }
+    }
+
+    /* ══ REGULAR CARDS (3-col grid) ══ */
+    .proj-card {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+      display: flex; flex-direction: column;
+      height: 100%;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .proj-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,.12); }
+    .proj-card .proj-img {
+      position: relative; overflow: hidden; height: 200px;
+    }
+    .proj-card .proj-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .35s;
+    }
+    .proj-card:hover .proj-img img { transform: scale(1.06); }
+    .proj-card .proj-body { padding: 1.4rem; display: flex; flex-direction: column; flex: 1; }
+    .proj-chip {
+      font-size: .68rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: #64748b; margin-bottom: .4rem; display: block;
+    }
+    .proj-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: .4rem; line-height: 1.3; }
+    .proj-card .proj-desc { font-size: .82rem; color: #64748b; line-height: 1.55; margin-bottom: .9rem; }
+    .proj-tag {
+      display: inline-block;
+      background: #f1f5f9; color: #475569;
+      border-radius: 999px; padding: .18rem .55rem;
+      font-size: .72rem; margin: .12rem .08rem;
+    }
+    .proj-card .proj-cta {
+      margin-top: auto; padding-top: 1rem;
     }
   </style>
 </head>
@@ -116,271 +188,141 @@
       </div>
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4 isotope-container justify-content-center">
 
-          <!-- ══════════════════════════════════════════
-               PROJECT 1 — PROJECT BRIDGE (French) ★ NEW
-          ═══════════════════════════════════════════ -->
-          <div class="col-lg-6 col-md-10 portfolio-item">
-            <div class="portfolio-card shadow-sm rounded overflow-hidden bg-white h-100 d-flex flex-column">
+        <!-- ══ FEATURED — LEADWISE ══════════════════════════════════════ -->
+        <div class="mb-4" data-aos="fade-up">
+          <a href="leadwise-banking.html" class="text-decoration-none text-reset d-block">
+            <div class="featured-card">
 
-              <div class="portfolio-img position-relative">
-                <span class="lang-badge fr">Français</span>
-                <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=2070&auto=format&fit=crop"
-                     alt="Project BRIDGE ERP Oracle EBS Distribution" class="img-fluid" style="object-fit:cover; height:260px; width:100%;">
-                <div class="portfolio-overlay d-flex align-items-center justify-content-center">
-                  <a href="project-bridge.html" class="mx-2" title="Voir le projet"><i class="bi bi-plus fs-2"></i></a>
-                  <a href="project-bridge.html" class="mx-2" title="Détails"><i class="bi bi-link-45deg fs-2"></i></a>
-                </div>
+              <!-- Left: video -->
+              <div class="featured-video-side">
+                <video src="LeadWise.mp4" autoplay muted loop playsinline></video>
               </div>
 
-              <div class="portfolio-info p-4 d-flex flex-column flex-grow-1">
-                <span class="project-chip">Oracle EBS · ERP Migration · Distribution Européenne</span>
-                <h4>⚡ Project BRIDGE — Migration ERP Oracle EBS</h4>
-                <p class="text-secondary small">Simulation d'une mission BA complète : migration Oracle EBS pour un distributeur de jouets présent dans 12 pays — du diagnostic AS-IS à la conduite du changement.</p>
+              <!-- Right: content -->
+              <div class="featured-content">
+                <div class="featured-badge"><span class="dot"></span> Featured Project</div>
+                <span class="featured-chip">AI Lead Scoring · FastAPI · Claude API · Banking &amp; Travel</span>
+                <h3>LeadWise</h3>
+                <p class="sub">AI-Powered Lead Qualification Engine · 2 verticals · EN / FR</p>
+                <p class="desc">Industry-agnostic scoring engine built with FastAPI + Claude API. Deployed on two verticals — BankWise Retail (banking) and LinguaWise (travel) — with full BA specs, RGPD compliance, and a white-label config toggle.</p>
 
-                <div class="my-2">
-                  <h6 class="fw-semibold">Le défi business</h6>
-                  <p class="small mb-2">ERP legacy déconnecté du 3PL : <strong>95% de saisies manuelles</strong>, 3,5 jours de délai de facturation, 0% de rapprochement AP automatisé, stock en temps réel inexistant sur 12 pays.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <div class="featured-stat"><strong>2</strong><small>verticals</small></div>
+                  <div class="featured-stat"><strong>15–18%</strong><small>conv. target</small></div>
+                  <div class="featured-stat"><strong>&lt;45s</strong><small>AI scoring</small></div>
+                  <div class="featured-stat"><strong>8</strong><small>API endpoints</small></div>
                 </div>
 
-                <div class="my-2">
-                  <h6 class="fw-semibold">Contributions clés</h6>
-                  <ul class="small mb-0">
-                    <li><strong>Cartographie :</strong> AS-IS BPMN Order-to-Cash &amp; Procure-to-Pay · 14 ateliers d'élicitation.</li>
-                    <li><strong>Gap Analysis :</strong> 12 écarts documentés (8 P1 critiques) avec preuves SQL Oracle.</li>
-                    <li><strong>Specs ERP :</strong> Paramétrage Oracle INV/AP/AR/OM/PO · règles de gestion · design EDI X12.</li>
-                    <li><strong>Tests :</strong> 12 scénarios UAT · log incidents L3 · 5 incidents résolus.</li>
-                  </ul>
+                <div class="mb-3">
+                  <span class="featured-tag">FastAPI</span>
+                  <span class="featured-tag">Claude API</span>
+                  <span class="featured-tag">Streamlit</span>
+                  <span class="featured-tag">Pydantic v2</span>
+                  <span class="featured-tag">RGPD</span>
+                  <span class="featured-tag">Render</span>
                 </div>
 
-                <div class="d-flex gap-2 flex-wrap my-3">
-                  <div class="stat-pill"><strong>12</strong><small>gaps identifiés</small></div>
-                  <div class="stat-pill"><strong>5</strong><small>modules EBS</small></div>
-                  <div class="stat-pill"><strong>0j</strong><small>délai facturation</small></div>
-                  <div class="stat-pill"><strong>85%</strong><small>AP auto</small></div>
-                </div>
-
-                <div class="portfolio-tags mb-3">
-                  <span class="badge bg-light text-dark border">Oracle EBS</span>
-                  <span class="badge bg-light text-dark border">EDI X12</span>
-                  <span class="badge bg-light text-dark border">SQL / PL-SQL</span>
-                  <span class="badge bg-light text-dark border">BPMN 2.0</span>
-                  <span class="badge bg-light text-dark border">Supply Chain</span>
-                  <span class="badge bg-light text-dark border">Change Mgmt</span>
-                </div>
-
-                <div class="mt-auto">
-                  <a href="project-bridge.html" class="btn w-100 text-white" style="background: linear-gradient(135deg,#312e81,#7c3aed);">
-                    Voir le dossier de mission BA <i class="bi bi-arrow-up-right-square ms-2"></i>
+                <div class="mt-auto d-flex gap-2">
+                  <a href="https://github.com/zahraeh/LeadWise" target="_blank"
+                     class="btn btn-sm btn-outline-light"
+                     onclick="event.stopPropagation();">
+                    <i class="bi bi-github me-1"></i> GitHub
                   </a>
+                  <span class="btn btn-sm btn-primary">
+                    Open Case Study <i class="bi bi-arrow-right ms-1"></i>
+                  </span>
                 </div>
               </div>
 
             </div>
-          </div>
-
-          <!-- ══════════════════════════════════════════
-               PROJECT 2 — AFIYA (English)
-          ═══════════════════════════════════════════ -->
-          <div class="col-lg-6 col-md-10 portfolio-item">
-            <div class="portfolio-card shadow-sm rounded overflow-hidden bg-white h-100 d-flex flex-column">
-
-              <div class="portfolio-img position-relative">
-                <span class="lang-badge en">English</span>
-                <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop"
-                     alt="Afiya Wellness App" class="img-fluid">
-                <div class="portfolio-overlay d-flex align-items-center justify-content-center">
-                  <a href="https://precious-afiya.notion.site/Afiya-Small-insights-Better-habits-31c91d8111b280928e7ec3e0f444b80d"
-                     target="_blank" class="mx-2" title="Voir le projet"><i class="bi bi-plus fs-2"></i></a>
-                  <a href="https://precious-afiya.notion.site/Afiya-Small-insights-Better-habits-31c91d8111b280928e7ec3e0f444b80d"
-                     target="_blank" class="mx-2" title="Lien externe"><i class="bi bi-link-45deg fs-2"></i></a>
-                </div>
-              </div>
-
-              <div class="portfolio-info p-4 d-flex flex-column flex-grow-1">
-                <span class="project-chip">HealthTech · Agile/Scrum</span>
-                <h4>Afiya — Connected Wellness Coach</h4>
-                <p class="text-secondary small">End-to-end BA lifecycle: from stakeholder needs to functional specs.</p>
-
-                <div class="my-2">
-                  <h6 class="fw-semibold">The Business Challenge</h6>
-                  <p class="small mb-2">Users struggle with fragmented health data across multiple apps. Afiya centralizes metrics into a "Today's Focus" AI recommendation engine that nudges healthy habits without overwhelming the user.</p>
-                </div>
-
-                <div class="my-2">
-                  <h6 class="fw-semibold">Key Contributions</h6>
-                  <ul class="small mb-0">
-                    <li><strong>Agility:</strong> Managed a backlog of 40+ User Stories on Jira using <strong>MoSCoW</strong> prioritization.</li>
-                    <li><strong>Modeling:</strong> Created <strong>BPMN 2.0</strong> AS-IS/TO-BE flows for API integrations (Apple Health, Flo).</li>
-                    <li><strong>Engineering:</strong> Drafted Functional Specs (DSF) and <strong>Gherkin</strong> acceptance criteria for UAT.</li>
-                  </ul>
-                </div>
-
-                <div class="d-flex gap-2 flex-wrap my-3">
-                  <div class="stat-pill"><strong>40+</strong><small>User Stories</small></div>
-                  <div class="stat-pill"><strong>BPMN</strong><small>AS-IS/TO-BE</small></div>
-                  <div class="stat-pill"><strong>Gherkin</strong><small>UAT criteria</small></div>
-                </div>
-
-                <div class="portfolio-tags mb-3">
-                  <span class="badge bg-light text-dark border">Agile/Scrum</span>
-                  <span class="badge bg-light text-dark border">BPMN 2.0</span>
-                  <span class="badge bg-light text-dark border">Jira/Confluence</span>
-                  <span class="badge bg-light text-dark border">API Documentation</span>
-                </div>
-
-                <div class="mt-auto">
-                  <a href="https://precious-afiya.notion.site/Afiya-Small-insights-Better-habits-31c91d8111b280928e7ec3e0f444b80d"
-                     target="_blank" class="btn btn-primary w-100">
-                    Read Full Case Study on Notion <i class="bi bi-arrow-up-right-square ms-2"></i>
-                  </a>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- ══════════════════════════════════════════
-               PROJECT 2 — DIGITAL BANKING (French)
-          ═══════════════════════════════════════════ -->
-          <div class="col-lg-6 col-md-10 portfolio-item">
-            <div class="portfolio-card shadow-sm rounded overflow-hidden bg-white h-100 d-flex flex-column">
-
-              <div class="portfolio-img position-relative">
-                <span class="lang-badge fr">Français</span>
-                <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop"
-                     alt="Digital Banking App Mobile DSP2" class="img-fluid" style="object-fit:cover; height:260px; width:100%;">
-                <div class="portfolio-overlay d-flex align-items-center justify-content-center">
-                  <a href="https://precious-afiya.notion.site/Digital-Banking-Refonte-App-Mobile-Paiements-DSP2-32091d8111b2818ab6e0c73abe5391d9?source=copy_link"
-                     target="_blank" class="mx-2" title="Voir le projet"><i class="bi bi-plus fs-2"></i></a>
-                  <a href="https://precious-afiya.notion.site/Digital-Banking-Refonte-App-Mobile-Paiements-DSP2-32091d8111b2818ab6e0c73abe5391d9?source=copy_link"
-                     target="_blank" class="mx-2" title="Lien externe"><i class="bi bi-link-45deg fs-2"></i></a>
-                </div>
-              </div>
-
-              <div class="portfolio-info p-4 d-flex flex-column flex-grow-1">
-                <span class="project-chip">Digital Banking · DSP2 · RGPD</span>
-                <h4>Digital Banking — Refonte App Mobile Paiements</h4>
-                <p class="text-secondary small">Mission BA chez un éditeur bancaire : analyse end-to-end d'une refonte mobile, de la modélisation BPMN aux specs fonctionnelles.</p>
-
-                <div class="my-2">
-                  <h6 class="fw-semibold">Le défi business</h6>
-                  <p class="small mb-2">Taux d'abandon de <strong>34%</strong> sur le parcours virement — causé par une rupture OTP SMS. Concurrence néobanques (Revolut, N26). Obligation réglementaire DSP2 pour le virement instantané. Budget : 1,2M€ · MEP cible : 6 mois.</p>
-                </div>
-
-                <div class="my-2">
-                  <h6 class="fw-semibold">Contributions clés</h6>
-                  <ul class="small mb-0">
-                    <li><strong>Analyse :</strong> BPMN AS-IS en swim lanes → identification des 3 irritants principaux avec impact chiffré.</li>
-                    <li><strong>Conception :</strong> BPMN TO-BE avec biométrie in-app FaceID/TouchID — SCA conforme DSP2, zéro rupture de parcours.</li>
-                    <li><strong>Spécification :</strong> EDB complète — 10 besoins fonctionnels MoSCoW + 5 BNF + glossaire 18 termes bancaires.</li>
-                    <li><strong>Conformité :</strong> Analyse DSP2 & RGPD art. 9 (données biométriques) intégrée dès les specs.</li>
-                  </ul>
-                </div>
-
-                <div class="d-flex gap-2 flex-wrap my-3">
-                  <div class="stat-pill"><strong>-79%</strong><small>temps parcours</small></div>
-                  <div class="stat-pill"><strong>-64%</strong><small>actions user</small></div>
-                  <div class="stat-pill"><strong>10 BF</strong><small>spécifiés</small></div>
-                </div>
-
-                <div class="portfolio-tags mb-3">
-                  <span class="badge bg-light text-dark border">BPMN 2.0</span>
-                  <span class="badge bg-light text-dark border">DSP2 / RGPD</span>
-                  <span class="badge bg-light text-dark border">Agile SAFe</span>
-                  <span class="badge bg-light text-dark border">Jira</span>
-                  <span class="badge bg-light text-dark border">Figma</span>
-                  <span class="badge bg-light text-dark border">API REST</span>
-                </div>
-
-                <div class="mt-auto">
-                  <a href="https://precious-afiya.notion.site/Digital-Banking-Refonte-App-Mobile-Paiements-DSP2-32091d8111b2818ab6e0c73abe5391d9?source=copy_link"
-                     target="_blank" class="btn btn-primary w-100">
-                    Lire l'étude de cas sur Notion <i class="bi bi-arrow-up-right-square ms-2"></i>
-                  </a>
-                </div>
-              </div>
-
-            </div>
-          </div>
-          <!-- ══════════════════════════════════════════
-               PROJECT 3 — LEADWISE (English / French)
-          ═══════════════════════════════════════════ -->
-          <div class="col-lg-6 col-md-10 portfolio-item">
-            <div class="portfolio-card shadow-sm rounded overflow-hidden bg-white h-100 d-flex flex-column">
-
-              <!-- Video demo instead of static image -->
-              <div class="portfolio-img position-relative" style="background:#0d1b3e;">
-                <span class="lang-badge en" style="z-index:20;">EN · FR</span>
-                <video
-                  src="LeadWise.mp4"
-                  autoplay muted loop playsinline
-                  style="width:100%; height:260px; object-fit:cover; display:block;">
-                </video>
-                <div class="portfolio-overlay d-flex align-items-center justify-content-center">
-                  <a href="leadwise-banking.html" class="mx-2" title="Dossier de specs BA"><i class="bi bi-plus fs-2"></i></a>
-                  <a href="https://github.com/zahraeh/LeadWise" target="_blank" class="mx-2" title="Code source GitHub"><i class="bi bi-github fs-2"></i></a>
-                  <a href="https://precious-lingua.notion.site/LeadWise-Core-Product-Hub-34b91d8111b281398551c193d62e3c48" target="_blank" class="mx-2" title="Notion Hub"><i class="bi bi-link-45deg fs-2"></i></a>
-                </div>
-              </div>
-
-              <div class="portfolio-info p-4 d-flex flex-column flex-grow-1">
-                <span class="project-chip">AI Lead Scoring · FastAPI · Claude API · Multi-Vertical</span>
-                <h4>LeadWise — AI-Powered Lead Qualification Engine</h4>
-                <p class="text-secondary small">Moteur de qualification de leads par IA — déployé sur deux verticaux (Banking &amp; Travel). Code réel sur GitHub + dossier de specs BA complet.</p>
-
-                <div class="my-2">
-                  <h6 class="fw-semibold">The business challenge</h6>
-                  <p class="small mb-2">Manual lead qualification — 100% human review, >72h callback delay, conversion rates below 8%. LeadWise replaces this with an <strong>industry-agnostic AI scoring engine</strong> configurable per vertical.</p>
-                </div>
-
-                <div class="my-2">
-                  <h6 class="fw-semibold">Key contributions</h6>
-                  <ul class="small mb-0">
-                    <li><strong>Code :</strong> FastAPI backend + Streamlit UI + Claude API scoring agent — deployed on Render.</li>
-                    <li><strong>2 verticals :</strong> BankWise Retail (target 15% conversion) &amp; LinguaWise Travel (target 18%).</li>
-                    <li><strong>BA specs :</strong> 6 User Stories BDD, 10 règles de gestion, RACI, RGPD Art. 6/17/21, plan de tests 6 niveaux.</li>
-                    <li><strong>White-label :</strong> Industry config toggle — add a new vertical via <code>config.py</code> only.</li>
-                  </ul>
-                </div>
-
-                <div class="d-flex gap-2 flex-wrap my-3">
-                  <div class="stat-pill"><strong>2</strong><small>verticaux</small></div>
-                  <div class="stat-pill"><strong>15–18%</strong><small>cible conversion</small></div>
-                  <div class="stat-pill"><strong>&lt;45s</strong><small>scoring IA</small></div>
-                  <div class="stat-pill"><strong>8 EP</strong><small>API REST</small></div>
-                </div>
-
-                <div class="portfolio-tags mb-3">
-                  <span class="badge bg-light text-dark border">FastAPI / Python</span>
-                  <span class="badge bg-light text-dark border">Claude API</span>
-                  <span class="badge bg-light text-dark border">Streamlit</span>
-                  <span class="badge bg-light text-dark border">Pydantic v2</span>
-                  <span class="badge bg-light text-dark border">RGPD</span>
-                  <span class="badge bg-light text-dark border">Render</span>
-                </div>
-
-                <div class="mt-auto d-flex flex-column gap-2">
-                  <div class="d-flex gap-2">
-                    <a href="https://github.com/zahraeh/LeadWise" target="_blank" class="btn btn-dark flex-fill">
-                      <i class="bi bi-github me-1"></i> Code source
-                    </a>
-                    <a href="https://precious-lingua.notion.site/LeadWise-Core-Product-Hub-34b91d8111b281398551c193d62e3c48" target="_blank" class="btn btn-outline-secondary flex-fill">
-                      <i class="bi bi-journal-text me-1"></i> Notion Hub
-                    </a>
-                  </div>
-                  <a href="leadwise-banking.html" class="btn btn-primary w-100">
-                    Dossier de spécifications BA <i class="bi bi-arrow-up-right-square ms-2"></i>
-                  </a>
-                </div>
-              </div>
-
-            </div>
-          </div>
-          <!-- end row -->
-
+          </a>
         </div>
+
+        <!-- ══ 3-COL GRID ═══════════════════════════════════════════════ -->
+        <div class="row g-4" data-aos="fade-up" data-aos-delay="50">
+
+          <!-- Afiya -->
+          <div class="col-lg-4 col-md-6">
+            <a href="https://precious-afiya.notion.site/Afiya-Small-insights-Better-habits-31c91d8111b280928e7ec3e0f444b80d"
+               target="_blank" class="text-decoration-none text-reset d-block h-100">
+              <div class="proj-card">
+                <div class="proj-img">
+                  <span class="lang-badge en">English</span>
+                  <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop" alt="Afiya">
+                </div>
+                <div class="proj-body">
+                  <span class="proj-chip">HealthTech · Agile/Scrum</span>
+                  <h4>Afiya — Connected Wellness Coach</h4>
+                  <p class="proj-desc">End-to-end BA lifecycle: 40+ User Stories, BPMN 2.0 AS-IS/TO-BE flows, Gherkin UAT criteria for an AI-driven wellness app.</p>
+                  <div class="mb-3">
+                    <span class="proj-tag">Agile/Scrum</span>
+                    <span class="proj-tag">BPMN 2.0</span>
+                    <span class="proj-tag">Jira</span>
+                    <span class="proj-tag">Gherkin</span>
+                  </div>
+                  <div class="proj-cta">
+                    <span class="btn btn-primary w-100 btn-sm">View Case Study <i class="bi bi-arrow-up-right-square ms-1"></i></span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Project BRIDGE -->
+          <div class="col-lg-4 col-md-6">
+            <a href="project-bridge.html" class="text-decoration-none text-reset d-block h-100">
+              <div class="proj-card">
+                <div class="proj-img">
+                  <span class="lang-badge fr">Français</span>
+                  <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=2070&auto=format&fit=crop" alt="Project BRIDGE">
+                </div>
+                <div class="proj-body">
+                  <span class="proj-chip">Oracle EBS · ERP Migration · 12 pays</span>
+                  <h4>⚡ Project BRIDGE — Oracle EBS</h4>
+                  <p class="proj-desc">Mission BA complète : 12 gaps documentés, specs Oracle INV/AP/AR, design EDI X12, 12 scénarios UAT — de l'AS-IS à la conduite du changement.</p>
+                  <div class="mb-3">
+                    <span class="proj-tag">Oracle EBS</span>
+                    <span class="proj-tag">SQL</span>
+                    <span class="proj-tag">EDI X12</span>
+                    <span class="proj-tag">BPMN</span>
+                  </div>
+                  <div class="proj-cta">
+                    <span class="btn w-100 btn-sm text-white" style="background:linear-gradient(135deg,#312e81,#7c3aed);">Voir le dossier <i class="bi bi-arrow-up-right-square ms-1"></i></span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Digital Banking -->
+          <div class="col-lg-4 col-md-6">
+            <a href="https://precious-afiya.notion.site/Digital-Banking-Refonte-App-Mobile-Paiements-DSP2-32091d8111b2818ab6e0c73abe5391d9?source=copy_link"
+               target="_blank" class="text-decoration-none text-reset d-block h-100">
+              <div class="proj-card">
+                <div class="proj-img">
+                  <span class="lang-badge fr">Français</span>
+                  <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop" alt="Digital Banking">
+                </div>
+                <div class="proj-body">
+                  <span class="proj-chip">Digital Banking · DSP2 · RGPD</span>
+                  <h4>Digital Banking — Refonte App Mobile</h4>
+                  <p class="proj-desc">Refonte du parcours paiement mobile : BPMN AS-IS/TO-BE, biométrie FaceID conforme DSP2, −79% de temps de parcours, 10 BF spécifiés.</p>
+                  <div class="mb-3">
+                    <span class="proj-tag">BPMN 2.0</span>
+                    <span class="proj-tag">DSP2</span>
+                    <span class="proj-tag">SAFe</span>
+                    <span class="proj-tag">Figma</span>
+                  </div>
+                  <div class="proj-cta">
+                    <span class="btn btn-primary w-100 btn-sm">Lire l'étude de cas <i class="bi bi-arrow-up-right-square ms-1"></i></span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+        </div><!-- /3-col grid -->
       </div>
     </section>
 
