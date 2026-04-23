@@ -243,60 +243,73 @@
             </div>
           </div>
           <!-- ══════════════════════════════════════════
-               PROJECT 3 — LEADWISE BANKING (French)
+               PROJECT 3 — LEADWISE (English / French)
           ═══════════════════════════════════════════ -->
           <div class="col-lg-6 col-md-10 portfolio-item">
             <div class="portfolio-card shadow-sm rounded overflow-hidden bg-white h-100 d-flex flex-column">
 
-              <div class="portfolio-img position-relative">
-                <span class="lang-badge fr">Français</span>
-                <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2070&auto=format&fit=crop"
-                     alt="LeadWise Banking CRM Leads" class="img-fluid" style="object-fit:cover; height:260px; width:100%;">
+              <!-- Video demo instead of static image -->
+              <div class="portfolio-img position-relative" style="background:#0d1b3e;">
+                <span class="lang-badge en" style="z-index:20;">EN · FR</span>
+                <video
+                  src="LeadWise.mp4"
+                  autoplay muted loop playsinline
+                  style="width:100%; height:260px; object-fit:cover; display:block;">
+                </video>
                 <div class="portfolio-overlay d-flex align-items-center justify-content-center">
-                  <a href="leadwise-banking.html" class="mx-2" title="Voir le projet"><i class="bi bi-plus fs-2"></i></a>
-                  <a href="leadwise-banking.html" class="mx-2" title="Détails"><i class="bi bi-link-45deg fs-2"></i></a>
+                  <a href="leadwise-banking.html" class="mx-2" title="Dossier de specs BA"><i class="bi bi-plus fs-2"></i></a>
+                  <a href="https://github.com/zahraeh/LeadWise" target="_blank" class="mx-2" title="Code source GitHub"><i class="bi bi-github fs-2"></i></a>
+                  <a href="https://precious-lingua.notion.site/LeadWise-Core-Product-Hub-34b91d8111b281398551c193d62e3c48" target="_blank" class="mx-2" title="Notion Hub"><i class="bi bi-link-45deg fs-2"></i></a>
                 </div>
               </div>
 
               <div class="portfolio-info p-4 d-flex flex-column flex-grow-1">
-                <span class="project-chip">CRM Bancaire · RGPD · Agent IA</span>
-                <h4>LeadWise Banking — Système de Gestion des Leads</h4>
-                <p class="text-secondary small">Dossier de spécifications BA end-to-end pour un CRM de scoring et d'affectation de leads bancaires avec conformité RGPD native.</p>
+                <span class="project-chip">AI Lead Scoring · FastAPI · Claude API · Multi-Vertical</span>
+                <h4>LeadWise — AI-Powered Lead Qualification Engine</h4>
+                <p class="text-secondary small">Moteur de qualification de leads par IA — déployé sur deux verticaux (Banking &amp; Travel). Code réel sur GitHub + dossier de specs BA complet.</p>
 
                 <div class="my-2">
-                  <h6 class="fw-semibold">Le défi business</h6>
-                  <p class="small mb-2">Traitement <strong>100% manuel</strong> des leads, délai de rappel > 72h, taux de conversion < 8%, aucune conformité RGPD structurée. Manque à gagner estimé à <strong>+30K€/mois</strong>.</p>
+                  <h6 class="fw-semibold">The business challenge</h6>
+                  <p class="small mb-2">Manual lead qualification — 100% human review, >72h callback delay, conversion rates below 8%. LeadWise replaces this with an <strong>industry-agnostic AI scoring engine</strong> configurable per vertical.</p>
                 </div>
 
                 <div class="my-2">
-                  <h6 class="fw-semibold">Contributions clés</h6>
+                  <h6 class="fw-semibold">Key contributions</h6>
                   <ul class="small mb-0">
-                    <li><strong>Spécifications :</strong> 6 User Stories BDD, 10 règles de gestion, matrice RACI complète.</li>
-                    <li><strong>Agent IA :</strong> Intégration Claude API pour scoring automatique 1–10 avec justification lisible.</li>
-                    <li><strong>Conformité :</strong> RGPD Art. 6/17/21, CNIL, LCB-FT, DSP2 intégrés nativement dans les specs.</li>
-                    <li><strong>Tests :</strong> Plan 6 niveaux — unitaires, intégration, RGPD, UAT, performance (Locust).</li>
+                    <li><strong>Code :</strong> FastAPI backend + Streamlit UI + Claude API scoring agent — deployed on Render.</li>
+                    <li><strong>2 verticals :</strong> BankWise Retail (target 15% conversion) &amp; LinguaWise Travel (target 18%).</li>
+                    <li><strong>BA specs :</strong> 6 User Stories BDD, 10 règles de gestion, RACI, RGPD Art. 6/17/21, plan de tests 6 niveaux.</li>
+                    <li><strong>White-label :</strong> Industry config toggle — add a new vertical via <code>config.py</code> only.</li>
                   </ul>
                 </div>
 
                 <div class="d-flex gap-2 flex-wrap my-3">
-                  <div class="stat-pill"><strong>6 US</strong><small>BDD</small></div>
-                  <div class="stat-pill"><strong>10 RG</strong><small>Gestion</small></div>
+                  <div class="stat-pill"><strong>2</strong><small>verticaux</small></div>
+                  <div class="stat-pill"><strong>15–18%</strong><small>cible conversion</small></div>
+                  <div class="stat-pill"><strong>&lt;45s</strong><small>scoring IA</small></div>
                   <div class="stat-pill"><strong>8 EP</strong><small>API REST</small></div>
-                  <div class="stat-pill"><strong>&lt;24h</strong><small>délai traitement</small></div>
                 </div>
 
                 <div class="portfolio-tags mb-3">
                   <span class="badge bg-light text-dark border">FastAPI / Python</span>
                   <span class="badge bg-light text-dark border">Claude API</span>
-                  <span class="badge bg-light text-dark border">Salesforce CRM</span>
+                  <span class="badge bg-light text-dark border">Streamlit</span>
+                  <span class="badge bg-light text-dark border">Pydantic v2</span>
                   <span class="badge bg-light text-dark border">RGPD</span>
-                  <span class="badge bg-light text-dark border">Pydantic</span>
-                  <span class="badge bg-light text-dark border">Agile</span>
+                  <span class="badge bg-light text-dark border">Render</span>
                 </div>
 
-                <div class="mt-auto">
+                <div class="mt-auto d-flex flex-column gap-2">
+                  <div class="d-flex gap-2">
+                    <a href="https://github.com/zahraeh/LeadWise" target="_blank" class="btn btn-dark flex-fill">
+                      <i class="bi bi-github me-1"></i> Code source
+                    </a>
+                    <a href="https://precious-lingua.notion.site/LeadWise-Core-Product-Hub-34b91d8111b281398551c193d62e3c48" target="_blank" class="btn btn-outline-secondary flex-fill">
+                      <i class="bi bi-journal-text me-1"></i> Notion Hub
+                    </a>
+                  </div>
                   <a href="leadwise-banking.html" class="btn btn-primary w-100">
-                    Voir le dossier de spécifications <i class="bi bi-arrow-up-right-square ms-2"></i>
+                    Dossier de spécifications BA <i class="bi bi-arrow-up-right-square ms-2"></i>
                   </a>
                 </div>
               </div>

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:precious-lingua.notion.site)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}
