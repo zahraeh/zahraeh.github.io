@@ -86,9 +86,9 @@
 
 
     /* ═══════════════════════════════════════════════════
-       BLOG SECTION — MEDIUM RSS AUTO-PULL
+       FEATURED PROJECTS SECTION
     ═══════════════════════════════════════════════════ */
-    .blog-section {
+    .projects-section {
       padding: 80px 0 90px;
       background: #0d0d14;
       position: relative;
@@ -96,7 +96,7 @@
     }
 
     /* Subtle grid texture */
-    .blog-section::before {
+    .projects-section::before {
       content: '';
       position: absolute;
       inset: 0;
@@ -108,7 +108,7 @@
     }
 
     /* Glow blob */
-    .blog-section::after {
+    .projects-section::after {
       content: '';
       position: absolute;
       top: -120px;
@@ -119,10 +119,10 @@
       pointer-events: none;
     }
 
-    .blog-section .container { position: relative; z-index: 1; }
+    .projects-section .container { position: relative; z-index: 1; }
 
     /* Header */
-    .blog-header {
+    .projects-header {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
@@ -131,9 +131,7 @@
       margin-bottom: 52px;
     }
 
-    .blog-header-left {}
-
-    .blog-eyebrow {
+    .projects-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -145,7 +143,7 @@
       margin-bottom: 12px;
     }
 
-    .blog-eyebrow .dot {
+    .projects-eyebrow .dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
@@ -158,7 +156,7 @@
       50% { opacity: 0.4; transform: scale(0.7); }
     }
 
-    .blog-heading {
+    .projects-heading {
       font-family: 'Lora', Georgia, serif;
       font-size: clamp(1.8rem, 4vw, 2.6rem);
       font-weight: 600;
@@ -167,12 +165,12 @@
       margin: 0;
     }
 
-    .blog-heading em {
+    .projects-heading em {
       font-style: italic;
       color: #a5b4fc;
     }
 
-    .blog-view-all {
+    .projects-view-all {
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -187,149 +185,145 @@
       white-space: nowrap;
     }
 
-    .blog-view-all:hover {
+    .projects-view-all:hover {
       background: rgba(129,140,248,0.1);
       border-color: rgba(129,140,248,0.7);
       color: #c7d2fe;
       gap: 12px;
     }
 
-    /* Grid */
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 22px;
+    /* ── Language badge ── */
+    .lang-badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      z-index: 10;
+      font-size: .7rem; font-weight: 600;
+      letter-spacing: .05em; text-transform: uppercase;
+      padding: .2rem .55rem; border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+    .lang-badge.fr { background: rgba(0,86,179,.85); color: #fff; }
+    .lang-badge.en { background: rgba(20,160,100,.85); color: #fff; }
+
+    /* ── Featured card (LeadWise) ── */
+    .featured-card {
+      background: #0d1b3e;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 48px rgba(0,0,0,.18);
+      display: flex;
+      flex-direction: row;
+      min-height: 420px;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .featured-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+    .featured-video-side {
+      position: relative;
+      flex: 0 0 58%;
+      min-height: 380px;
+    }
+    .featured-video-side video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .featured-video-side::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, transparent 55%, #0d1b3e 100%);
+      pointer-events: none;
+    }
+    .featured-content {
+      flex: 1;
+      color: #fff;
+      padding: 2.2rem 2rem 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .featured-badge {
+      display: inline-flex; align-items: center; gap: .35rem;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .22rem .75rem; color: #fff;
+      margin-bottom: .9rem; width: fit-content;
+    }
+    .featured-badge .dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; }
+    .featured-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: .2rem; }
+    .featured-card .sub { font-size: .85rem; opacity: .65; margin-bottom: 1rem; }
+    .featured-card p.desc { font-size: .85rem; opacity: .8; line-height: 1.6; margin-bottom: 1rem; }
+    .featured-stat {
+      text-align: center;
+      padding: .45rem .6rem;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      min-width: 64px;
+    }
+    .featured-stat strong { font-size: 1.05rem; font-weight: 700; display: block; line-height: 1; color: #7dd3fc; }
+    .featured-stat small  { font-size: .6rem; opacity: .65; margin-top: 2px; display: block; }
+    .featured-tag {
+      display: inline-block;
+      background: rgba(255,255,255,.09);
+      color: rgba(255,255,255,.75);
+      border-radius: 999px;
+      padding: .18rem .6rem; font-size: .72rem; margin: .15rem .1rem;
+    }
+    .featured-chip {
+      font-size: .68rem; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: rgba(255,255,255,.45);
+      margin-bottom: .5rem; display: block;
     }
 
-    /* Card */
-    .blog-card {
+    @media (max-width: 767px) {
+      .featured-card { flex-direction: column; }
+      .featured-video-side { flex: 0 0 220px; min-height: 220px; }
+      .featured-video-side::after { background: linear-gradient(to bottom, transparent 55%, #0d1b3e 100%); }
+      .featured-content { padding: 1.5rem; }
+    }
+
+    /* ── Regular project cards ── */
+    .proj-card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
+      border-radius: 14px;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-      text-decoration: none;
+      display: flex; flex-direction: column;
+      height: 100%;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
     }
-
-    .blog-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(129,140,248,0.4);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(129,140,248,0.15);
+    .proj-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(0,0,0,.3);
+      border-color: rgba(129,140,248,0.35);
     }
-
-    .blog-card-thumb {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      display: block;
-      background: #1e1e2e;
+    .proj-card .proj-img {
+      position: relative; overflow: hidden; height: 200px;
     }
-
-    /* Placeholder thumb when no image */
-    .blog-card-thumb-placeholder {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(165,180,252,0.25);
-      font-size: 2.2rem;
+    .proj-card .proj-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .35s;
     }
-
-    .blog-card-body {
-      padding: 22px 22px 20px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
+    .proj-card:hover .proj-img img { transform: scale(1.06); }
+    .proj-card .proj-body { padding: 1.4rem; display: flex; flex-direction: column; flex: 1; }
+    .proj-chip {
+      font-size: .68rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: #818cf8; margin-bottom: .4rem; display: block;
     }
-
-    .blog-card-meta {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
+    .proj-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: .4rem; line-height: 1.3; color: #e2e8f0; }
+    .proj-card .proj-desc { font-size: .82rem; color: #94a3b8; line-height: 1.55; margin-bottom: .9rem; }
+    .proj-tag {
+      display: inline-block;
+      background: rgba(129,140,248,0.12); color: #a5b4fc;
+      border-radius: 999px; padding: .18rem .55rem;
+      font-size: .72rem; margin: .12rem .08rem;
     }
-
-    .blog-card-date {
-      font-size: 0.68rem;
-      font-weight: 600;
-      color: #64748b;
-      letter-spacing: 0.04em;
-    }
-
-    .blog-card-tag {
-      font-size: 0.62rem;
-      font-weight: 700;
-      padding: 2px 9px;
-      border-radius: 999px;
-      background: rgba(99,102,241,0.18);
-      color: #a5b4fc;
-      letter-spacing: 0.03em;
-    }
-
-    .blog-card-title {
-      font-family: 'Lora', Georgia, serif;
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #e2e8f0;
-      line-height: 1.45;
-      margin: 0 0 10px;
-    }
-
-    .blog-card-excerpt {
-      font-size: 0.8rem;
-      color: #64748b;
-      line-height: 1.65;
-      flex: 1;
-      margin: 0 0 18px;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .blog-card-read {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.74rem;
-      font-weight: 700;
-      color: #818cf8;
-      letter-spacing: 0.04em;
-      transition: gap 0.2s ease;
-    }
-
-    .blog-card:hover .blog-card-read { gap: 10px; }
-
-    /* States */
-    .blog-loading, .blog-error, .blog-empty {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 60px 20px;
-      color: #475569;
-    }
-
-    .blog-loading .spinner {
-      width: 36px;
-      height: 36px;
-      border: 2px solid rgba(129,140,248,0.2);
-      border-top-color: #818cf8;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 16px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .blog-error a {
-      color: #818cf8;
-      text-decoration: underline;
-    }
+    .proj-card .proj-cta { margin-top: auto; padding-top: 1rem; }
   </style>
 </head>
 
@@ -437,39 +431,156 @@
 
 
     <!-- ════════════════════════════════════════════════
-         BLOG — AUTO-PULL FROM MEDIUM RSS
-         Feed: https://medium.com/feed/@zahraeh.fr
-         Via rss2json.com (free, no API key needed)
+         FEATURED PROJECTS
     ════════════════════════════════════════════════ -->
-    <section id="blog" class="blog-section">
+    <section id="projects" class="projects-section">
       <div class="container">
 
-        <div class="blog-header" data-aos="fade-up">
-          <div class="blog-header-left">
-            <div class="blog-eyebrow">
+        <div class="projects-header" data-aos="fade-up">
+          <div>
+            <div class="projects-eyebrow">
               <span class="dot"></span>
-              Latest from Medium
+              Selected Work
             </div>
-            <h2 class="blog-heading">
-              Thoughts on <em>Business Analysis</em><br>& the craft of requirements
+            <h2 class="projects-heading">
+              Featured <em>Projects</em><br>&amp; Case Studies
             </h2>
           </div>
-          <a class="blog-view-all" href="https://medium.com/@zahraeh.fr" target="_blank" rel="noopener">
-            All articles <i class="bi bi-arrow-up-right"></i>
+          <a class="projects-view-all" href="portfolio.html">
+            All projects <i class="bi bi-arrow-right"></i>
           </a>
         </div>
 
-        <div class="blog-grid" id="blog-grid" data-aos="fade-up" data-aos-delay="100">
-          <!-- Loading state -->
-          <div class="blog-loading" id="blog-loading">
-            <div class="spinner"></div>
-            <p style="font-size:0.85rem;">Fetching latest posts…</p>
-          </div>
+        <!-- Featured: LeadWise -->
+        <div class="mb-4" data-aos="fade-up">
+          <a href="leadwise-banking.html" class="text-decoration-none text-reset d-block">
+            <div class="featured-card">
+              <div class="featured-video-side">
+                <video src="LeadWise.mp4" autoplay muted loop playsinline></video>
+              </div>
+              <div class="featured-content">
+                <div class="featured-badge"><span class="dot"></span> Featured Project</div>
+                <span class="featured-chip">AI Lead Scoring · FastAPI · Claude API · Banking &amp; Travel</span>
+                <h3>LeadWise</h3>
+                <p class="sub">AI-Powered Lead Qualification Engine · 2 verticals · EN / FR</p>
+                <p class="desc">Industry-agnostic scoring engine built with FastAPI + Claude API. Deployed on two verticals — BankWise Retail (banking) and LinguaWise (travel) — with full BA specs, RGPD compliance, and a white-label config toggle.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <div class="featured-stat"><strong>2</strong><small>verticals</small></div>
+                  <div class="featured-stat"><strong>15–18%</strong><small>conv. target</small></div>
+                  <div class="featured-stat"><strong>&lt;45s</strong><small>AI scoring</small></div>
+                  <div class="featured-stat"><strong>8</strong><small>API endpoints</small></div>
+                </div>
+                <div class="mb-3">
+                  <span class="featured-tag">FastAPI</span>
+                  <span class="featured-tag">Claude API</span>
+                  <span class="featured-tag">Streamlit</span>
+                  <span class="featured-tag">Pydantic v2</span>
+                  <span class="featured-tag">RGPD</span>
+                  <span class="featured-tag">Render</span>
+                </div>
+                <div class="mt-auto d-flex gap-2">
+                  <a href="https://github.com/zahraeh/LeadWise" target="_blank"
+                     class="btn btn-sm btn-outline-light"
+                     onclick="event.stopPropagation();">
+                    <i class="bi bi-github me-1"></i> GitHub
+                  </a>
+                  <span class="btn btn-sm btn-primary">
+                    Open Case Study <i class="bi bi-arrow-right ms-1"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
         </div>
+
+        <!-- 3-col grid -->
+        <div class="row g-4" data-aos="fade-up" data-aos-delay="50">
+
+          <!-- Afiya -->
+          <div class="col-lg-4 col-md-6">
+            <a href="https://precious-afiya.notion.site/Afiya-Small-insights-Better-habits-31c91d8111b280928e7ec3e0f444b80d"
+               target="_blank" class="text-decoration-none text-reset d-block h-100">
+              <div class="proj-card">
+                <div class="proj-img">
+                  <span class="lang-badge en">English</span>
+                  <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop" alt="Afiya">
+                </div>
+                <div class="proj-body">
+                  <span class="proj-chip">HealthTech · Agile/Scrum</span>
+                  <h4>Afiya — Connected Wellness Coach</h4>
+                  <p class="proj-desc">End-to-end BA lifecycle: 40+ User Stories, BPMN 2.0 AS-IS/TO-BE flows, Gherkin UAT criteria for an AI-driven wellness app.</p>
+                  <div class="mb-3">
+                    <span class="proj-tag">Agile/Scrum</span>
+                    <span class="proj-tag">BPMN 2.0</span>
+                    <span class="proj-tag">Jira</span>
+                    <span class="proj-tag">Gherkin</span>
+                  </div>
+                  <div class="proj-cta">
+                    <span class="btn btn-primary w-100 btn-sm">View Case Study <i class="bi bi-arrow-up-right-square ms-1"></i></span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Project BRIDGE -->
+          <div class="col-lg-4 col-md-6">
+            <a href="project-bridge.html" class="text-decoration-none text-reset d-block h-100">
+              <div class="proj-card">
+                <div class="proj-img">
+                  <span class="lang-badge fr">Français</span>
+                  <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=2070&auto=format&fit=crop" alt="Project BRIDGE">
+                </div>
+                <div class="proj-body">
+                  <span class="proj-chip">Oracle EBS · ERP Migration · 12 pays</span>
+                  <h4>⚡ Project BRIDGE — Oracle EBS</h4>
+                  <p class="proj-desc">Mission BA complète : 12 gaps documentés, specs Oracle INV/AP/AR, design EDI X12, 12 scénarios UAT — de l'AS-IS à la conduite du changement.</p>
+                  <div class="mb-3">
+                    <span class="proj-tag">Oracle EBS</span>
+                    <span class="proj-tag">SQL</span>
+                    <span class="proj-tag">EDI X12</span>
+                    <span class="proj-tag">BPMN</span>
+                  </div>
+                  <div class="proj-cta">
+                    <span class="btn w-100 btn-sm text-white" style="background:linear-gradient(135deg,#312e81,#7c3aed);">Voir le dossier <i class="bi bi-arrow-up-right-square ms-1"></i></span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Digital Banking -->
+          <div class="col-lg-4 col-md-6">
+            <a href="https://precious-afiya.notion.site/Digital-Banking-Refonte-App-Mobile-Paiements-DSP2-32091d8111b2818ab6e0c73abe5391d9?source=copy_link"
+               target="_blank" class="text-decoration-none text-reset d-block h-100">
+              <div class="proj-card">
+                <div class="proj-img">
+                  <span class="lang-badge fr">Français</span>
+                  <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop" alt="Digital Banking">
+                </div>
+                <div class="proj-body">
+                  <span class="proj-chip">Digital Banking · DSP2 · RGPD</span>
+                  <h4>Digital Banking — Refonte App Mobile</h4>
+                  <p class="proj-desc">Refonte du parcours paiement mobile : BPMN AS-IS/TO-BE, biométrie FaceID conforme DSP2, −79% de temps de parcours, 10 BF spécifiés.</p>
+                  <div class="mb-3">
+                    <span class="proj-tag">BPMN 2.0</span>
+                    <span class="proj-tag">DSP2</span>
+                    <span class="proj-tag">SAFe</span>
+                    <span class="proj-tag">Figma</span>
+                  </div>
+                  <div class="proj-cta">
+                    <span class="btn btn-primary w-100 btn-sm">Lire l'étude de cas <i class="bi bi-arrow-up-right-square ms-1"></i></span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+        </div><!-- /3-col grid -->
 
       </div>
     </section>
-    <!-- ════ /BLOG ════ -->
+    <!-- ════ /PROJECTS ════ -->
 
   </main>
 
@@ -496,100 +607,6 @@
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/js/main.js"></script>
 
-  <script>
-    /* ── Medium RSS → Blog cards ── */
-    (function () {
-      const FEED_URL  = 'https://medium.com/feed/@zahraeh.fr';
-      const API_URL   = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(FEED_URL)}&count=6`;
-      const grid      = document.getElementById('blog-grid');
-      const loading   = document.getElementById('blog-loading');
-
-      /* Format "2025-03-01T..." → "Mar 2025" */
-      function fmtDate(str) {
-        const d = new Date(str);
-        return d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
-      }
-
-      /* Strip HTML tags for excerpt */
-      function stripHtml(html) {
-        const tmp = document.createElement('div');
-        tmp.innerHTML = html;
-        return tmp.textContent || tmp.innerText || '';
-      }
-
-      /* Pull first category as tag label */
-      function getTag(item) {
-        if (item.categories && item.categories.length > 0) {
-          return item.categories[0];
-        }
-        return 'Article';
-      }
-
-      /* Estimate read time */
-      function readTime(content) {
-        const words = stripHtml(content).split(/\s+/).length;
-        const mins  = Math.max(1, Math.round(words / 200));
-        return `${mins} min read`;
-      }
-
-      /* Build one card */
-      function buildCard(item) {
-        const a = document.createElement('a');
-        a.className  = 'blog-card';
-        a.href       = item.link;
-        a.target     = '_blank';
-        a.rel        = 'noopener noreferrer';
-
-        const thumb = item.thumbnail
-          ? `<img class="blog-card-thumb" src="${item.thumbnail}" alt="${item.title}" loading="lazy" onerror="this.outerHTML='<div class=\\'blog-card-thumb-placeholder\\'><i class=\\'bi bi-pencil-square\\'></i></div>'">`
-          : `<div class="blog-card-thumb-placeholder"><i class="bi bi-pencil-square"></i></div>`;
-
-        const excerpt = stripHtml(item.description).slice(0, 160).trim();
-
-        a.innerHTML = `
-          ${thumb}
-          <div class="blog-card-body">
-            <div class="blog-card-meta">
-              <span class="blog-card-date">${fmtDate(item.pubDate)}</span>
-              <span class="blog-card-tag">${getTag(item)}</span>
-              <span class="blog-card-date">${readTime(item.content || item.description)}</span>
-            </div>
-            <h3 class="blog-card-title">${item.title}</h3>
-            <p class="blog-card-excerpt">${excerpt}…</p>
-            <span class="blog-card-read">Read on Medium <i class="bi bi-arrow-right"></i></span>
-          </div>`;
-
-        return a;
-      }
-
-      /* Fetch */
-      fetch(API_URL)
-        .then(r => r.json())
-        .then(data => {
-          loading.remove();
-
-          if (!data.items || data.items.length === 0) {
-            grid.innerHTML = `
-              <div class="blog-empty">
-                <i class="bi bi-journal-text" style="font-size:2rem;display:block;margin-bottom:12px;color:#334155;"></i>
-                No posts found yet — <a href="https://medium.com/@zahraeh.fr" target="_blank" rel="noopener">visit Medium</a> to check.
-              </div>`;
-            return;
-          }
-
-          data.items.forEach(item => grid.appendChild(buildCard(item)));
-        })
-        .catch(() => {
-          loading.remove();
-          grid.innerHTML = `
-            <div class="blog-error">
-              <i class="bi bi-wifi-off" style="font-size:2rem;display:block;margin-bottom:12px;color:#334155;"></i>
-              Couldn't load posts right now —
-              <a href="https://medium.com/@zahraeh.fr" target="_blank" rel="noopener">read them on Medium directly</a>.
-            </div>`;
-        });
-    })();
-  </script>
 
 </body>
 </html>
