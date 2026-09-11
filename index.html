@@ -86,6 +86,84 @@
 
 
     /* ═══════════════════════════════════════════════════
+       HOME HERO — dark grid/glow, matches resume-hero
+    ═══════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, #0a0a12 0%, #0d0f1e 100%);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -80px; right: -60px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(99,102,241,0.14) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero .container { position: relative; z-index: 1; }
+
+    .hero .hero-content h1 { color: #f1f5f9; font-weight: 800; }
+    .hero .hero-content h2 { color: #94a3b8; }
+    .hero .hero-content h2 .typed { color: #818cf8; }
+    .hero .hero-content p.hero-description {
+      color: #94a3b8; font-size: 0.95rem; line-height: 1.7; max-width: 520px;
+    }
+
+    .hero .strip-label { color: #64748b; opacity: 1; }
+
+    .hero .hero-content .social-links {
+      color: #94a3b8; font-size: 0.85rem; row-gap: 8px;
+    }
+    .hero .hero-content .social-links .text-secondary { color: #64748b !important; }
+
+    .hero .hero-actions .btn.btn-primary { background: #7c3aed; border-color: #7c3aed; }
+    .hero .hero-actions .btn.btn-primary:hover { background: #6d28d9; border-color: #6d28d9; }
+    .hero .hero-actions .btn.btn-outline-light {
+      border: 2px solid rgba(255,255,255,.2); color: #e2e8f0; background: transparent;
+    }
+    .hero .hero-actions .btn.btn-outline-light:hover {
+      border-color: rgba(255,255,255,.45); transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex; gap: 32px; flex-wrap: wrap;
+      margin-top: 1.8rem; padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-stats .hero-stat strong {
+      display: block; font-size: 1.5rem; font-weight: 800; color: #f1f5f9; line-height: 1;
+    }
+    .hero-stats .hero-stat span {
+      font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+
+    .hero .hero-image .image-wrapper img {
+      border-radius: 20px;
+      border: 3px solid rgba(129,140,248,0.35);
+      box-shadow: 0 20px 60px rgba(0,0,0,.5), 0 0 0 6px rgba(129,140,248,0.08);
+    }
+
+    .hero .hero-image .floating-elements .floating-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: #e2e8f0;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .hero .hero-image .floating-elements .floating-card i { color: #a5b4fc; }
+
+
+    /* ═══════════════════════════════════════════════════
        FEATURED PROJECTS SECTION
     ═══════════════════════════════════════════════════ */
     .projects-section {
@@ -365,14 +443,11 @@
               </h2>
 
               <p class="hero-description" data-aos="fade-up" data-aos-delay="400">
+                I run technical discovery with stakeholders, design and scope the solution, deploy it, and drive adoption after go-live — the discovery-to-adoption loop a commercial AI-platform SE owns.
               </p>
 
-              <div class="hero-actions" data-aos="fade-up" data-aos-delay="500">
-                <a href="portfolio.html" class="btn btn-primary">Explore My Work</a>
-              </div>
-
               <!-- Cert pills -->
-              <div class="d-flex align-items-center gap-2 flex-wrap mt-4 mb-2" data-aos="fade-up" data-aos-delay="560">
+              <div class="d-flex align-items-center gap-2 flex-wrap mt-2 mb-3" data-aos="fade-up" data-aos-delay="500">
                 <span class="strip-label me-1">Certified</span>
                 <div class="cert-pill cert-ecba">
                   <div class="pill-icon"><i class="bi bi-award-fill"></i></div>
@@ -390,11 +465,25 @@
                 </div>
               </div>
 
-              <div class="social-links mt-4" data-aos="fade-up" data-aos-delay="600">
+              <div class="hero-actions" data-aos="fade-up" data-aos-delay="550">
+                <a href="portfolio.html" class="btn btn-primary">Explore My Work</a>
+                <a href="https://www.linkedin.com/in/zahra-e-3004953a0/" target="_blank" rel="noopener" class="btn btn-outline-light">
+                  <i class="bi bi-linkedin me-2"></i>Connect on LinkedIn
+                </a>
+              </div>
+
+              <div class="social-links mt-2" data-aos="fade-up" data-aos-delay="600">
                 <span class="me-2 text-secondary">Expertise in:</span>
                 <i class="bi bi-check-circle-fill text-primary ms-2"></i> Technical Discovery &amp; Solution Design
                 <i class="bi bi-check-circle-fill text-primary ms-2"></i> AI Agents · Claude &amp; OpenAI APIs
                 <i class="bi bi-check-circle-fill text-primary ms-2"></i> POCs &amp; Live Demos · Python · FastAPI
+              </div>
+
+              <div class="hero-stats" data-aos="fade-up" data-aos-delay="650">
+                <div class="hero-stat"><strong>4+</strong><span>Years Experience</span></div>
+                <div class="hero-stat"><strong>10-20+</strong><span>Stakeholders / Cycle</span></div>
+                <div class="hero-stat"><strong>~60%</strong><span>Efficiency Gain</span></div>
+                <div class="hero-stat"><strong>2</strong><span>Certifications</span></div>
               </div>
 
             </div>
