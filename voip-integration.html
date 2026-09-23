@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>VoIP Provider Custom Integration — Discovery to Incident Report | Zahra E</title>
+  <meta name="description" content="A complete simulation of an implementation-consultant engagement: a custom VoIP-to-CRM integration built end to end, from discovery interview through requirements, architecture, working code, a pre-launch incident, and the customer-facing write-up of it.">
+  <meta name="keywords" content="Business Analyst, Implementation Consultant, Technical Pre-Sales, FastAPI, Requirements Engineering, Acceptance Criteria, Incident Report, Webhook Integration, CRM, Zahra">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --vp-dark:   #0b2e35;
+      --vp-mid:    #0e4f56;
+      --vp-accent: #14b8a6;
+      --vp-light:  #ecfeff;
+    }
+
+    /* ── Hero ── */
+    .vp-hero {
+      background: linear-gradient(135deg, #0b2e35 0%, #0e4f56 55%, #0f766e 100%);
+      color: #fff;
+      padding: 4rem 0 3rem;
+    }
+    .vp-hero .badge-chip {
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: .25rem .8rem;
+      margin-bottom: 1rem;
+    }
+    .vp-hero h1 { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 700; }
+    .vp-hero .sub { opacity: .8; font-size: .95rem; }
+    .vp-accent-line { color: var(--vp-accent); font-weight: 700; }
+
+    /* ── KPI strip ── */
+    .kpi-strip { background: #f8fafc; border-top: 3px solid var(--vp-accent); border-bottom: 1px solid #e2e8f0; }
+    .kpi-item strong { font-size: 1.6rem; color: var(--vp-accent); display: block; line-height: 1; }
+    .kpi-item span { font-size: .75rem; color: #64748b; }
+
+    /* ── Sections ── */
+    .vp-section { padding: 3.5rem 0; }
+    .vp-section:nth-child(even) { background: #f8fafc; }
+    .section-label {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--vp-accent);
+      border-left: 3px solid var(--vp-accent);
+      padding-left: .6rem;
+      margin-bottom: .5rem;
+    }
+    .vp-section h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+
+    /* ── Tables ── */
+    .vp-table th { background: var(--vp-dark); color: #fff; font-size: .8rem; font-weight: 600; }
+    .vp-table td { font-size: .85rem; vertical-align: middle; }
+    .badge-p1     { background: #dc3545; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-p2     { background: #fd7e14; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-passed { background: #198754; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-fixed  { background: #198754; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-assum  { background: #fef9c3; color: #92400e; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-fr     { background: #dbeafe; color: #1e40af; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-nfr    { background: #dcfce7; color: #166534; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+
+    /* ── Deliverable cards ── */
+    .deliv-card {
+      border-left: 4px solid var(--vp-accent);
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,.07);
+    }
+    .deliv-card .deliv-num { font-size: .7rem; font-weight: 700; color: var(--vp-accent); text-transform: uppercase; letter-spacing: .08em; }
+    .deliv-card .deliv-title { font-weight: 700; font-size: 1rem; margin-bottom: .25rem; }
+    .deliv-card ul { font-size: .85rem; margin: 0; padding-left: 1.2rem; color: #475569; }
+
+    /* ── Process flow steps ── */
+    .flow-step { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+    .flow-num { min-width: 34px; height: 34px; background: var(--vp-accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .85rem; flex-shrink: 0; }
+    .flow-content h6 { font-weight: 700; font-size: .9rem; margin-bottom: .1rem; }
+    .flow-content p { font-size: .82rem; color: #475569; margin: 0; }
+
+    /* ── Stack cards ── */
+    .stack-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; text-align: center; height: 100%; }
+    .stack-card .icon { font-size: 1.8rem; margin-bottom: .5rem; }
+    .stack-card h6 { font-size: .85rem; font-weight: 700; margin-bottom: .15rem; }
+    .stack-card small { font-size: .75rem; color: #64748b; }
+
+    /* ── Competence bars ── */
+    .comp-bar { background: #e2e8f0; border-radius: 999px; height: 8px; }
+    .comp-bar-fill { background: var(--vp-accent); border-radius: 999px; height: 8px; }
+
+    /* ── Code / terminal block ── */
+    .code-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      font-family: 'Courier New', monospace;
+      font-size: .78rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    .code-kw { color: #7dd3fc; }
+    .code-fn { color: #fbbf24; }
+    .code-str { color: #86efac; }
+    .code-cm { color: #64748b; font-style: italic; }
+    .code-err { color: #fca5a5; }
+    .code-ok { color: #86efac; }
+
+    /* ── Timeline ── */
+    .cm-phase { border-left: 3px solid var(--vp-accent); padding-left: 1rem; margin-bottom: 1.25rem; position: relative; }
+    .cm-phase::before { content: ''; position: absolute; left: -7px; top: 4px; width: 11px; height: 11px; background: var(--vp-accent); border-radius: 50%; }
+    .cm-phase h6 { font-weight: 700; font-size: .9rem; margin-bottom: .25rem; }
+    .cm-phase p { font-size: .82rem; color: #475569; margin: 0; }
+    .cm-phase .cm-week { font-size: .72rem; color: var(--vp-accent); font-weight: 700; text-transform: uppercase; }
+
+    /* ── Back button ── */
+    .back-btn { color: #fff; opacity: .8; text-decoration: none; font-size: .85rem; }
+    .back-btn:hover { opacity: 1; color: #fff; }
+
+    /* ── Incident severity ── */
+    .inc-severity-high { color: #dc3545; font-weight: 700; }
+    .inc-severity-med  { color: #fd7e14; font-weight: 700; }
+    .inc-severity-low  { color: #198754; font-weight: 700; }
+
+    /* ── Customer-note callout ── */
+    .customer-note {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid var(--vp-accent);
+      border-radius: 8px;
+      padding: 1.4rem 1.6rem;
+      font-size: .87rem;
+      color: #334155;
+      line-height: 1.7;
+    }
+    .customer-note h6 { font-weight: 700; margin-bottom: .5rem; color: var(--vp-dark); }
+  </style>
+</head>
+
+<body class="portfolio-details-page">
+
+  <header id="header" class="header d-flex align-items-center light-background sticky-top">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="resume.html">Resume</a></li>
+          <li><a href="portfolio.html" class="active">Portfolio</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <div class="header-social-links">
+        <a href="mailto:zahraeh.fr@gmail.com" class="email"><i class="bi bi-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/zahra-e-3004953a0/" target="_blank"><i class="bi bi-linkedin"></i></a>
+        <a href="https://github.com/zahraeh" target="_blank"><i class="bi bi-github"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ══ HERO ══════════════════════════════════════════════════════════ -->
+    <section class="vp-hero">
+      <div class="container">
+        <a href="portfolio.html" class="back-btn mb-3 d-inline-block"><i class="bi bi-arrow-left me-1"></i> Back to portfolio</a>
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-8">
+            <span class="badge-chip">Implementation Consulting · Webhook Integration · FastAPI</span>
+            <h1>☎ VoIP Provider Custom Integration</h1>
+            <p class="sub mb-1">A complete engagement simulation, played end to end</p>
+            <p class="sub mb-3">Discovery → Requirements → Architecture → Build → Pre-Launch Incident → Customer Communication · Acme Services (fictional, 25-person sales team)</p>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge bg-light text-dark">FastAPI</span>
+              <span class="badge bg-light text-dark">PostgreSQL / SQLAlchemy</span>
+              <span class="badge bg-light text-dark">Docker Compose</span>
+              <span class="badge bg-light text-dark">Slack Webhook</span>
+              <span class="badge bg-light text-dark">Idempotency</span>
+              <span class="badge bg-light text-dark">Retry with Backoff</span>
+              <span class="badge bg-light text-dark">Pytest</span>
+              <span class="badge bg-light text-dark">Postman</span>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="bg-white bg-opacity-10 rounded p-3" style="border:1px solid rgba(255,255,255,.2)">
+              <table class="table table-sm mb-0 text-white" style="font-size:.85rem;">
+                <tbody>
+                  <tr><td class="opacity-75">Author</td><td><strong>Zahra · Implementation Consultant</strong></td></tr>
+                  <tr><td class="opacity-75">Client</td><td>Acme Services (fictional)</td></tr>
+                  <tr><td class="opacity-75">Trigger</td><td>A VIP client's missed call escalated to the CEO</td></tr>
+                  <tr><td class="opacity-75">Stack</td><td>FastAPI · PostgreSQL · Docker</td></tr>
+                  <tr><td class="opacity-75">Status</td><td><span class="badge" style="background:rgba(255,255,255,.2)">Portfolio · Fictional data</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ KPI STRIP ══════════════════════════════════════════════════════ -->
+    <div class="kpi-strip py-3">
+      <div class="container">
+        <div class="row text-center gy-3">
+          <div class="col-6 col-md-2 kpi-item"><strong>23/23</strong><span>tests passing</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>9</strong><span>acceptance criteria</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>5</strong><span>assumptions logged</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>2</strong><span>idempotency guards</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>1</strong><span>incident caught pre-launch</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>0%</strong><span>real customer data used</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 01 CONTEXT & DIAGNOSIS ═══════════════════════════════════════════ -->
+    <section class="vp-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">01</span>
+        <h2>Context &amp; Diagnosis</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <p><strong>Acme Services</strong> is a 25-person sales team using a VoIP provider for calls (and SMS with some clients), Salesforce as CRM, and Slack internally. The VoIP provider already syncs call data into Salesforce — calls are logged and visible — but the sync is <strong>passive</strong>: it records that a call happened and nothing acts on that information afterward.</p>
+
+            <p>The trigger for this engagement was a specific incident: <strong>a VIP client's call went to voicemail, no one followed up for two days, and the client raised it directly with Acme's CEO.</strong> That single event is what the entire system below exists to prevent from happening again.</p>
+
+            <h5 class="fw-semibold mt-4 mb-3">Pain Points Identified in Discovery</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered vp-table">
+                <thead><tr><th>Pain Point</th><th>Operational Impact</th></tr></thead>
+                <tbody>
+                  <tr><td>Missed VIP calls get no follow-up</td><td>No auto-notification, no owned task — already escalated once to the CEO</td></tr>
+                  <tr><td>Unknown-caller leads are lost</td><td>Only caught by reps manually scanning the call log each morning</td></tr>
+                  <tr><td>Phone number format mismatch</td><td>VoIP provider delivers international format (+33…); CRM stores national format (0X…) — surfaced during discovery, not previously known to Acme</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="rounded p-3 mb-4" style="background: linear-gradient(135deg,#0b2e35,#0e4f56); color:#fff; font-size:.85rem;">
+              <strong><i class="bi bi-bullseye me-1"></i> Success Criteria — As Stated by the Client</strong>
+              <ul class="mt-2 mb-0" style="line-height:2;">
+                <li>No VIP client complains about a missed call going unfollowed-up <strong class="vp-accent-line">again</strong></li>
+                <li>Sales team no longer needs to <strong class="vp-accent-line">manually check</strong> the call log each morning</li>
+              </ul>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Stakeholders</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered vp-table">
+                <thead><tr><th>Stakeholder</th><th>Role</th></tr></thead>
+                <tbody>
+                  <tr><td>Sam (Ops Manager)</td><td>Primary discovery contact, owns the pain points</td></tr>
+                  <tr><td>Account managers</td><td>Set VIP tags, recipients of VIP-alert Slack messages</td></tr>
+                  <tr><td>Sales reps</td><td>Currently check the call log manually; recipients of new-lead alerts</td></tr>
+                  <tr class="table-warning fw-bold"><td>Zahra ★</td><td>Implementation Consultant — end to end</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 02 DISCOVERY DISCIPLINE ═══════════════════════════════════════════ -->
+    <section class="vp-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverable 01</span>
+        <h2>Discovery — What Was Confirmed vs. Left Open</h2>
+
+        <p class="text-muted mb-4" style="font-size:.9rem;">The discipline that shapes everything downstream: discovery notes separate what the client actually said from what was still unresolved, instead of quietly filling gaps and presenting them as fact.</p>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Open Questions — Recorded, Not Resolved</h5>
+            <div class="deliv-card">
+              <div class="deliv-num">Unresolved</div>
+              <div class="deliv-title">VIP status freshness</div>
+              <ul><li>Read live at call time, or is a periodic/cached sync acceptable? No answer given in discovery.</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Unresolved</div>
+              <div class="deliv-title">Escalation path for unreachable account owners</div>
+              <ul><li>Raised as a good question by the client — no answer existed yet.</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Unresolved</div>
+              <div class="deliv-title">Notification timing</div>
+              <ul><li>Client said "pinged immediately" — no numeric latency SLA discussed.</li></ul>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Explicit Non-Goals — Confirmed Out of Scope</h5>
+            <div class="deliv-card">
+              <div class="deliv-num">Non-Goal 01</div>
+              <div class="deliv-title">SMS handling</div>
+              <ul><li>Confirmed not causing an active problem — a "while you're in there" ask, not a requirement.</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Non-Goal 02</div>
+              <div class="deliv-title">Cross-number identity matching</div>
+              <ul><li>A repeat caller from a <em>different</em> number won't be recognized as the same lead — accepted limitation.</li></ul>
+            </div>
+            <div class="mt-3 p-3 rounded" style="background:#fff7ed; border-left:4px solid var(--vp-accent); font-size:.83rem;">
+              <strong><i class="bi bi-lightbulb me-1"></i> Why this matters:</strong> every one of these three open questions gets carried forward into the next deliverable as a named <strong>Assumption</strong> — never silently decided.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 03 REQUIREMENTS & ACCEPTANCE CRITERIA ══════════════════════════ -->
+    <section class="vp-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverable 02</span>
+        <h2>Requirements, Assumptions &amp; Acceptance Criteria</h2>
+
+        <p class="text-muted mb-4" style="font-size:.9rem;">9 functional + 5 non-functional requirements, each open question from discovery converted into a named, justified assumption — visible as a decision made <em>on the client's behalf</em>, not fact.</p>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <h5 class="fw-semibold mb-3">Functional Requirements (excerpt)</h5>
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered vp-table">
+                <thead><tr><th>ID</th><th>Requirement</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="badge-fr">FR-2</span></td><td>Normalize phone numbers from both the VoIP provider and internal CRM into one canonical format before any comparison.</td></tr>
+                  <tr><td><span class="badge-fr">FR-5</span></td><td>Missed/voicemail call from a known VIP → create CRM follow-up task + Slack alert to the account owner.</td></tr>
+                  <tr><td><span class="badge-fr">FR-7</span></td><td>Call from an unknown number → create a new CRM lead + notify sales via Slack.</td></tr>
+                  <tr><td><span class="badge-fr">FR-8</span></td><td>Never create more than one lead for repeat calls from the same unknown number.</td></tr>
+                  <tr><td><span class="badge-fr">FR-9</span></td><td>Never process the same VoIP call event twice, even on duplicate webhook delivery.</td></tr>
+                  <tr><td><span class="badge-nfr">NFR-5</span></td><td>Phone normalization lives in a single shared function used by every comparison — no divergent matching logic.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Assumptions Log — Gaps Filled, Named &amp; Justified</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered vp-table">
+                <thead><tr><th>ID</th><th>Assumption</th><th>Why</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="badge-assum">A-1</span></td><td>VIP status read live, not cached</td><td>Simplest single-source-of-truth design at this scale — not a fix for the original incident, which wasn't cache-related</td></tr>
+                  <tr><td><span class="badge-assum">A-2</span></td><td>No resolvable owner → fallback Slack channel</td><td>Client has no escalation policy to build against; inventing an SLA would overreach</td></tr>
+                  <tr><td><span class="badge-assum">A-3</span></td><td>"Immediately" = synchronous, same request</td><td>Simplest reading of an un-numbered requirement</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <h5 class="fw-semibold mb-3">Acceptance Criteria — Given/When/Then</h5>
+            <p class="text-muted" style="font-size:.83rem;">The two listed first below were flagged as highest-risk — the scenarios most likely to cause real damage (duplicate records, duplicate customer-facing alerts) if missed.</p>
+
+            <div class="code-block mb-3">
+<span class="code-cm"># AC-1 — Duplicate webhook delivery</span>
+<span class="code-kw">Given</span> VoIP Provider already delivered event X
+<span class="code-kw">When</span>  it delivers event X <span class="code-str">again</span> (retry)
+<span class="code-kw">Then</span>  no second call record, no second
+      Slack message, no second CRM task
+      <span class="code-ok">✓ system still responds 200 OK</span>
+
+<span class="code-cm"># AC-3 — Dedup survives format drift</span>
+<span class="code-kw">Given</span> a lead recorded as <span class="code-str">+33612345678</span>
+<span class="code-kw">When</span>  the same number calls in a
+      <span class="code-str">different raw format</span>
+<span class="code-kw">Then</span>  <span class="code-ok">both normalize to the same value</span>
+      <span class="code-ok">✓ no second lead created</span>
+            </div>
+
+            <div class="p-3 rounded" style="background:#fff7ed; border-left:4px solid var(--vp-accent); font-size:.83rem;">
+              <strong><i class="bi bi-search me-1"></i> Requirements review, before sign-off:</strong> a word-for-word pass against the discovery transcript caught two issues — one assumption's rationale cited the wrong incident, and one requirement quietly extended past what the client actually confirmed. Both fixed <em>before</em> this document would have gone to the client, not after.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 04 ARCHITECTURE ═══════════════════════════════════════════════ -->
+    <section class="vp-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverable 03</span>
+        <h2>Architecture — Request Flow &amp; Data Model</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Request Flow — One Webhook, Four Outcomes</h5>
+            <div class="flow-step">
+              <div class="flow-num">1</div>
+              <div class="flow-content">
+                <h6>POST /webhooks/voip</h6>
+                <p>Inbound call event received from the VoIP provider</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">2</div>
+              <div class="flow-content">
+                <h6>Claim the event id <small class="text-muted">idempotency</small></h6>
+                <p>Insert a placeholder row; a unique constraint rejects duplicate deliveries — already-claimed events return <code>already_processed: true</code> and re-run nothing</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">3</div>
+              <div class="flow-content">
+                <h6>Normalize the phone number → E.164</h6>
+                <p>One shared function, applied at the earliest possible point — the exact bug class caught in the incident below</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">4</div>
+              <div class="flow-content">
+                <h6>Match against <code>customers</code> <small class="text-muted">one query</small></h6>
+                <p>Four direct outcomes: VIP missed, non-VIP/completed, existing lead, unknown number</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">5</div>
+              <div class="flow-content">
+                <h6>Branch &amp; act</h6>
+                <p>VIP missed → CRM task + Slack @-mention (fallback channel if no owner) · Unknown → create lead + notify sales · Everything else → record only</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">6</div>
+              <div class="flow-content">
+                <h6>Retry, then fail visibly</h6>
+                <p>Downstream CRM/Slack calls retry with exponential backoff (tenacity); exhausted retries write a queryable <code>failed_events</code> row, never a silent drop</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Data Model</h5>
+            <div class="table-responsive mb-3">
+              <table class="table table-bordered vp-table">
+                <thead><tr><th>Table</th><th>Purpose</th><th>Key Constraint</th></tr></thead>
+                <tbody>
+                  <tr><td><code>customers</code></td><td>CRM contact — a lead is just a row with <code>source = 'inbound_lead'</code></td><td><code>phone_number</code> unique (dedup)</td></tr>
+                  <tr><td><code>calls</code></td><td>One row per call event actually processed</td><td><code>voip_event_id</code> unique (idempotency)</td></tr>
+                  <tr><td><code>failed_events</code></td><td>Exists only when retries are exhausted — queryable, not just logged</td><td>FK → <code>calls.id</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Two Distinct Guards — Deliberately Not Conflated</h5>
+            <div class="deliv-card">
+              <div class="deliv-num">Guard 01</div>
+              <div class="deliv-title">Event idempotency</div>
+              <ul><li>Unique constraint on <code>calls.voip_event_id</code> — stops the same webhook delivery being processed twice</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Guard 02</div>
+              <div class="deliv-title">Lead deduplication</div>
+              <ul><li>Unique constraint on <code>customers.phone_number</code> — stops the same caller becoming two leads, even under a race</li></ul>
+            </div>
+            <p class="text-muted" style="font-size:.82rem;">Both rely on a database constraint as the source of truth, not application-level locking — the service may run as more than one process.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 05 STACK ════════════════════════════════════════════════════════ -->
+    <section class="vp-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverable 04</span>
+        <h2>Delivery — Stack &amp; Test Coverage</h2>
+
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stack-card"><div class="icon">⚡</div><h6>FastAPI</h6><small>Webhook receiver + business logic</small></div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stack-card"><div class="icon">🐘</div><h6>PostgreSQL</h6><small>SQLAlchemy ORM, prod + Docker</small></div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stack-card"><div class="icon">🐳</div><h6>Docker Compose</h6><small>One-command local stack</small></div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stack-card"><div class="icon">💬</div><h6>Slack Webhook</h6><small>Real outbound HTTP notification</small></div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stack-card"><div class="icon">🔁</div><h6>Tenacity</h6><small>Exponential-backoff retry</small></div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stack-card"><div class="icon">✅</div><h6>Pytest</h6><small>23 tests, in-memory SQLite</small></div>
+          </div>
+        </div>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Test Suite Breakdown</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered vp-table">
+                <thead><tr><th>File</th><th>Covers</th><th>Tests</th></tr></thead>
+                <tbody>
+                  <tr><td><code>test_webhook.py</code></td><td>All four branch outcomes, end to end</td><td>9</td></tr>
+                  <tr><td><code>test_phone.py</code></td><td>E.164 normalization edge cases</td><td>6</td></tr>
+                  <tr><td><code>test_slack.py</code></td><td>Notification payloads &amp; routing</td><td>5</td></tr>
+                  <tr><td><code>test_retry_and_failure_tracking.py</code></td><td>Backoff + <code>failed_events</code> visibility</td><td>2</td></tr>
+                  <tr><td><code>test_incident_phone_format.py</code></td><td>The reproduction test below</td><td>1</td></tr>
+                  <tr class="fw-bold"><td>Total</td><td></td><td><span class="badge-passed">23 passed</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Normalization — The Single Choke Point</h5>
+            <div class="code-block">
+<span class="code-cm"># app/phone.py — every comparison in the codebase
+# goes through this one function. No inline
+# normalization anywhere else is allowed.</span>
+
+<span class="code-kw">def</span> <span class="code-fn">normalize_phone_number</span>(raw: str) -> str:
+    <span class="code-cm"># phonenumbers (libphonenumber), default
+    # region FR, output E.164: +33612345678</span>
+    ...
+            </div>
+            <p class="text-muted mt-2" style="font-size:.82rem;">E.164 was chosen over national format specifically because it's unambiguous without a default-region assumption baked into every comparison site.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 06 INCIDENT ═════════════════════════════════════════════════════ -->
+    <section class="vp-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverable 05</span>
+        <h2>Incident — Caught Before It Shipped</h2>
+
+        <div class="p-3 rounded mb-4" style="background:#fef2f2; border-left:4px solid #dc3545; font-size:.87rem;">
+          <strong class="inc-severity-high"><i class="bi bi-exclamation-triangle-fill me-1"></i> HIGH severity</strong> —
+          during pre-launch UAT, a bug reproduced the <em>exact</em> business failure this project was built to prevent: a VIP customer's missed call silently going unfollowed-up.
+        </div>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Timeline</h5>
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered vp-table">
+                <thead><tr><th>Time</th><th>Event</th></tr></thead>
+                <tbody>
+                  <tr><td>18:40</td><td>Full suite green — 20/20, all against app-generated test data</td></tr>
+                  <tr><td>18:52</td><td>UAT started with data shaped like a <strong>real CRM export</strong> (national-format numbers)</td></tr>
+                  <tr><td>18:53</td><td>Reproduction test written to target the suspected gap</td></tr>
+                  <tr><td>18:54</td><td><span class="inc-severity-high">Confirmed failing</span> — VIP call misclassified as a new lead</td></tr>
+                  <tr><td>19:00</td><td>Fix implemented and verified</td></tr>
+                  <tr><td>19:02</td><td><span class="badge-fixed">21/21 passing</span>, including the new test</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Root Cause</h5>
+            <p style="font-size:.87rem; color:#475569;">Every comparison assumed both sides were already E.164-normalized. That held for any customer created <em>through the app</em> — but nothing enforced it for a row written any other way, such as a bulk CRM import landing numbers in national format. A design gap in <em>enforcement</em>, not in the design itself: the architecture doc already required this invariant — it just wasn't guaranteed at every write path.</p>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Reproduction → Fix → Verify</h5>
+            <div class="code-block mb-3">
+<span class="code-cm">$ pytest tests/test_incident_phone_format.py -v</span>
+<span class="code-err">FAILED</span> ...::test_legacy_national_format_seed_data_is_still_matched
+<span class="code-err">AssertionError:</span> expected the call to match the
+existing VIP customer and trigger follow-up,
+but got branch_taken=<span class="code-str">'new_lead'</span>
+<span class="code-err">assert 'new_lead' == 'vip_missed'</span>
+            </div>
+            <div class="code-block mb-3">
+<span class="code-cm"># app/models.py — the fix: enforce the invariant
+# on the model itself, not at every call site</span>
+<span class="code-kw">@validates</span>(<span class="code-str">"phone_number"</span>)
+<span class="code-kw">def</span> <span class="code-fn">_normalize_phone_number</span>(self, key, value):
+    <span class="code-kw">return</span> normalize_phone_number(value)
+            </div>
+            <div class="code-block">
+<span class="code-cm">$ pytest tests/ -v</span>
+...::test_legacy_national_format_seed_data_is_still_matched <span class="code-ok">PASSED</span>
+<span class="code-ok">======================== 21 passed in 2.18s ========================</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 p-3 rounded" style="background:#f0fdfa; border-left:4px solid var(--vp-accent); font-size:.85rem;">
+          <strong><i class="bi bi-shield-check me-1"></i> Why it was caught:</strong> the existing 20-test suite passed the whole time — every one of those tests created its fixtures through the app's own normalized code path. The gap was in <strong>test data realism</strong>, not test coverage: seeding data shaped like a real import, instead of only data shaped like the app's own writes, is what surfaced it.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 07 CUSTOMER COMMUNICATION ═══════════════════════════════════════ -->
+    <section class="vp-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverable 06</span>
+        <h2>Translating the Incident for a Non-Technical Stakeholder</h2>
+
+        <p class="text-muted mb-4" style="font-size:.9rem;">The same incident above, rewritten for Sam (the client's Ops Manager) — no jargon, no code, same facts, framed around what it means for them.</p>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <div class="customer-note">
+              <h6>What happened: a testing update on the missed-call alerts</h6>
+              <p><em>For Sam — no technical background needed to read this.</em></p>
+              <p>While testing the new system before launch, we found — and already fixed — a bug that could have caused the exact problem this project was built to prevent: a VIP client's missed call not triggering an alert. <strong>It never affected a real client</strong>, because we caught it during our own pre-launch testing, using practice data, before the system went live.</p>
+              <p>Your team enters phone numbers the normal, human way — like <code>06 12 34 56 78</code>. The VoIP provider uses the international format instead — like <code>+33 6 12 34 56 78</code>. Same number, two different-looking versions of it. We'd already handled that difference for incoming calls — what we'd missed was a one-time import scenario landing a number in the "wrong" format.</p>
+              <p class="mb-0">We changed the system so that <strong>any</strong> phone number it stores — no matter how it got there — automatically converts to one consistent format the moment it's saved. Nothing you need to do right now.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <h5 class="fw-semibold mb-3">What Changed Between the Two Versions</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered vp-table">
+                <thead><tr><th></th><th>Incident Report</th><th>Customer Summary</th></tr></thead>
+                <tbody>
+                  <tr><td>Audience</td><td>Engineering / QA</td><td>Non-technical ops lead</td></tr>
+                  <tr><td>Root cause</td><td>SQLAlchemy write-path gap</td><td>"a number could get stored the wrong way"</td></tr>
+                  <tr><td>Evidence</td><td>pytest output, stack trace</td><td>Plain description of the test scenario</td></tr>
+                  <tr><td>Tone</td><td>Precise, technical</td><td>Reassuring, action-oriented</td></tr>
+                  <tr><td>Facts changed</td><td colspan="2" class="text-center fw-bold vp-accent-line">None — same incident, same fix</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mt-3 p-3 rounded" style="background:#fff7ed; border-left:4px solid var(--vp-accent); font-size:.83rem;">
+              <strong><i class="bi bi-chat-square-quote me-1"></i> Closing line, verbatim:</strong> "Happy to walk through this live if it's easier than reading it — just let us know."
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 08 RESULTS & COMPETENCIES ═══════════════════════════════════════ -->
+    <section class="vp-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">08</span>
+        <h2>Results &amp; Deliverables</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <h5 class="fw-semibold mb-3">Competencies Demonstrated</h5>
+            <div class="d-flex flex-column gap-2 mb-4" style="font-size:.85rem;">
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Discovery &amp; requirements elicitation</span><span class="text-muted">Advanced</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:95%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Given/When/Then acceptance criteria authoring</span><span class="text-muted">Advanced</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:92%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>System architecture &amp; data modeling</span><span class="text-muted">Advanced</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:90%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>API implementation (FastAPI / SQLAlchemy / Pydantic)</span><span class="text-muted">Advanced</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:88%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Root-cause investigation &amp; reproduction testing</span><span class="text-muted">Advanced</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:92%"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1"><span>Customer-facing technical communication</span><span class="text-muted">Advanced</span></div>
+                <div class="comp-bar"><div class="comp-bar-fill" style="width:90%"></div></div>
+              </div>
+            </div>
+
+            <div class="p-3 rounded" style="background:#ede9fe; border-left:4px solid #7c3aed; font-size:.85rem;">
+              <strong><i class="bi bi-info-circle me-1"></i> Author's note:</strong> this project simulates a full implementation-consultant engagement — including catching and disclosing its own pre-launch bug, rather than presenting a clean, incident-free narrative. Acme Services is fictional; no real customer data is used anywhere in this project.
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <h5 class="fw-semibold mb-3">The 6 Deliverables Produced</h5>
+            <div class="deliv-card">
+              <div class="deliv-num">Deliverable 01</div>
+              <div class="deliv-title">🔍 Discovery Document</div>
+              <ul><li>Stakeholder interview · pain points · open questions kept visibly unresolved</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Deliverable 02</div>
+              <div class="deliv-title">📋 Requirements &amp; Acceptance Criteria</div>
+              <ul><li>9 FR · 5 NFR · 5 assumptions · 9 Given/When/Then criteria</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Deliverable 03</div>
+              <div class="deliv-title">🏗 Architecture &amp; Data Model</div>
+              <ul><li>Idempotency, retry, and normalization design — with rejected alternatives documented</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Deliverable 04</div>
+              <div class="deliv-title">⚙️ Working Implementation</div>
+              <ul><li>23 passing tests · Docker Compose · Postman collection</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Deliverable 05</div>
+              <div class="deliv-title">🚨 Incident Report</div>
+              <ul><li>Pre-launch bug reproduced, root-caused, fixed, and verified</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Deliverable 06</div>
+              <div class="deliv-title">📣 Customer-Facing Summary</div>
+              <ul><li>Same incident, rewritten for a non-technical stakeholder</li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ CTA ════════════════════════════════════════════════════════════ -->
+    <section class="py-5 text-center" style="background: linear-gradient(135deg, #0b2e35, #0e4f56); color:#fff;">
+      <div class="container">
+        <h3 class="mb-2">Want to see the code?</h3>
+        <p class="opacity-75 mb-4">Full source, docs, and Postman collection are on GitHub.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+          <a href="https://github.com/zahraeh/voip-custom-integration" target="_blank" rel="noopener" class="btn" style="background:var(--vp-accent); color:#fff; border:none;">
+            <i class="bi bi-github me-1"></i> View on GitHub
+          </a>
+          <a href="portfolio.html" class="btn btn-outline-light">← Back to Portfolio</a>
+          <a href="contact.html" class="btn btn-outline-light">Contact Me</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Zahra E</strong> <span>All Rights Reserved</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</body>
+</html>
