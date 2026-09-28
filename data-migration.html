@@ -154,6 +154,23 @@
     }
     .customer-note h6 { font-weight: 700; margin-bottom: .5rem; color: var(--dm-dark); }
 
+    .tldr { border-left: 4px solid var(--dm-accent); padding: .25rem 0 .25rem 1.2rem; max-width: 900px; }
+    .tldr p { font-size: 1rem; line-height: 1.7; color: #1e293b; }
+
+    /* ── Spreadsheet rendering of a real exceptions file ── */
+    .xl { border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+    .xl-bar { background: #1d6f42; color: #fff; font-size: .78rem; padding: .45rem .9rem; display: flex; justify-content: space-between; gap: 1rem; }
+    .xl-scroll { overflow-x: auto; }
+    .xl table { border-collapse: collapse; width: 100%; min-width: 760px; font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: .78rem; }
+    .xl th, .xl td { border: 1px solid #e2e8f0; padding: .3rem .5rem; white-space: nowrap; }
+    .xl thead th { background: #f1f5f9; color: #475569; font-weight: 400; text-align: center; }
+    .xl .hdr td { font-weight: 700; background: #f8fafc; }
+    .xl td.rn { background: #f1f5f9; color: #64748b; text-align: center; width: 2.2rem; }
+    .xl td.wrap { white-space: normal; min-width: 260px; }
+    .xl .st-rej { color: #b91c1c; font-weight: 600; }
+    .xl .st-warn { color: #92400e; font-weight: 600; }
+    .xl .st-skip { color: #475569; font-weight: 600; }
+
     .callout { padding: 1rem; border-radius: 8px; font-size: .84rem; }
     .callout-amber { background: #fff7ed; border-left: 4px solid var(--dm-accent); }
     .callout-blue  { background: #eff6ff; border-left: 4px solid var(--dm-mid); }
@@ -231,15 +248,25 @@
           <div class="col-6 col-md-2 kpi-item"><strong>3</strong><span>dry runs to GO</span></div>
           <div class="col-6 col-md-2 kpi-item"><strong>7</strong><span>decisions logged &amp; signed off</span></div>
           <div class="col-6 col-md-2 kpi-item"><strong>50</strong><span>tests passing</span></div>
-          <div class="col-6 col-md-2 kpi-item"><strong>0%</strong><span>real customer data</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>1</strong><span>silent bug caught before go-live</span></div>
         </div>
       </div>
     </div>
 
-    <!-- ══ 01 CONTEXT ══════════════════════════════════════════════════════ -->
+    <!-- ══ TL;DR ═══════════════════════════════════════════════════════════ -->
+    <section class="py-4" style="background:#fff; border-bottom:1px solid #e2e8f0;">
+      <div class="container">
+        <div class="tldr">
+          <span class="d-block mb-1" style="font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm-accent-text);">The 30-second version</span>
+          <p class="mb-0">A heating company needed 12 years of customers, contacts and contracts moved from an old desktop tool into a new platform. On the second test run every row was accounted for and nothing errored, but the customer's own revenue report showed <strong>€90,295 missing</strong>: the old system writes €2,400 as <code>2.400</code>, and the code had read it as €2.40. It was fixed before go-live, and the final run reconciled to <strong>€0.00 unexplained → GO</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ CONTEXT ══════════════════════════════════════════════════════ -->
     <section class="dm-section" data-aos="fade-up">
       <div class="container">
-        <span class="section-label">01</span>
+        <span class="section-label">The Situation</span>
         <h2>Context &amp; Diagnosis</h2>
 
         <div class="row gy-4">
@@ -393,7 +420,7 @@
   review_keys: [name, postcode]  <span class="code-cm"># flag only</span>
             </div>
             <div class="callout callout-blue">
-              <strong><i class="bi bi-file-earmark-spreadsheet me-1"></i> Built for the person who'll open it:</strong> exceptions files are UTF-8 with BOM and <code>;</code> separators, so they open correctly in French Excel with a double-click, and every row says what to do next.
+              <strong><i class="bi bi-file-earmark-spreadsheet me-1"></i> Built for the person who'll open it:</strong> exceptions files are UTF-8 with BOM and <code>;</code> separators, so they open correctly in French Excel with a double-click, and every row says what to do next. <a href="#exceptions-file">See the real file ↓</a>
             </div>
           </div>
         </div>
@@ -422,7 +449,7 @@
             <div class="deliv-card h-100">
               <div class="deliv-num">Dry run 1 · 31.3% rejected</div>
               <div class="deliv-title">One bad column multiplies</div>
-              <p>145 accounts rejected for 4-digit postcodes. Their <strong>201 contacts and 130 contracts</strong> were rejected with them, so 145 bad cells became 476 rejected rows. Fixed with a confirmed rule (D-05), not a guess.</p>
+              <p>143 accounts were rejected only because Excel had cut their postcode to 4 digits. Their <strong>198 contacts and 126 contracts</strong> were rejected with them: <strong>467 of the 498 rejected rows</strong> from one bad column. The other 31 are the issues still in run 3 (nameless accounts, rows pointing at deleted customers, impossible dates). Fixed with a confirmed rule (D-05), not a guess.</p>
             </div>
           </div>
           <div class="col-lg-6">
@@ -590,19 +617,38 @@ accounts:  470 rows removed
                   <tr><td>Root cause</td><td>Parser regex, profile display limit</td><td>"read €2,400 as €2.40"</td></tr>
                   <tr><td>Leads with</td><td>Timeline &amp; evidence</td><td>"Ready for Monday"</td></tr>
                   <tr><td>Ends with</td><td>Corrective actions</td><td>One dated ask, sized in euros</td></tr>
-                  <tr><td>Facts changed</td><td colspan="2" class="text-center fw-bold dm-accent-line">None</td></tr>
+                  <tr><td>Facts changed</td><td class="fw-bold dm-accent-line">None</td><td class="fw-bold dm-accent-line">None</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+        <h5 class="fw-semibold mt-5 mb-2" id="exceptions-file">What Nadia Actually Opens</h5>
+        <p class="text-muted mb-3" style="font-size:.85rem;">Rows copied verbatim from <a href="https://github.com/zahraeh/customer-data-migration/blob/main/reports/v3/exceptions_contracts.csv" target="_blank" rel="noopener"><code>reports/v3/exceptions_contracts.csv</code></a> (source columns trimmed to fit). UTF-8 with BOM and <code>;</code> separators, so it opens correctly in French Excel with a double-click. Every row says what happened and what's needed.</p>
+        <div class="xl">
+          <div class="xl-bar"><span><i class="bi bi-file-earmark-spreadsheet me-1"></i> exceptions_contracts.csv</span><span class="opacity-75">57 rows · 10 need a decision</span></div>
+          <div class="xl-scroll">
+            <table>
+              <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr></thead>
+              <tbody>
+                <tr class="hdr"><td class="rn">1</td><td>Line in export</td><td>Legacy ID</td><td>Status</td><td>Issue(s)</td><td>Montant annuel HT</td><td>Date début</td></tr>
+                <tr><td class="rn">2</td><td>5</td><td>CTR-2018-0274</td><td class="st-skip">OUT OF SCOPE - not migrated</td><td class="wrap">terminated contracts stay in the legacy archive (decision D-03)</td><td>575,20</td><td>02/05/2018</td></tr>
+                <tr><td class="rn">3</td><td>12</td><td>CTR-2025-0423</td><td class="st-warn">MIGRATED with warning</td><td class="wrap">re-linked from duplicate CL00515 to surviving record CL00065</td><td>2 778,86</td><td>07/01/2025</td></tr>
+                <tr><td class="rn">4</td><td>31</td><td>CTR-2026-0434</td><td class="st-rej">REJECTED - needs your decision</td><td class="wrap">accounts CL00109 does not exist in the accounts export</td><td>2 315,58</td><td>23/10/2026</td></tr>
+                <tr><td class="rn">5</td><td>98</td><td>CTR-2026-0262</td><td class="st-rej">REJECTED - needs your decision</td><td class="wrap">start_date: Date '00/01/2022' is not a real calendar date (expected DD/MM/YYYY)</td><td>3 625,94</td><td>00/01/2022</td></tr>
+                <tr><td class="rn">6</td><td>150</td><td>CTR-2026-0430</td><td class="st-rej">REJECTED - needs your decision</td><td class="wrap">accounts CL00522 was rejected, so this row cannot be attached to it</td><td>490</td><td>01/02/2026</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ══ 08 RESULTS ═════════════════════════════════════════════════════ -->
+
+    <!-- ══ TAKEAWAYS ═════════════════════════════════════════════════════ -->
     <section class="dm-section" data-aos="fade-up">
       <div class="container">
-        <span class="section-label">08</span>
+        <span class="section-label">Takeaways</span>
         <h2>What This Project Demonstrates</h2>
 
         <div class="row gy-4">
