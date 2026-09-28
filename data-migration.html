@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Customer Data Migration — Every Row, Every Euro | Zahra E</title>
+  <meta name="description" content="A full customer data migration engagement, simulated end to end: kickoff, mapping spec, three dry runs, a €90k silent-misparse incident caught by a customer control total, cutover runbook, and the customer update — with the working Python toolkit behind it.">
+  <meta name="keywords" content="Implementation Consultant, Implementation Engineer, Solutions Engineer, Data Migration, Reconciliation, Cutover, Onboarding, Python, Claude API, Zahra">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --dm-dark:   #172554;
+      --dm-mid:    #1e3a8a;
+      --dm-accent: #d97706;
+      --dm-accent-text: #b45309;
+      --dm-bright: #fbbf24;
+    }
+
+    /* ── Hero ── */
+    .dm-hero {
+      background: linear-gradient(135deg, #0f172a 0%, #172554 55%, #1e3a8a 100%);
+      color: #fff;
+      padding: 4rem 0 3rem;
+    }
+    .dm-hero .badge-chip {
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: .25rem .8rem;
+      margin-bottom: 1rem;
+    }
+    .dm-hero h1 { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 700; }
+    .dm-hero .sub { opacity: .85; font-size: .95rem; }
+    .dm-bright { color: var(--dm-bright); font-weight: 700; }
+    .dm-accent-line { color: var(--dm-accent-text); font-weight: 700; }
+
+    /* ── KPI strip ── */
+    .kpi-strip { background: #f8fafc; border-top: 3px solid var(--dm-accent); border-bottom: 1px solid #e2e8f0; }
+    .kpi-item strong { font-size: 1.5rem; color: var(--dm-accent-text); display: block; line-height: 1.1; }
+    .kpi-item span { font-size: .75rem; color: #64748b; }
+
+    /* ── Sections ── */
+    .dm-section { padding: 3.5rem 0; }
+    .dm-section:nth-child(even) { background: #f8fafc; }
+    .section-label {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--dm-accent-text);
+      border-left: 3px solid var(--dm-accent);
+      padding-left: .6rem;
+      margin-bottom: .5rem;
+    }
+    .dm-section h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+
+    /* ── Tables ── */
+    .dm-table th { background: var(--dm-dark); color: #fff; font-size: .8rem; font-weight: 600; }
+    .dm-table td { font-size: .85rem; vertical-align: middle; }
+    .badge-go    { background: #198754; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-nogo  { background: #dc3545; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .badge-dec   { background: #fef3c7; color: #92400e; font-size: .7rem; padding: .2rem .5rem; border-radius: 4px; white-space: nowrap; font-weight: 600; }
+    .row-hl td   { background: #fff7ed !important; }
+
+    /* ── Deliverable cards ── */
+    .deliv-card {
+      border-left: 4px solid var(--dm-accent);
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,.07);
+    }
+    .deliv-card .deliv-num { font-size: .7rem; font-weight: 700; color: var(--dm-accent-text); text-transform: uppercase; letter-spacing: .08em; }
+    .deliv-card .deliv-title { font-weight: 700; font-size: 1rem; margin-bottom: .25rem; }
+    .deliv-card ul, .deliv-card p { font-size: .85rem; margin: 0; color: #475569; }
+    .deliv-card ul { padding-left: 1.2rem; }
+
+    /* ── Flow ── */
+    .flow-step { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+    .flow-num { min-width: 34px; height: 34px; background: var(--dm-dark); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .85rem; flex-shrink: 0; }
+    .flow-content h6 { font-weight: 700; font-size: .9rem; margin-bottom: .1rem; }
+    .flow-content p { font-size: .82rem; color: #475569; margin: 0; }
+
+    /* ── Code block ── */
+    .code-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      font-family: 'Courier New', monospace;
+      font-size: .78rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    .code-kw { color: #7dd3fc; }
+    .code-fn { color: #fbbf24; }
+    .code-str { color: #86efac; }
+    .code-cm { color: #94a3b8; font-style: italic; }
+    .code-err { color: #fca5a5; }
+    .code-ok { color: #86efac; }
+
+    /* ── Equation (the reconciliation) ── */
+    .equation {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .6rem;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.2rem; font-size: .9rem;
+    }
+    .equation .term { text-align: center; padding: .5rem .8rem; border-radius: 8px; background: #f1f5f9; min-width: 120px; }
+    .equation .term strong { display: block; font-size: 1.05rem; color: var(--dm-dark); }
+    .equation .term small { color: #64748b; font-size: .72rem; }
+    .equation .term.bad { background: #fef2f2; }
+    .equation .term.bad strong { color: #b91c1c; }
+    .equation .term.good { background: #f0fdf4; }
+    .equation .term.good strong { color: #15803d; }
+    .equation .op { font-weight: 700; color: #64748b; font-size: 1.2rem; }
+
+    /* ── Back button ── */
+    .back-btn { color: #fff; opacity: .8; text-decoration: none; font-size: .85rem; }
+    .back-btn:hover { opacity: 1; color: #fff; }
+
+    .inc-severity-high { color: #dc3545; font-weight: 700; }
+
+    /* ── Customer note ── */
+    .customer-note {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid var(--dm-accent);
+      border-radius: 8px;
+      padding: 1.4rem 1.6rem;
+      font-size: .87rem;
+      color: #334155;
+      line-height: 1.7;
+    }
+    .customer-note h6 { font-weight: 700; margin-bottom: .5rem; color: var(--dm-dark); }
+
+    .callout { padding: 1rem; border-radius: 8px; font-size: .84rem; }
+    .callout-amber { background: #fff7ed; border-left: 4px solid var(--dm-accent); }
+    .callout-blue  { background: #eff6ff; border-left: 4px solid var(--dm-mid); }
+    .callout-red   { background: #fef2f2; border-left: 4px solid #dc3545; }
+  </style>
+</head>
+
+<body class="portfolio-details-page">
+
+  <header id="header" class="header d-flex align-items-center light-background sticky-top">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="resume.html">Resume</a></li>
+          <li><a href="portfolio.html" class="active">Portfolio</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <div class="header-social-links">
+        <a href="mailto:zahraeh.fr@gmail.com" class="email"><i class="bi bi-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/zahra-e-3004953a0/" target="_blank"><i class="bi bi-linkedin"></i></a>
+        <a href="https://github.com/zahraeh" target="_blank"><i class="bi bi-github"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ══ HERO ══════════════════════════════════════════════════════════ -->
+    <section class="dm-hero">
+      <div class="container">
+        <a href="portfolio.html" class="back-btn mb-3 d-inline-block"><i class="bi bi-arrow-left me-1"></i> Back to portfolio</a>
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-8">
+            <span class="badge-chip">Implementation · Data Migration · Reconciliation</span>
+            <h1>⇄ Customer Data Migration</h1>
+            <p class="sub mb-1">Every row accounted for. <span class="dm-bright">Every euro accounted for.</span></p>
+            <p class="sub mb-3">Kickoff → Mapping Spec → 3 Dry Runs → €90k Incident → Cutover Runbook → Customer Update · Maison Verte Services (fictional, 38 technicians)</p>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge bg-light text-dark">Python</span>
+              <span class="badge bg-light text-dark">SQLite (target API stand-in)</span>
+              <span class="badge bg-light text-dark">libphonenumber</span>
+              <span class="badge bg-light text-dark">Idempotent Upserts</span>
+              <span class="badge bg-light text-dark">Retry with Backoff</span>
+              <span class="badge bg-light text-dark">Rollback</span>
+              <span class="badge bg-light text-dark">Claude API</span>
+              <span class="badge bg-light text-dark">Pytest</span>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="bg-white bg-opacity-10 rounded p-3" style="border:1px solid rgba(255,255,255,.2)">
+              <table class="table table-sm mb-0 text-white" style="font-size:.85rem;">
+                <tbody>
+                  <tr><td class="opacity-75">Author</td><td><strong>Zahra · Implementation Consultant</strong></td></tr>
+                  <tr><td class="opacity-75">Client</td><td>Maison Verte Services (fictional)</td></tr>
+                  <tr><td class="opacity-75">Scope</td><td>Customers, contacts, contracts out of a 12-year-old desktop tool</td></tr>
+                  <tr><td class="opacity-75">Stack</td><td>Python · SQLite · Claude API</td></tr>
+                  <tr><td class="opacity-75">Status</td><td><span class="badge" style="background:rgba(255,255,255,.2)">Portfolio · Generated data</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ KPI STRIP ══════════════════════════════════════════════════════ -->
+    <div class="kpi-strip py-3">
+      <div class="container">
+        <div class="row text-center gy-3">
+          <div class="col-6 col-md-2 kpi-item"><strong>1,591</strong><span>source rows, all accounted for</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>€0.00</strong><span>unexplained vs. legacy total</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>3</strong><span>dry runs to GO</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>7</strong><span>decisions logged &amp; signed off</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>50</strong><span>tests passing</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>0%</strong><span>real customer data</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 01 CONTEXT ══════════════════════════════════════════════════════ -->
+    <section class="dm-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">01</span>
+        <h2>Context &amp; Diagnosis</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <p><strong>Maison Verte Services</strong> maintains boilers and heat pumps for ~480 homes and businesses around Bourg-en-Bresse and Lyon. For 12 years they've run on a desktop tool that can't schedule technicians or send contract renewals, so the office does both in Excel. <strong>Renewals get missed, and contracts lapse without anyone calling the customer.</strong></p>
+            <p>The new field-service platform automates renewals, but only if the contract data it receives is right. That makes the migration the part of the project where the money is.</p>
+
+            <h5 class="fw-semibold mt-4 mb-3">What the Legacy Exports Actually Looked Like</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered dm-table">
+                <thead><tr><th>Reality</th><th>Why it matters</th></tr></thead>
+                <tbody>
+                  <tr><td>Windows-1252, semicolon-delimited CSV</td><td>Read as UTF-8/comma, <code>Réf contrat</code> becomes <code>RÃ©f contrat</code>, or the file won't parse</td></tr>
+                  <tr><td>145 postcodes with 4 digits (<code>1000</code>)</td><td>Excel dropped the leading zero from every Ain (01) postcode</td></tr>
+                  <tr><td>6 ways of writing a phone number</td><td><code>06.12…</code>, <code>33612…</code>, <code>+33 6…</code>: same number, different strings</td></tr>
+                  <tr><td>12 companies created twice (same SIRET)</td><td>Their contacts and contracts are split across two records</td></tr>
+                  <tr><td>Contacts &amp; contracts on deleted customers</td><td>Orphans: nothing to attach them to</td></tr>
+                  <tr><td>Amounts in 4 formats in one column</td><td><code>1 250,50</code> · <code>189,90 €</code> · <code>450</code> · <code>2.400</code>. <a href="#incident">The last one mattered most.</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="rounded p-3 mb-4" style="background: linear-gradient(135deg,#172554,#1e3a8a); color:#fff; font-size:.85rem;">
+              <strong><i class="bi bi-bullseye me-1"></i> Success Criteria, Signed Off at Kickoff</strong>
+              <ol class="mt-2 mb-0" style="line-height:1.9;">
+                <li>Every source row is <span class="dm-bright">accounted for</span>: loaded, merged, out of scope, or in the exceptions file with a reason</li>
+                <li>Reject rate <span class="dm-bright">≤ 3%</span>, every rejected row reviewed by the office</li>
+                <li>Contract value reconciles to the legacy control total <span class="dm-bright">to the cent</span></li>
+                <li>Load can be re-run safely and <span class="dm-bright">rolled back in minutes</span></li>
+              </ol>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Stakeholders</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered dm-table">
+                <thead><tr><th>Stakeholder</th><th>Needs from the migration</th></tr></thead>
+                <tbody>
+                  <tr><td>Nadia (Ops lead)</td><td>Go-live on 05/10 with no data loss she has to explain</td></tr>
+                  <tr><td>Laurent (Owner)</td><td>Contract revenue in the new tool matches what he knows it is</td></tr>
+                  <tr><td>Office team (3)</td><td>Find every customer by name or phone on day one</td></tr>
+                  <tr class="table-warning fw-bold"><td>Zahra ★</td><td>Implementation Consultant, end to end</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 02 KICKOFF ═════════════════════════════════════════════════════ -->
+    <section class="dm-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverable 01</span>
+        <h2>Kickoff — The One Request That Mattered Most</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <div class="callout callout-amber mb-4" style="font-size:.95rem;">
+              <strong><i class="bi bi-calculator me-1"></i> "Can you export your 'CA contrats actifs' report on the same day as the CSVs?"</strong>
+              <p class="mb-0 mt-2" style="font-size:.85rem;">Row counts prove nothing got lost. They don't prove what got loaded is <em>right</em>. The customer's own revenue figure is independent of every line of code I write, so it's the only check my own bugs can't fool. Received 18/09: <strong>€701,366.21</strong>.</p>
+            </div>
+
+            <h5 class="fw-semibold mb-3">Discovery: Surprises Worth Writing Down</h5>
+            <div class="deliv-card">
+              <div class="deliv-num">Heard in the workshop</div>
+              <div class="deliv-title">"A new rep didn't find them and re-created them"</div>
+              <ul><li>→ duplicates exist, and they have their own contacts and contracts</li></ul>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-num">Heard in the workshop</div>
+              <div class="deliv-title">"We sometimes open the export in Excel to clean it up"</div>
+              <ul><li>→ expect Excel damage: lost leading zeros, reformatted numbers</li></ul>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Open Questions → Logged Decisions</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered dm-table">
+                <thead><tr><th>ID</th><th>Decision</th><th>Why</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="badge-dec">D-01</span></td><td>Go-live criteria: ≤3% rejects, 100% accounted, control total to the cent</td><td>"A few dozen rows to review, not hundreds"</td></tr>
+                  <tr><td><span class="badge-dec">D-02</span></td><td>Auto-merge <strong>only</strong> on identical SIRET; households flagged, never merged</td><td>A wrong merge is worse than a duplicate</td></tr>
+                  <tr><td><span class="badge-dec">D-03</span></td><td>Terminated contracts stay in the legacy archive</td><td>They'd trigger renewal emails</td></tr>
+                  <tr><td><span class="badge-dec">D-04</span></td><td>Bad phone/email → load empty + flag, don't reject the customer</td><td>Losing a customer is worse than losing a phone number</td></tr>
+                  <tr><td><span class="badge-dec">D-05</span></td><td>Pad 4-digit postcodes with a leading zero</td><td>All confirmed to be Ain (01xxx)</td></tr>
+                  <tr><td><span class="badge-dec">D-06</span></td><td><code>2.400</code> = €2,400 (dot = thousands)</td><td>Confirmed against paper contracts</td></tr>
+                  <tr><td><span class="badge-dec">D-07</span></td><td>Orphan rows: office decides per row</td><td>Only they know if those customers are active</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-muted" style="font-size:.8rem;">Every decision has a date and a named owner on the customer side. Nothing was "decided by the consultant" silently.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 03 TOOLKIT ═════════════════════════════════════════════════════ -->
+    <section class="dm-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverable 02</span>
+        <h2>The Toolkit — Mapping Spec as Code</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <div class="flow-step"><div class="flow-num">1</div><div class="flow-content">
+              <h6>profile</h6>
+              <p>Detects encoding and delimiter, and shows each column's value <em>shapes</em>: <code>99999</code> ×340 next to <code>9999</code> ×145 means lost leading zeros</p>
+            </div></div>
+            <div class="flow-step"><div class="flow-num">2</div><div class="flow-content">
+              <h6>suggest-mapping <small class="text-muted">optional AI</small></h6>
+              <p>Drafts source→target mapping with a confidence and a reason per line. Offline heuristics, or Claude with <code>--ai</code> (headers + 5 samples; <code>--mask</code> sends formats only). <strong>A draft for a human to approve, never auto-applied.</strong></p>
+            </div></div>
+            <div class="flow-step"><div class="flow-num">3</div><div class="flow-content">
+              <h6>dry-run</h6>
+              <p>Transform, validate, de-duplicate, reconcile. Every row gets exactly one outcome, and the run ends in GO / NO-GO with reasons</p>
+            </div></div>
+            <div class="flow-step"><div class="flow-num">4</div><div class="flow-content">
+              <h6>load</h6>
+              <p>Refuses to run on NO-GO. Batched upserts keyed on legacy ID (re-runs don't duplicate), 429s retried with exponential backoff, then reconciled against the target</p>
+            </div></div>
+            <div class="flow-step"><div class="flow-num">5</div><div class="flow-content">
+              <h6>rollback</h6>
+              <p>Every row remembers the run that wrote it; one command removes a whole run</p>
+            </div></div>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">One Outcome Per Row</h5>
+            <div class="table-responsive mb-3">
+              <table class="table table-bordered dm-table">
+                <thead><tr><th>Outcome</th><th>Meaning</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>accepted</strong></td><td>Loaded (flagged if it carries a warning)</td></tr>
+                  <tr><td><strong>merged</strong></td><td>Duplicate folded into a survivor; its contacts &amp; contracts re-linked</td></tr>
+                  <tr><td><strong>skipped</strong></td><td>Valid but out of scope by agreement (terminated contracts)</td></tr>
+                  <tr><td><strong>rejected</strong></td><td>Can't be loaded; goes to the customer with a reason they can act on</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="code-block mb-3">
+<span class="code-cm"># config/v3.yaml (the mapping spec, executable)</span>
+<span class="code-kw">annual_value:</span> {source: <span class="code-str">"Montant annuel HT"</span>,
+               transforms: [<span class="code-fn">amount_fr</span>], required: <span class="code-kw">true</span>}
+<span class="code-kw">postcode:</span>     {source: <span class="code-str">"CP"</span>,
+               transforms: [<span class="code-fn">postcode_fr</span>], required: <span class="code-kw">true</span>}
+<span class="code-kw">dedupe:</span>
+  strong_key: siret              <span class="code-cm"># merge (D-02)</span>
+  review_keys: [name, postcode]  <span class="code-cm"># flag only</span>
+            </div>
+            <div class="callout callout-blue">
+              <strong><i class="bi bi-file-earmark-spreadsheet me-1"></i> Built for the person who'll open it:</strong> exceptions files are UTF-8 with BOM and <code>;</code> separators, so they open correctly in French Excel with a double-click, and every row says what to do next.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 04 DRY RUNS ════════════════════════════════════════════════════ -->
+    <section class="dm-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverable 03</span>
+        <h2>Three Dry Runs, Versioned</h2>
+
+        <div class="table-responsive mb-4">
+          <table class="table table-bordered dm-table">
+            <thead><tr><th>Run</th><th>What changed</th><th class="text-end">Reject rate</th><th class="text-center">Rows balanced</th><th class="text-end">Euros unexplained</th><th class="text-center">Decision</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Strict mapping from the vendor's import template</td><td class="text-end">31.3%</td><td class="text-center">✅</td><td class="text-end">€90,295.61</td><td class="text-center"><span class="badge-nogo">NO-GO</span></td></tr>
+              <tr class="row-hl"><td>2</td><td>Postcodes repaired, every phone format parsed</td><td class="text-end">1.95%</td><td class="text-center">✅</td><td class="text-end"><strong>€90,295.61</strong></td><td class="text-center"><span class="badge-nogo">NO-GO</span></td></tr>
+              <tr><td>3</td><td>French number parsing for amounts</td><td class="text-end">1.95%</td><td class="text-center">✅</td><td class="text-end">€0.00</td><td class="text-center"><span class="badge-go">GO</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <div class="deliv-card h-100">
+              <div class="deliv-num">Dry run 1 · 31.3% rejected</div>
+              <div class="deliv-title">One bad column multiplies</div>
+              <p>145 accounts rejected for 4-digit postcodes. Their <strong>201 contacts and 130 contracts</strong> were rejected with them, so 145 bad cells became 476 rejected rows. Fixed with a confirmed rule (D-05), not a guess.</p>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="deliv-card h-100" style="border-left-color:#dc3545;">
+              <div class="deliv-num" style="color:#b91c1c;">Dry run 2 · everything looked ready</div>
+              <div class="deliv-title">Under the reject threshold. Every row balanced. Still wrong.</div>
+              <p>By row counts this run was ready to ship. The control total said <strong>€90,295.61</strong> of contract value was missing, with no error anywhere. <a href="#incident">What happened ↓</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 05 INCIDENT ════════════════════════════════════════════════════ -->
+    <section class="dm-section" data-aos="fade-up" id="incident">
+      <div class="container">
+        <span class="section-label">Deliverable 04</span>
+        <h2>Incident — €90,295.61 Misread, Zero Errors</h2>
+
+        <div class="callout callout-red mb-4" style="font-size:.87rem;">
+          <strong class="inc-severity-high"><i class="bi bi-exclamation-triangle-fill me-1"></i> CRITICAL</strong>:
+          would have under-stated active contract revenue by <strong>12.9%</strong> in the new platform. 23 business contracts would have shown €1–€7 a year, and renewal emails would have quoted <strong>€2.40 instead of €2,400</strong>.
+        </div>
+
+        <h5 class="fw-semibold mb-3">The Reconciliation That Didn't Close (Dry Run 2)</h5>
+        <div class="equation mb-2">
+          <div class="term"><strong>€701,366.21</strong><small>legacy control total<br>(customer's report)</small></div>
+          <div class="op">−</div>
+          <div class="term"><strong>€590,936.84</strong><small>migrated</small></div>
+          <div class="op">−</div>
+          <div class="term"><strong>€20,133.76</strong><small>on hold<br>(rejected rows)</small></div>
+          <div class="op">=</div>
+          <div class="term bad"><strong>€90,295.61</strong><small>unexplained<br>→ NO-GO</small></div>
+        </div>
+        <div class="equation mb-4">
+          <div class="term"><strong>€701,366.21</strong><small>legacy control total</small></div>
+          <div class="op">−</div>
+          <div class="term"><strong>€675,837.85</strong><small>migrated</small></div>
+          <div class="op">−</div>
+          <div class="term"><strong>€25,528.36</strong><small>on hold</small></div>
+          <div class="op">=</div>
+          <div class="term good"><strong>€0.00</strong><small>dry run 3<br>→ GO</small></div>
+        </div>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Root Cause</h5>
+            <div class="table-responsive mb-3">
+              <table class="table table-bordered dm-table">
+                <thead><tr><th>Legacy value</th><th>Meaning</th><th class="text-end">Parser v2 read</th></tr></thead>
+                <tbody>
+                  <tr><td><code>1 250,50</code></td><td>€1,250.50</td><td class="text-end">1,250.50 ✅</td></tr>
+                  <tr><td><code>189,90 €</code></td><td>€189.90</td><td class="text-end">189.90 ✅</td></tr>
+                  <tr class="row-hl"><td><code>2.400</code></td><td>€2,400</td><td class="text-end"><strong class="text-danger">2.40</strong> ❌</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p style="font-size:.87rem; color:#475569;">The legacy tool prints whole-euro amounts ≥ €1,000 with a dot as the thousands separator. The parser treated every dot as a decimal point. <code>2.40</code> is a valid, positive number, so nothing failed.</p>
+
+            <h5 class="fw-semibold mb-3 mt-4">Why Only the Control Total Caught It</h5>
+            <ul style="font-size:.87rem; color:#475569;">
+              <li><strong>Row counts:</strong> the 23 rows were loaded and counted correctly; they just held the wrong values</li>
+              <li><strong>Validation:</strong> 2.40 passes every rule</li>
+              <li><strong>Our own totals:</strong> we'd have summed the same wrong values and matched ourselves</li>
+              <li><strong>The customer's report</strong> doesn't depend on any code I wrote</li>
+            </ul>
+          </div>
+
+          <div class="col-lg-6">
+            <h5 class="fw-semibold mb-3">Reproduce → Fix → Verify</h5>
+            <div class="code-block mb-3">
+<span class="code-cm"># tests/test_transforms.py: the bug, pinned forever</span>
+<span class="code-kw">def</span> <span class="code-fn">test_amount_naive_silently_reads_thousands_dot_as_decimal</span>():
+    <span class="code-kw">assert</span> t.amount_naive(<span class="code-str">"2.400"</span>) == <span class="code-err">2.40</span>
+
+<span class="code-cm"># migrate/transforms.py: the fix</span>
+<span class="code-cm"># a dot followed by exactly 3 digits, no comma = thousands</span>
+_THOUSANDS_DOT = re.compile(<span class="code-str">r"^\d{1,3}(\.\d{3})+$"</span>)
+            </div>
+            <div class="code-block mb-3">
+<span class="code-cm">$ python -m migrate dry-run --config config/v2.yaml</span>
+<span class="code-err">NO-GO</span>
+  - contracts.annual_value: <span class="code-err">€90,295.61 unexplained</span>
+    vs. the legacy control total
+
+<span class="code-cm">$ python -m migrate dry-run --config config/v3.yaml</span>
+<span class="code-ok">GO</span>
+            </div>
+            <h5 class="fw-semibold mb-2">Corrective Actions</h5>
+            <ol style="font-size:.85rem; color:#475569;">
+              <li>French-rules amount parser + a regression test for every format seen</li>
+              <li><strong>The profile had shown <code>9.999</code> ×25, but only as the 5th shape</strong>, and it displayed the top 3. It now shows every shape above 2% of rows.</li>
+              <li>Control totals stay a <em>hard</em> go-live gate, not a warning</li>
+              <li>Kickoff checklist: one control total per money or quantity field, same day as export</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 06 CUTOVER ═════════════════════════════════════════════════════ -->
+    <section class="dm-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverable 05</span>
+        <h2>Cutover Runbook — Go / No-Go Built In</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <div class="table-responsive">
+              <table class="table table-bordered dm-table">
+                <thead><tr><th>When</th><th>Step</th><th>Go / no-go check</th></tr></thead>
+                <tbody>
+                  <tr><td>Fri 17:00</td><td>Freeze legacy tool, final exports + same-day control total</td><td>Figure comes from the customer</td></tr>
+                  <tr><td>Sat</td><td>Profile final exports vs. dry run 3</td><td>Any <strong>new</strong> value shape → stop</td></tr>
+                  <tr><td>Sat</td><td>Final dry run</td><td>Must be GO</td></tr>
+                  <tr><td>Sat</td><td>Load + automatic reconciliation</td><td>In target = accepted · 0 stale · 0 orphans · €0.00</td></tr>
+                  <tr><td>Sat</td><td>Spot check: 10 random accounts + 5 highest contracts</td><td>15/15 match the legacy tool</td></tr>
+                  <tr><td>Sat 14:00</td><td><strong>Go / no-go call</strong></td><td>Customer's ops lead decides</td></tr>
+                  <tr><td>Week 1–2</td><td>Hypercare: daily check-in; first renewal batch reviewed <em>before</em> it sends</td><td>Open issues list empty at exit</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="callout callout-amber mb-3">
+              <strong><i class="bi bi-arrow-counterclockwise me-1"></i> Rollback is boring on purpose:</strong> the legacy tool stays read-only and intact. If any check fails and can't be explained in 2 hours, one command removes the run, and the office works in the old tool on Monday as usual.
+            </div>
+            <div class="code-block mb-3">
+<span class="code-cm">$ python -m migrate load --config config/v3.yaml \
+    --simulate-rate-limit 2</span>
+<span class="code-ok">GO</span>: 16 batches, 7 transient failures retried
+<span class="code-cm">$ python -m migrate rollback --run-id v3-…</span>
+contracts: 391 rows removed
+contacts:  652 rows removed
+accounts:  470 rows removed
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 07 CUSTOMER UPDATE ═════════════════════════════════════════════ -->
+    <section class="dm-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverable 06</span>
+        <h2>Telling the Customer — One Email, One Ask</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <div class="customer-note">
+              <h6>Subject: Migration: ready for 05/10, one decision needed from you by Friday</h6>
+              <p>Short version: <strong>the migration is ready for go-live on Monday 5 October.</strong> We need one thing from your team by Friday, and I owe you an explanation of something we caught this week.</p>
+              <p>On Tuesday's test run, everything looked fine: no errors, and every row accounted for. But the contract total came out <strong>€90,295 lower</strong> than your report. Your old system writes some amounts like <code>2.400</code>, meaning two thousand four hundred euros. Our first version read that as two euros forty. Thank you for checking five of them against the paper contracts. That confirmed the fix.</p>
+              <p>This never reached your new platform. It's the reason we asked for your control total at kickoff, and it's exactly what that total is for.</p>
+              <p class="mb-0"><strong>What we need by Friday:</strong> open the three exceptions files (they open directly in Excel) and decide on the 31 rows marked REJECTED. Together they're worth €25,528 a year, so they're worth the 30 minutes.</p>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <h5 class="fw-semibold mb-3">Incident Report vs. Customer Email</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered dm-table">
+                <thead><tr><th></th><th>Incident report</th><th>Customer email</th></tr></thead>
+                <tbody>
+                  <tr><td>Audience</td><td>Project team</td><td>Ops lead, non-technical</td></tr>
+                  <tr><td>Root cause</td><td>Parser regex, profile display limit</td><td>"read €2,400 as €2.40"</td></tr>
+                  <tr><td>Leads with</td><td>Timeline &amp; evidence</td><td>"Ready for Monday"</td></tr>
+                  <tr><td>Ends with</td><td>Corrective actions</td><td>One dated ask, sized in euros</td></tr>
+                  <tr><td>Facts changed</td><td colspan="2" class="text-center fw-bold dm-accent-line">None</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 08 RESULTS ═════════════════════════════════════════════════════ -->
+    <section class="dm-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">08</span>
+        <h2>What This Project Demonstrates</h2>
+
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <div class="deliv-card">
+              <div class="deliv-title">Asking for proof that doesn't depend on me</div>
+              <p>The control total was requested at kickoff, before a single line of mapping existed. It's the check that caught the one bug nothing else would have.</p>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-title">Knowing what to repair and what to hand back</div>
+              <p><code>1000</code> → <code>01000</code> is certain, so it's repaired. <code>31/02/2023</code> isn't "probably the 28th", so it goes back to the customer with a reason.</p>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-title">Decisions with owners, not silent defaults</div>
+              <p>Seven decisions, each dated and agreed by a named person on the customer side.</p>
+            </div>
+            <div class="deliv-card">
+              <div class="deliv-title">Engineering for the operational reality</div>
+              <p>Idempotent loads, retry with backoff, run-level rollback, stale-row detection, and exceptions files built for French Excel.</p>
+            </div>
+            <div class="p-3 rounded mt-3" style="background:#ede9fe; border-left:4px solid #7c3aed; font-size:.85rem;">
+              <strong><i class="bi bi-info-circle me-1"></i> Author's note:</strong> this project simulates a full migration engagement, including the dry run that went wrong, rather than presenting a clean narrative. Maison Verte Services and every person, company and number in it are generated; no real customer data is used anywhere.
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <h5 class="fw-semibold mb-3">The 6 Deliverables</h5>
+            <div class="deliv-card"><div class="deliv-num">01</div><div class="deliv-title">🧭 Kickoff &amp; Discovery</div><ul><li>Stakeholders, confirmed vs. open, success criteria</li></ul></div>
+            <div class="deliv-card"><div class="deliv-num">02</div><div class="deliv-title">🗺 Data Mapping Spec</div><ul><li>Field by field, plus the executable YAML</li></ul></div>
+            <div class="deliv-card"><div class="deliv-num">03</div><div class="deliv-title">🧪 Dry-Run &amp; Decision Log</div><ul><li>3 versioned runs, 7 signed-off decisions</li></ul></div>
+            <div class="deliv-card"><div class="deliv-num">04</div><div class="deliv-title">🚨 Incident Report</div><ul><li>€90k silent misread: timeline, root cause, actions</li></ul></div>
+            <div class="deliv-card"><div class="deliv-num">05</div><div class="deliv-title">📋 Cutover Runbook</div><ul><li>Freeze, load, go/no-go, rollback, hypercare</li></ul></div>
+            <div class="deliv-card"><div class="deliv-num">06</div><div class="deliv-title">📣 Customer Update</div><ul><li>Same story, one clear ask, sized in euros</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ CTA ════════════════════════════════════════════════════════════ -->
+    <section class="py-5 text-center" style="background: linear-gradient(135deg, #0f172a, #1e3a8a); color:#fff;">
+      <div class="container">
+        <h3 class="mb-2">Want to see the code and the documents?</h3>
+        <p class="opacity-75 mb-4">Toolkit, configs, all six documents, and every generated report are on GitHub.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+          <a href="https://github.com/zahraeh/customer-data-migration" target="_blank" rel="noopener" class="btn" style="background:var(--dm-bright); color:#172554; border:none; font-weight:600;">
+            <i class="bi bi-github me-1"></i> View on GitHub
+          </a>
+          <a href="portfolio.html" class="btn btn-outline-light">← Back to Portfolio</a>
+          <a href="contact.html" class="btn btn-outline-light">Contact Me</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Zahra E</strong> <span>All Rights Reserved</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</body>
+</html>
