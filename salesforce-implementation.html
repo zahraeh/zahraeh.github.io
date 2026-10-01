@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Salesforce Implementation — Atelier Rhône Équipements | Zahra E</title>
+  <meta name="description" content="A Salesforce implementation run like a real client engagement, built in public over four weeks: discovery, data model, security, Flows, SIRET enrichment from the French company register, Stripe webhooks with idempotency, a 200-account migration, UAT and dashboards.">
+  <meta name="keywords" content="Salesforce, Salesforce Consultant, Salesforce Admin, Apex, Flows, Stripe, Webhooks, Idempotency, SIRET, API Recherche d'entreprises, Data Migration, UAT, Zahra">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --sf-dark:   #032d60;
+      --sf-mid:    #0b5cab;
+      --sf-blue:   #0176d3;
+      --sf-bright: #7dd3fc;
+      --sf-accent-text: #0b5cab;
+    }
+    .sf-hero { background: linear-gradient(135deg, #021a3a 0%, #032d60 55%, #0b5cab 100%); color: #fff; padding: 4rem 0 3rem; }
+    .sf-hero .badge-chip { display: inline-block; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 999px; font-size: .75rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; padding: .25rem .8rem; margin-bottom: 1rem; }
+    .sf-hero h1 { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 700; }
+    .sf-hero .sub { opacity: .85; font-size: .95rem; }
+    .sf-bright { color: var(--sf-bright); font-weight: 700; }
+    .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #4ade80; margin-right: .4rem; box-shadow: 0 0 0 0 rgba(74,222,128,.6); animation: pulse 2s infinite; }
+    @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(74,222,128,0); } 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); } }
+    @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+
+    .kpi-strip { background: #f8fafc; border-top: 3px solid var(--sf-blue); border-bottom: 1px solid #e2e8f0; }
+    .kpi-item strong { font-size: 1.5rem; color: var(--sf-accent-text); display: block; line-height: 1.1; }
+    .kpi-item span { font-size: .75rem; color: #64748b; }
+
+    .sf-section { padding: 3.5rem 0; }
+    .sf-section:nth-child(even) { background: #f8fafc; }
+    .section-label { display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sf-accent-text); border-left: 3px solid var(--sf-blue); padding-left: .6rem; margin-bottom: .5rem; }
+    .sf-section h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+
+    .tldr { border-left: 4px solid var(--sf-blue); padding: .25rem 0 .25rem 1.2rem; max-width: 900px; }
+    .tldr p { font-size: 1rem; line-height: 1.7; color: #1e293b; }
+
+    .sf-table th { background: var(--sf-dark); color: #fff; font-size: .8rem; font-weight: 600; }
+    .sf-table td { font-size: .85rem; vertical-align: middle; }
+
+    .pain-card { background: #fff; border-radius: 8px; padding: 1.2rem 1.4rem; box-shadow: 0 1px 6px rgba(0,0,0,.07); height: 100%; border-top: 3px solid var(--sf-blue); }
+    .pain-card i { font-size: 1.4rem; color: var(--sf-blue); }
+    .pain-card h6 { font-weight: 700; margin: .5rem 0 .3rem; }
+    .pain-card p { font-size: .84rem; color: #475569; margin: 0; }
+
+    .week-card { background: #fff; border-radius: 8px; padding: 1.25rem 1.4rem; box-shadow: 0 1px 6px rgba(0,0,0,.07); height: 100%; border-left: 4px solid #cbd5e1; }
+    .week-card.now { border-left-color: var(--sf-blue); }
+    .week-card .wk { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--sf-accent-text); }
+    .week-card h6 { font-weight: 700; margin: .25rem 0 .5rem; }
+    .week-card ul { font-size: .82rem; color: #475569; padding-left: 1.1rem; margin: 0; }
+    .st { font-size: .68rem; font-weight: 700; padding: .15rem .5rem; border-radius: 4px; white-space: nowrap; }
+    .st-next { background: #e0f2fe; color: #075985; }
+    .st-todo { background: #f1f5f9; color: #475569; }
+    .st-done { background: #dcfce7; color: #166534; }
+
+    .q-card { background: #fff; border: 1px solid #e2e8f0; border-left: 4px solid var(--sf-blue); border-radius: 8px; padding: 1.2rem 1.4rem; height: 100%; }
+    .q-card h6 { font-weight: 700; color: var(--sf-dark); }
+    .q-card p { font-size: .85rem; color: #475569; margin: 0; }
+
+    .back-btn { color: #fff; opacity: .8; text-decoration: none; font-size: .85rem; }
+    .back-btn:hover { opacity: 1; color: #fff; }
+    .callout-blue { background: #eff6ff; border-left: 4px solid var(--sf-blue); padding: 1rem; border-radius: 8px; font-size: .84rem; }
+  </style>
+</head>
+
+<body class="portfolio-details-page">
+
+  <header id="header" class="header d-flex align-items-center light-background sticky-top">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="resume.html">Resume</a></li>
+          <li><a href="portfolio.html" class="active">Portfolio</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <div class="header-social-links">
+        <a href="mailto:zahraeh.fr@gmail.com" class="email"><i class="bi bi-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/zahra-e-3004953a0/" target="_blank"><i class="bi bi-linkedin"></i></a>
+        <a href="https://github.com/zahraeh" target="_blank"><i class="bi bi-github"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ══ HERO ══════════════════════════════════════════════════════════ -->
+    <section class="sf-hero">
+      <div class="container">
+        <a href="portfolio.html" class="back-btn mb-3 d-inline-block"><i class="bi bi-arrow-left me-1"></i> Back to portfolio</a>
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-8">
+            <span class="badge-chip"><span class="live-dot"></span>Building in public · Launch 2 Nov 2026</span>
+            <h1>☁ Salesforce Implementation</h1>
+            <p class="sub mb-1">From Excel to Salesforce, <span class="sf-bright">run like a real client engagement.</span></p>
+            <p class="sub mb-3">Discovery → Data Model → Security → Flows → SIRET &amp; Stripe Integrations → Migration → UAT → Dashboard · Atelier Rhône Équipements (fictional, ~80 staff, Lyon)</p>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge bg-light text-dark">Salesforce</span>
+              <span class="badge bg-light text-dark">Apex</span>
+              <span class="badge bg-light text-dark">Flows</span>
+              <span class="badge bg-light text-dark">Named Credentials</span>
+              <span class="badge bg-light text-dark">Stripe Webhooks</span>
+              <span class="badge bg-light text-dark">Idempotency</span>
+              <span class="badge bg-light text-dark">Data Loader</span>
+              <span class="badge bg-light text-dark">SFDX</span>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="bg-white bg-opacity-10 rounded p-3" style="border:1px solid rgba(255,255,255,.2)">
+              <table class="table table-sm mb-0 text-white" style="font-size:.85rem;">
+                <tbody>
+                  <tr><td class="opacity-75">Author</td><td><strong>Zahra · Salesforce Consultant</strong></td></tr>
+                  <tr><td class="opacity-75">Client</td><td>Atelier Rhône Équipements (fictional)</td></tr>
+                  <tr><td class="opacity-75">Scope</td><td>Quote-to-cash, payments, migration, e-invoicing readiness</td></tr>
+                  <tr><td class="opacity-75">Timeline</td><td>5 Oct – 1 Nov 2026</td></tr>
+                  <tr><td class="opacity-75">Status</td><td><span class="badge" style="background:rgba(255,255,255,.2)">Week 0 · Plan ready</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ KPI STRIP ══════════════════════════════════════════════════════ -->
+    <div class="kpi-strip py-3">
+      <div class="container">
+        <div class="row text-center gy-3">
+          <div class="col-6 col-md-2 kpi-item"><strong>4</strong><span>weeks, fixed launch date</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>3</strong><span>roles, private sharing</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>2</strong><span>live API integrations</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>200</strong><span>messy legacy accounts to migrate</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>12</strong><span>client deliverables</span></div>
+          <div class="col-6 col-md-2 kpi-item"><strong>FR · EN</strong><span>case study &amp; README</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TL;DR ═══════════════════════════════════════════════════════════ -->
+    <section class="py-4" style="background:#fff; border-bottom:1px solid #e2e8f0;">
+      <div class="container">
+        <div class="tldr">
+          <span class="d-block mb-1" style="font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--sf-accent-text);">The 30-second version</span>
+          <p class="mb-0">An 80-person industrial equipment distributor in Lyon runs sales on Excel. Quotes get lost, payments are chased by hand, company details are re-typed, and the French e-invoicing reform is coming. Over four weeks I'm taking them to Salesforce the way a consultant would: discovery first, then build, then proof. This page updates every week until launch on <strong>2 November 2026</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ PROBLEM ═════════════════════════════════════════════════════════ -->
+    <section class="sf-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">The client problem</span>
+        <h2>Four things going wrong today</h2>
+        <div class="row g-3">
+          <div class="col-md-6 col-lg-3"><div class="pain-card"><i class="bi bi-file-earmark-x"></i><h6>Quotes go missing</h6><p>Quotes live in spreadsheets and inboxes. Nobody knows which ones are waiting on the customer, or which discounts were approved.</p></div></div>
+          <div class="col-md-6 col-lg-3"><div class="pain-card"><i class="bi bi-telephone-outbound"></i><h6>Payments chased by hand</h6><p>Finance finds out a payment failed days late and calls the sales rep, who calls the customer.</p></div></div>
+          <div class="col-md-6 col-lg-3"><div class="pain-card"><i class="bi bi-keyboard"></i><h6>Company details re-typed</h6><p>Legal names, addresses and NAF codes are typed in by hand, with typos and duplicates as a result.</p></div></div>
+          <div class="col-md-6 col-lg-3"><div class="pain-card"><i class="bi bi-receipt"></i><h6>E-invoicing reform</h6><p>The French e-invoicing reform needs clean SIREN, VAT and address data, which they don't have today.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SCOPE ═══════════════════════════════════════════════════════════ -->
+    <section class="sf-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Scope</span>
+        <h2>What's in v1, and what waits</h2>
+        <p class="text-muted" style="font-size:.9rem; max-width:820px;">The scope is cut on purpose so it can ship in four weeks. Anything not in v1 goes on a written v2 list.</p>
+        <div class="table-responsive">
+          <table class="table sf-table">
+            <thead><tr><th>Area</th><th>In v1</th><th>Deferred to v2</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Data model</strong></td><td>Accounts, contacts, opportunities, products, price books, quotes, orders, custom Payment object</td><td>Inventory by warehouse</td></tr>
+              <tr><td><strong>Security</strong></td><td>3 roles (Sales Rep, Sales Manager, Finance), private sharing, permission sets</td><td>Territory management</td></tr>
+              <tr><td><strong>Automation</strong></td><td>2 record-triggered Flows, 1 screen Flow, 1 approval process, validation &amp; duplicate rules</td><td>Complex Apex triggers</td></tr>
+              <tr><td><strong>Integration 1</strong></td><td>SIRET lookup from the French company register (Named Credential + Apex callout)</td><td>Scheduled re-enrichment</td></tr>
+              <tr><td><strong>Integration 2</strong></td><td>Stripe test mode: success, failure and refund by webhook, with idempotency</td><td>ERP sync</td></tr>
+              <tr><td><strong>Migration</strong></td><td>200 messy legacy accounts cleaned and loaded with external IDs</td><td>Historical orders</td></tr>
+              <tr><td><strong>E-invoicing</strong></td><td>Written design: Salesforce → ERP → certified platform</td><td>Any build</td></tr>
+              <tr><td><strong>AI</strong></td><td>Written design for governed support-reply drafting</td><td>Agentforce build</td></tr>
+              <tr><td><strong>Reporting</strong></td><td>Pipeline, payments and quote-conversion dashboard</td><td>Forecasting</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ ROADMAP ═════════════════════════════════════════════════════════ -->
+    <section class="sf-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Roadmap</span>
+        <h2>Four weeks, one launch date</h2>
+        <div class="row g-3">
+          <div class="col-md-6 col-lg-3"><div class="week-card now">
+            <div class="d-flex justify-content-between align-items-center"><span class="wk">Week 1 · 5–11 Oct</span><span class="st st-next">Next</span></div>
+            <h6>Discovery &amp; foundations</h6>
+            <ul><li>Client brief, discovery questions, user stories</li><li>Data model &amp; decision log</li><li>Objects, SIRET &amp; VAT fields, roles, sharing</li></ul>
+          </div></div>
+          <div class="col-md-6 col-lg-3"><div class="week-card">
+            <div class="d-flex justify-content-between align-items-center"><span class="wk">Week 2 · 12–18 Oct</span><span class="st st-todo">Planned</span></div>
+            <h6>Quote-to-cash &amp; SIRET</h6>
+            <ul><li>Quotes, payment terms, discount approval</li><li>Closed Won → Order Flow; failed payment → task</li><li>SIRET lookup with Apex callout &amp; tests</li></ul>
+          </div></div>
+          <div class="col-md-6 col-lg-3"><div class="week-card">
+            <div class="d-flex justify-content-between align-items-center"><span class="wk">Week 3 · 19–25 Oct</span><span class="st st-todo">Planned</span></div>
+            <h6>Payments &amp; migration</h6>
+            <ul><li>Stripe webhooks, signature check, idempotent upsert</li><li>200-account cleanup &amp; load, reconciled</li><li>E-invoicing design</li></ul>
+          </div></div>
+          <div class="col-md-6 col-lg-3"><div class="week-card">
+            <div class="d-flex justify-content-between align-items-center"><span class="wk">Week 4 · 26 Oct – 1 Nov</span><span class="st st-todo">Planned</span></div>
+            <h6>Proof &amp; launch</h6>
+            <ul><li>Dashboard &amp; full UAT run</li><li>Deployment plan &amp; run book</li><li>Demo video, case study FR + EN</li></ul>
+          </div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ HARD QUESTIONS ══════════════════════════════════════════════════ -->
+    <section class="sf-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">The questions this project has to answer</span>
+        <h2>Where the real work is</h2>
+        <div class="row g-3">
+          <div class="col-lg-4"><div class="q-card"><h6>What if Stripe sends the same payment twice?</h6><p>Webhooks get retried. Every Stripe event ID is stored in a unique external ID field and upserted, so a replayed event never creates a second payment. I'll replay one on purpose to prove it.</p></div></div>
+          <div class="col-lg-4"><div class="q-card"><h6>How do you trust a public endpoint?</h6><p>The webhook endpoint is on a public Salesforce Site. Nothing is processed until the Stripe signature has been verified in Apex.</p></div></div>
+          <div class="col-lg-4"><div class="q-card"><h6>What does the API do when the SIRET is wrong?</h6><p>Invalid SIRET, company not found, API down: each case is handled, tested with a mock, and logged in the UAT workbook.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ DELIVERABLES ════════════════════════════════════════════════════ -->
+    <section class="sf-section" data-aos="fade-up">
+      <div class="container">
+        <span class="section-label">Deliverables</span>
+        <h2>What the client gets</h2>
+        <div class="table-responsive">
+          <table class="table sf-table">
+            <thead><tr><th>Document</th><th>Week</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Client brief (FR) · Discovery note · User stories</td><td>1</td><td><span class="st st-todo">Planned</span></td></tr>
+              <tr><td>Data model diagram · Decision log</td><td>1</td><td><span class="st st-todo">Planned</span></td></tr>
+              <tr><td>UAT workbook with defect IDs</td><td>2 → 4</td><td><span class="st st-todo">Planned</span></td></tr>
+              <tr><td>Data mapping sheet &amp; reconciliation</td><td>3</td><td><span class="st st-todo">Planned</span></td></tr>
+              <tr><td>E-invoicing design (2 pages)</td><td>3</td><td><span class="st st-todo">Planned</span></td></tr>
+              <tr><td>AI design note · Deployment plan &amp; run book</td><td>4</td><td><span class="st st-todo">Planned</span></td></tr>
+              <tr><td>Case study (FR + EN) · Demo video (≤ 5 min)</td><td>4</td><td><span class="st st-todo">Planned</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout-blue mt-3">This is a self-directed project. The client and all data are fictional, and Stripe runs in test mode only.</div>
+      </div>
+    </section>
+
+    <!-- ══ CTA ════════════════════════════════════════════════════════════ -->
+    <section class="py-5 text-center" style="background: linear-gradient(135deg, #021a3a, #0b5cab); color:#fff;">
+      <div class="container">
+        <h3 class="mb-2">Follow the build</h3>
+        <p class="opacity-75 mb-4">Metadata, documents and the weekly progress are on GitHub.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+          <a href="https://github.com/zahraeh/salesforce-atelier-rhone" target="_blank" rel="noopener" class="btn" style="background:var(--sf-bright); color:#032d60; border:none; font-weight:600;">
+            <i class="bi bi-github me-1"></i> View on GitHub
+          </a>
+          <a href="portfolio.html" class="btn btn-outline-light">← Back to Portfolio</a>
+          <a href="contact.html" class="btn btn-outline-light">Contact Me</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Zahra E</strong> <span>All Rights Reserved</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</body>
+</html>
