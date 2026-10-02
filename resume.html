@@ -217,6 +217,8 @@
       background: linear-gradient(to right, transparent 55%, #0d1b3e 100%);
       pointer-events: none;
     }
+    .featured-video-side.portrait { flex-basis: 40%; background: #0d1b3e; }
+    .featured-video-side.portrait video { object-fit: contain; padding: 1.25rem 0; }
     .featured-content {
       flex: 1; color: #fff;
       padding: 2.2rem 2rem 2rem 1.5rem;
@@ -253,6 +255,7 @@
     @media (max-width: 767px) {
       .featured-card { flex-direction: column; }
       .featured-video-side { flex: 0 0 220px; min-height: 220px; }
+      .featured-video-side.portrait { flex-basis: 420px; min-height: 420px; }
       .featured-video-side::after { background: linear-gradient(to bottom, transparent 55%, #0d1b3e 100%); }
       .featured-content { padding: 1.5rem; }
     }
@@ -574,8 +577,8 @@
         <!-- Featured: Afiya -->
         <div class="mb-4" data-aos="fade-up">
           <div class="featured-card">
-            <div class="featured-video-side">
-              <video src="Afiya.mp4" autoplay muted loop playsinline></video>
+            <div class="featured-video-side portrait">
+              <video src="Afiya-oura.mp4" autoplay muted loop playsinline></video>
             </div>
             <div class="featured-content">
               <div class="featured-badge"><span class="badge-dot"></span> Live Demo Available</div>
